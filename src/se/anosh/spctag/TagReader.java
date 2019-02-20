@@ -24,75 +24,46 @@ public class TagReader {
    
     public static void main(String[] args) throws FileNotFoundException, IOException {
         
-        System.out.println(args[0]);
-        
+       // System.out.println(args[0]);
+       
+       args = new String[1];
+       args[0] = "/tmp/axelay.spc";
+       
         if (args.length < 1) {
-            System.out.println("Usage: spicy FILENAME");
+            System.out.println("Usage: spctag FILENAME");
             System.exit(0);
         }
         TagReader demo = new TagReader();
         demo.go(args);
     }
     
-    public void go(String[] filenames) throws FileNotFoundException, IOException  {
+    public void go(String[] filenames)  {
        
-        
-        for (String file : filenames) {
-            System.out.println("File name: " + file);
+            try {
+                SpcFile myFile = new SpcFile(filenames[0]);
             
-            raf = new RandomAccessFile(filenames[0], "r");
+            System.out.println("File header: ");
             
-            System.out.print("File header: ");
-            System.out.println(readStuff(tag.HEADER_OFFSET, tag.HEADER_LENGTH));
+            System.out.println("Song title: ");
             
-            System.out.print("Song title: ");
-            System.out.println(readStuff(tag.SONG_TITLE_OFFSET, tag.SONG_TITLE_LENGTH));
+            System.out.println("Game title: ");
             
-            System.out.print("Game title: ");
-            System.out.println(readStuff(tag.GAME_TITLE_OFFSET, tag.GAME_TITLE_LENGTH));
+            System.out.println("Name of dumper: ");
             
-            System.out.print("Name of dumper: ");
-            System.out.println(readStuff(tag.NAME_OF_DUMPER_OFFSET, tag.NAME_OF_DUMPER_LENGTH));
+            System.out.println("Comments: ");
             
-            System.out.print("Comments: ");
-            System.out.println(readStuff(tag.COMMENTS_OFFSET, tag.COMMENTS_LENGTH));
+            System.out.println("Date SPC was dumped:");
             
-            System.out.print("Date SPC was dumped:");
-            System.out.println(readStuff(tag.DUMP_DATE_OFFSET, tag.DUMP_DATE_LENGTH));
+            System.out.println("Artist of song: "); // composer
             
-            System.out.print("Artist of song: "); // composer
-            System.out.println(readStuff(tag.ARTIST_OF_SONG_OFFSET, tag.ARTIST_OF_SONG_LENGTH));
+            System.out.println("Emulator used to dump SPC: " + myFile.getEmulatorUsedToCreateDump()); // composer
             
-            String emulator = "unknown";
-            byte result = readByte(tag.EMULATOR_OFFSET);
-            //System.out.println("result = " + result);
-            switch (result) {
-                case 1:
-                    emulator = "ZSNES";
-                    break;
-                case 2:
-                    emulator = "Snes9x";
-                    break;
+            } catch (Exception ex) {
+                System.out.println("I/O error");
+                ex.printStackTrace();
+                System.exit(0);
+                
             }
-            System.out.println("Emulator used to dump SPC: " + emulator); // composer
         }
         
-    }
-    
-    private String readStuff(int offset, int length) throws IOException {
-        
-        raf.seek(offset);
-        byte[] bytes = new byte[length];
-        raf.read(bytes);
-        
-        return new String(bytes);
-    }
-    
-    private byte readByte(int offset) throws IOException {
-        raf.seek(offset);
-              
-        byte result = raf.readByte();
-        return result;
-    }
-    
 }

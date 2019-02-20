@@ -90,5 +90,45 @@ public class SpcFile {
         byte result = raf.readByte();
         return result;
     }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public String getHeader() {
+        return header;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public String getSongTitle() {
+        return songTitle;
+    }
+
+    public String getGameTitle() {
+        return gameTitle;
+    }
+
+    public String getDumper() {
+        return dumper;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public String getDateDumpWasCreated() {
+        return dateDumpWasCreated;
+    }
+
+    public String getEmulatorUsedToCreateDump() {
+        return emulatorUsedToCreateDump;
+    }
+    
+    
+    
+    
     
 }
