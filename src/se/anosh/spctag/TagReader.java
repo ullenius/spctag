@@ -1,6 +1,10 @@
 package se.anosh.spctag;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 /**
  *
  * SPC tag 0.1
@@ -19,28 +23,58 @@ import java.io.IOException;
  */
 public class TagReader {
     
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    private static final String VERSION ="spctag version 0.1";
+    private static final String ABOUT = "code by A. Ullenius 2019";
+    private static final String LICENCE = "Licence: Gnu General Public License - version 3.0 only";
+    private static final String TRIBUTE = "spctag is dedicated to my favourite OC remixer: Chris 'Avien' Powell (1986-2004). RIP";
+    
+    public static void main(String[] args) {
         
-//       System.out.println(args[0]);
-//       
-//       args = new String[1];
-//       args[0] = "/tmp/axelay.spc";
-       
-        if (args.length < 1) {
-            System.out.println("Usage: spctag FILENAME");
+        Options options = new Options();
+        options.addOption("v", "verbose", false, "verbose output");
+        options.addOption("V", "version", false, "print version");
+        
+        CommandLineParser parser = new DefaultParser();
+        
+        HelpFormatter formatter = new HelpFormatter();
+
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            
+            if (cmd.hasOption("V"))
+                printVersionAndCreditsAndExit();
+            
+            if (cmd.getArgList().isEmpty())
+                    throw new ParseException("No arguments");
+            
+            TagReader demo = new TagReader();
+            demo.go(cmd);
+        } catch (ParseException ex) {
+            formatter.printHelp("spctag <filename>", options);
             System.exit(0);
         }
-        TagReader demo = new TagReader();
-        demo.go(args);
+        
     }
     
-    public void go(String[] filenames)  {
+    private static void printVersionAndCreditsAndExit() {
         
-        for (String file : filenames) {
+        System.out.println(VERSION);
+        System.out.println(ABOUT);
+        System.out.println(LICENCE);
+        System.out.println(TRIBUTE);
+        System.exit(0);
+    }
+    
+    public void go(final CommandLine cmd)  {
+        
+        String[] fileNames = cmd.getArgs();
+        
+        for (String file : fileNames) {
             try {
                 SpcFile myFile = new SpcFile(file);
                 
-                System.out.println("File header: " + myFile.getHeader());
+                if (cmd.hasOption("v")) // verbose output
+                    System.out.println("File header: " + myFile.getHeader());
                 System.out.println("Artist of song: " + myFile.getArtist()); // composer
                 System.out.println("Song title: " + myFile.getSongTitle());
                 
