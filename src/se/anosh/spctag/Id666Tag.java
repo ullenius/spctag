@@ -33,7 +33,8 @@ public final class Id666Tag {
     public static final int DUMP_DATE_OFFSET = 0x9E;
     public static final int DUMP_DATE_LENGTH = 11;
     
-    public static final int ARTIST_OF_SONG_OFFSET = 0xb1;
+    public static final int ARTIST_OF_SONG_OFFSET = 0xB1; // text format
+    public static final int ARTIST_OF_SONG_OFFSET_BINARY_FORMAT = 0xB0;
     public static final int ARTIST_OF_SONG_LENGTH = 32;
     
     /**
@@ -43,6 +44,8 @@ public final class Id666Tag {
      * 2 = Snes9x
      */
     public static final int EMULATOR_OFFSET = 0xD2;
+    public static final int EMULATOR_OFFSET_BINARY_FORMAT = 0xD1;
+    
     public static final int EMULATOR_LENGTH = 1;
     
        

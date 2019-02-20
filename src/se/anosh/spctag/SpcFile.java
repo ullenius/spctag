@@ -10,8 +10,8 @@ import java.io.RandomAccessFile;
  */
 class SpcFile {
     
-    
-    private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data v0.30";
+    // version may vary, most recent is 0.31 (?) from 2006
+    private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data"; 
     
     private RandomAccessFile raf;
     private final String filename;
@@ -46,9 +46,27 @@ class SpcFile {
             
             artist = readStuff(Id666Tag.ARTIST_OF_SONG_OFFSET, Id666Tag.ARTIST_OF_SONG_LENGTH).trim();
             
-            // determines the emulator used to dump the file
+           
+            // emulator offset to use...
+            // sets it to default
+            int emulatorOffsetToUse = Id666Tag.EMULATOR_OFFSET; // default value, (text format)
+            
+            System.out.println("kollar 0xB0");
+            String s = readStuff(0xB0,1);
+            try {
+              System.out.println("s = " + s);
+            int value = Integer.parseInt(s);
+            System.out.println("value = " + value);
+            } catch (NumberFormatException ex) {
+                //0xB0 är inte en siffra
+                // då lagras taggen i binärt format! :)
+          artist = readStuff(Id666Tag.ARTIST_OF_SONG_OFFSET_BINARY_FORMAT, Id666Tag.ARTIST_OF_SONG_LENGTH).trim();
+          emulatorOffsetToUse = Id666Tag.EMULATOR_OFFSET_BINARY_FORMAT;
+            }
+            
+             // determines the emulator used to dump the file
             String emulator = "unknown";
-            byte result = readByte(Id666Tag.EMULATOR_OFFSET);
+            byte result = readByte(emulatorOffsetToUse);
             
             //System.out.println("result = " + Byte.valueOf(result)); // debug stuff
             switch (result) {
@@ -60,13 +78,17 @@ class SpcFile {
                     break;
             }
             this.emulatorUsedToCreateDump = emulator;
+            
+            
         
     }
     
     private boolean isValidSPCFile() throws IOException {
         
         raf.seek(0);
-        final String fileHeader = readStuff(Id666Tag.HEADER_OFFSET, Id666Tag.HEADER_LENGTH).trim();
+        final String fileHeader = readStuff(Id666Tag.HEADER_OFFSET, Id666Tag.HEADER_LENGTH)
+                .trim()
+                .substring(0, CORRECT_HEADER.length());
         return (CORRECT_HEADER.equalsIgnoreCase(fileHeader));
     }
     
@@ -122,9 +144,6 @@ class SpcFile {
     public String getEmulatorUsedToCreateDump() {
         return emulatorUsedToCreateDump;
     }
-    
-    
-    
     
     
 }
