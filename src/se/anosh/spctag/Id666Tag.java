@@ -1,7 +1,6 @@
 /**
  * 
- * ID666 tag offsets used in SPC-files (Sony SPC700) sound chip
- * used in the Super Nintendo / Super Famicom
+ * ID666 tag offsets used in SPC-files (Sony SPC-700 sound chip)
  * 
  */
 package se.anosh.spctag;

@@ -1,7 +1,6 @@
 package se.anosh.spctag;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 /**
  *
  * SPC tag 0.1
@@ -16,6 +15,7 @@ import java.io.RandomAccessFile;
  * 
  * 
  * @author Anosh D. Ullenius <anosh@anosh.se>
+ * code written in February 2019
  */
 public class TagReader {
     

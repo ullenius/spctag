@@ -14,8 +14,7 @@ public class SpcFile {
     private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data v0.30";
     
     private RandomAccessFile raf;
-    
-    private String filename;
+    private final String filename;
     
     private String header;
     private String artist;
@@ -29,14 +28,14 @@ public class SpcFile {
     
     public SpcFile(String filename) throws FileNotFoundException, IOException {
         this.filename = filename;
-        readAll();
-        
+        raf = new RandomAccessFile(filename,"r"); // read only
+        if (!isValidSPCFile())
+            throw new IOException("File is missing correct SPC-header. Exiting");
+         readAll();
     }
 
     private void readAll() throws FileNotFoundException, IOException {
         
-            raf = new RandomAccessFile(filename,"r"); // read only
-            
             header = readStuff(Id666Tag.HEADER_OFFSET, Id666Tag.HEADER_LENGTH).trim(); // removes NULL character
             songTitle = readStuff(Id666Tag.SONG_TITLE_OFFSET, Id666Tag.SONG_TITLE_LENGTH).trim();
             gameTitle = readStuff(Id666Tag.GAME_TITLE_OFFSET, Id666Tag.GAME_TITLE_LENGTH).trim();
@@ -50,7 +49,8 @@ public class SpcFile {
             // determines the emulator used to dump the file
             String emulator = "unknown";
             byte result = readByte(Id666Tag.EMULATOR_OFFSET);
-            System.out.println("result = " + result + "(debug)");
+            
+            //System.out.println("result = " + Byte.valueOf(result)); // debug stuff
             switch (result) {
                 case 1:
                     emulator = "ZSNES";
@@ -63,14 +63,11 @@ public class SpcFile {
         
     }
     
-    private boolean isValidSPCFile() {
+    private boolean isValidSPCFile() throws IOException {
         
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-    
-    private boolean headerContainsID666Tag() {
-        
-        throw new UnsupportedOperationException("not yet implemented");
+        raf.seek(0);
+        final String fileHeader = readStuff(Id666Tag.HEADER_OFFSET, Id666Tag.HEADER_LENGTH).trim();
+        return (CORRECT_HEADER.equalsIgnoreCase(fileHeader));
     }
     
     
