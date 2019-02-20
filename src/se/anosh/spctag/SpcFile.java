@@ -39,11 +39,10 @@ public class SpcFile {
             
             header = readStuff(Id666Tag.HEADER_OFFSET, Id666Tag.HEADER_LENGTH).trim(); // removes NULL character
             songTitle = readStuff(Id666Tag.SONG_TITLE_OFFSET, Id666Tag.SONG_TITLE_LENGTH).trim();
-            
             gameTitle = readStuff(Id666Tag.GAME_TITLE_OFFSET, Id666Tag.GAME_TITLE_LENGTH).trim();
+
             dumper = readStuff(Id666Tag.NAME_OF_DUMPER_OFFSET, Id666Tag.NAME_OF_DUMPER_LENGTH).trim();
-            
-            comments = (readStuff(Id666Tag.COMMENTS_OFFSET, Id666Tag.COMMENTS_LENGTH));
+            comments = readStuff(Id666Tag.COMMENTS_OFFSET, Id666Tag.COMMENTS_LENGTH).trim();
             dateDumpWasCreated = (readStuff(Id666Tag.DUMP_DATE_OFFSET, Id666Tag.DUMP_DATE_LENGTH)).trim();
             
             artist = readStuff(Id666Tag.ARTIST_OF_SONG_OFFSET, Id666Tag.ARTIST_OF_SONG_LENGTH).trim();
@@ -81,7 +80,7 @@ public class SpcFile {
         byte[] bytes = new byte[length];
         raf.read(bytes);
         
-        return new String(bytes);
+        return new String(bytes, "UTF-8");
     }
     
     private byte readByte(int offset) throws IOException {

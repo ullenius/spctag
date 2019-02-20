@@ -19,15 +19,12 @@ import java.io.RandomAccessFile;
  */
 public class TagReader {
     
-    private RandomAccessFile raf;
-    private Id666Tag tag;
-   
     public static void main(String[] args) throws FileNotFoundException, IOException {
         
-       // System.out.println(args[0]);
-       
-       args = new String[1];
-       args[0] = "/tmp/axelay.spc";
+//       System.out.println(args[0]);
+//       
+//       args = new String[1];
+//       args[0] = "/tmp/axelay.spc";
        
         if (args.length < 1) {
             System.out.println("Usage: spctag FILENAME");
@@ -38,32 +35,29 @@ public class TagReader {
     }
     
     public void go(String[] filenames)  {
-       
+        
+        for (String file : filenames) {
             try {
-                SpcFile myFile = new SpcFile(filenames[0]);
-            
-            System.out.println("File header: ");
-            
-            System.out.println("Song title: ");
-            
-            System.out.println("Game title: ");
-            
-            System.out.println("Name of dumper: ");
-            
-            System.out.println("Comments: ");
-            
-            System.out.println("Date SPC was dumped:");
-            
-            System.out.println("Artist of song: "); // composer
-            
-            System.out.println("Emulator used to dump SPC: " + myFile.getEmulatorUsedToCreateDump()); // composer
-            
+                SpcFile myFile = new SpcFile(file);
+                
+                System.out.println("File header: " + myFile.getHeader());
+                System.out.println("Artist of song: " + myFile.getArtist()); // composer
+                System.out.println("Song title: " + myFile.getSongTitle());
+                
+                System.out.println("Game title: " + myFile.getGameTitle());
+                System.out.println("Name of dumper: " + myFile.getDumper());
+                System.out.println("Comments: " + myFile.getComments());
+                
+                System.out.println("Date SPC was dumped:" + myFile.getDateDumpWasCreated());
+                System.out.println("Emulator used to dump SPC: " + myFile.getEmulatorUsedToCreateDump()); // composer
+                
             } catch (Exception ex) {
                 System.out.println("I/O error");
                 ex.printStackTrace();
                 System.exit(0);
                 
             }
-        }
-        
+        } // end of for-each-loop
+    }
+    
 }
