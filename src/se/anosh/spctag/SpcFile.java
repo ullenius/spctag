@@ -80,7 +80,7 @@ public class SpcFile {
         byte[] bytes = new byte[length];
         raf.read(bytes);
         
-        return new String(bytes, "UTF-8");
+        return new String(bytes, "ISO-8859-1");
     }
     
     private byte readByte(int offset) throws IOException {
