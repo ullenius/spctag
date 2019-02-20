@@ -2,13 +2,22 @@ package se.anosh.spctag;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-
-
 /**
  *
+ * SPC tag 0.1
+ * 
+ * Java command-line tool for reading the ID666 tag from a SNES SPC file.
+ * 
+ * SPC-files are sound files containing ripped chiptune music 
+ * from Super Nintendo and Super Famicom games. 
+ * 
+ * They are named after the Sony SPC-700 sound chip created by Ken Kutaragi 
+ * (who later became the father of the Playstation).
+ * 
+ * 
  * @author Anosh D. Ullenius <anosh@anosh.se>
  */
-public class Demo {
+public class TagReader {
     
     private RandomAccessFile raf;
     private Id666Tag tag;
@@ -21,7 +30,7 @@ public class Demo {
             System.out.println("Usage: spicy FILENAME");
             System.exit(0);
         }
-        Demo demo = new Demo();
+        TagReader demo = new TagReader();
         demo.go(args);
     }
     

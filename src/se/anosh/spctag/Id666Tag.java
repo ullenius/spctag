@@ -12,7 +12,7 @@ package se.anosh.spctag;
  */
 public final class Id666Tag {
     
-    public Id666Tag() {
+    protected Id666Tag() {
     }
     
     public static final int HEADER_OFFSET = 0;
@@ -44,5 +44,6 @@ public final class Id666Tag {
      */
     public static final int EMULATOR_OFFSET = 0xD2;
     public static final int EMULATOR_LENGTH = 1;
+    
        
 }
