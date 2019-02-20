@@ -35,7 +35,6 @@ public class TagReader {
         options.addOption("V", "version", false, "print version");
         
         CommandLineParser parser = new DefaultParser();
-        
         HelpFormatter formatter = new HelpFormatter();
 
         try {
@@ -75,7 +74,7 @@ public class TagReader {
                 
                 if (cmd.hasOption("v")) // verbose output
                     System.out.println("File header: " + myFile.getHeader());
-                System.out.println("Artist of song: " + myFile.getArtist()); // composer
+                System.out.println("Artist: " + myFile.getArtist()); // composer
                 System.out.println("Song title: " + myFile.getSongTitle());
                 
                 System.out.println("Game title: " + myFile.getGameTitle());
