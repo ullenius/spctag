@@ -8,7 +8,7 @@ import java.io.RandomAccessFile;
  *
  * @author Anosh D. Ullenius <anosh@anosh.se>
  */
-public class SpcFile {
+class SpcFile {
     
     
     private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data v0.30";

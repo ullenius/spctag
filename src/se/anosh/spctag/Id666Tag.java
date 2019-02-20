@@ -11,7 +11,8 @@ package se.anosh.spctag;
  */
 public final class Id666Tag {
     
-    protected Id666Tag() {
+    private Id666Tag() {
+        throw new AssertionError(); //prevent instantiation
     }
     
     public static final int HEADER_OFFSET = 0;
