@@ -58,39 +58,32 @@ final class SpcFile {
             comments = readStuff(Id666Tag.COMMENTS_OFFSET, Id666Tag.COMMENTS_LENGTH).trim();
             dateDumpWasCreated = (readStuff(Id666Tag.DUMP_DATE_OFFSET, Id666Tag.DUMP_DATE_LENGTH)).trim();
             
-            artist = readStuff(Id666Tag.ARTIST_OF_SONG_OFFSET, Id666Tag.ARTIST_OF_SONG_LENGTH).trim();
-            
             hasId666Tags = containsID666Tags();
             binaryTagFormat = hasBinaryTagFormat();
-            
            
             // emulator offset to use...
-            int emulatorOffsetToUse = Id666Tag.EMULATOR_OFFSET; // default value, (text format)
+            artist = readStuff(Id666Tag.ARTIST_OF_SONG_TEXT_FORMAT_OFFSET, Id666Tag.ARTIST_OF_SONG_LENGTH).trim();
             
-            System.out.println("kollar 0xB0");
-            String s = readStuff(0xB0,2);
-            try {
-                System.out.println("s = " + s);
-                
-                int value = Integer.parseInt(s);
-                System.out.println("value = " + value);
-            } catch (NumberFormatException ex) {
-                System.out.println("kastar exception...");
-                //0xB0 if this is not a valid number.
-                // NULL-chars cause exception as well. But String.trim() removes them :)
-                // then the tag uses binary-format and offsets :)
-                artist = readStuff(Id666Tag.ARTIST_OF_SONG_OFFSET_BINARY_FORMAT, Id666Tag.ARTIST_OF_SONG_LENGTH).trim();
-                if (s.trim().isEmpty()) {
-                    emulatorOffsetToUse = Id666Tag.EMULATOR_OFFSET_BINARY_FORMAT;
-                    System.out.println("contains null (is empty after trim)");
-                }
+            if (hasBinaryTagFormat()) {
+                artist = readStuff(Id666Tag.ARTIST_OF_SONG_BINARY_FORMAT_OFFSET, Id666Tag.ARTIST_OF_SONG_LENGTH).trim();
+                setEmulatorUsedToCreateDump(Id666Tag.EMULATOR_BINARY_FORMAT_OFFSET);
             }
-            
-             // determines the emulator used to dump the file
-            String emulator = "unknown";
-            byte result = readByte(emulatorOffsetToUse);
-            
-            //System.out.println("result = " + Byte.valueOf(result)); // debug stuff
+            else if (isTextTagFormat()) {
+                artist = readStuff(Id666Tag.ARTIST_OF_SONG_TEXT_FORMAT_OFFSET, Id666Tag.ARTIST_OF_SONG_LENGTH).trim();
+                setEmulatorUsedToCreateDump(Id666Tag.EMULATOR_TEXT_FORMAT_OFFSET);
+            }
+            else {
+                throw new IOException("Something unthinkable occured!");
+            }
+        raf.close(); // close the file
+    }
+    
+    /**
+     * This method is called by readAll()
+     */
+    private void setEmulatorUsedToCreateDump(final int offset) throws IOException {
+        String emulator = "unknown";
+            byte result = readByte(offset);
             switch (result) {
                 case 1:
                     emulator = "ZSNES"; // saves in binary format. See SPCFormat_031.txt
@@ -100,9 +93,8 @@ final class SpcFile {
                     break;
             }
             this.emulatorUsedToCreateDump = emulator;
-            
-        raf.close(); // close the file
     }
+    
     
     private boolean isValidSPCFile() throws IOException {
         raf.seek(0);
@@ -119,6 +111,7 @@ final class SpcFile {
      * @throws IOException if offset has invalid value SPC-file.
      */
     private boolean containsID666Tags() throws IOException{
+        
         byte tag = readByte(Id666Tag.HEADER_CONTAINS_ID666_TAG_OFFSET);
         if (tag == CONTAINS_ID666_TAG)
             return true;
@@ -146,7 +139,7 @@ final class SpcFile {
      */
     private boolean hasBinaryTagFormat() throws IOException {
         
-        String s = readStuff(Id666Tag.ARTIST_OF_SONG_OFFSET_BINARY_FORMAT,1);
+        String s = readStuff(Id666Tag.ARTIST_OF_SONG_BINARY_FORMAT_OFFSET,1);
         // If 0xB0 is *NOT* a valid char or *IS* a digit then don't allow it.
         // Sometimes we have valid digits in this offset (if the tag-format is text)
         if (!Character.isLetter(s.charAt(0)) || Character.isDigit(s.charAt(0))) {
