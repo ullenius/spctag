@@ -80,19 +80,25 @@ final class SpcFile {
     
     /**
      * This method is called by readAll()
+     * 
+     * ZSNES saves in binary format
+     * Snes9x saves in text format
+     * (as of 2006)
+     * 
+     * TODO: Fix this method using the japanese ID666-tag spec
      */
     private void setEmulatorUsedToCreateDump(final int offset) throws IOException {
         String emulator = "unknown";
-            byte result = readByte(offset);
-            switch (result) {
-                case 1:
-                    emulator = "ZSNES"; // saves in binary format. See SPCFormat_031.txt
-                    break;
-                case 2:
-                    emulator = "Snes9x"; // saves in text format
-                    break;
-            }
-            this.emulatorUsedToCreateDump = emulator;
+        byte result = readByte(offset);
+        switch (result) {
+            case 1:
+                emulator = "ZSNES";
+                break;
+            case 2:
+                emulator = "Snes9x";
+                break;
+        }
+        this.emulatorUsedToCreateDump = emulator;
     }
     
     
@@ -103,7 +109,6 @@ final class SpcFile {
                 .substring(0, CORRECT_HEADER.length());
         return (CORRECT_HEADER.equalsIgnoreCase(fileHeader));
     }
-    
     
     /**
      * 
