@@ -45,23 +45,26 @@ class SpcFile {
             dateDumpWasCreated = (readStuff(Id666Tag.DUMP_DATE_OFFSET, Id666Tag.DUMP_DATE_LENGTH)).trim();
             
             artist = readStuff(Id666Tag.ARTIST_OF_SONG_OFFSET, Id666Tag.ARTIST_OF_SONG_LENGTH).trim();
-            
            
             // emulator offset to use...
-            // sets it to default
             int emulatorOffsetToUse = Id666Tag.EMULATOR_OFFSET; // default value, (text format)
             
             System.out.println("kollar 0xB0");
             String s = readStuff(0xB0,1);
             try {
-              System.out.println("s = " + s);
-            int value = Integer.parseInt(s);
-            System.out.println("value = " + value);
+                System.out.println("s = " + s);
+                int value = Integer.parseInt(s);
+                System.out.println("value = " + value);
             } catch (NumberFormatException ex) {
-                //0xB0 är inte en siffra
-                // då lagras taggen i binärt format! :)
-          artist = readStuff(Id666Tag.ARTIST_OF_SONG_OFFSET_BINARY_FORMAT, Id666Tag.ARTIST_OF_SONG_LENGTH).trim();
-          emulatorOffsetToUse = Id666Tag.EMULATOR_OFFSET_BINARY_FORMAT;
+                System.out.println("kastar exception...");
+                //0xB0 if this is not a valid number.
+                // NULL-chars cause exception as well. But String.trim() removes them :)
+                // then the tag uses binary-format and offsets :)
+                artist = readStuff(Id666Tag.ARTIST_OF_SONG_OFFSET_BINARY_FORMAT, Id666Tag.ARTIST_OF_SONG_LENGTH).trim();
+                if (s.trim().isEmpty()) {
+                    emulatorOffsetToUse = Id666Tag.EMULATOR_OFFSET_BINARY_FORMAT;
+                    System.out.println("contains null (is empty after trim)");
+                }
             }
             
              // determines the emulator used to dump the file
@@ -71,14 +74,13 @@ class SpcFile {
             //System.out.println("result = " + Byte.valueOf(result)); // debug stuff
             switch (result) {
                 case 1:
-                    emulator = "ZSNES";
+                    emulator = "ZSNES"; // saves in binary format. See SPCFormat_031.txt
                     break;
                 case 2:
-                    emulator = "Snes9x";
+                    emulator = "Snes9x"; // saves in text format
                     break;
             }
             this.emulatorUsedToCreateDump = emulator;
-            
             
         
     }
