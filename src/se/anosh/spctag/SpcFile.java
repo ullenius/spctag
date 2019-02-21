@@ -17,6 +17,13 @@ final class SpcFile implements Comparable<SpcFile> {
     private static final int CONTAINS_ID666_TAG = 26;
     private static final int MISSING_ID666_TAG = 27;
     
+    // Thanks to Lukasz Wiktor @ stack overflow (2014)
+    private static final Comparator<String> nullSafeStringComparator = Comparator.nullsFirst(String::compareToIgnoreCase);
+    private static final Comparator<SpcFile> SpcFileComparator = Comparator
+            .comparing(SpcFile::getGameTitle, nullSafeStringComparator)
+            .thenComparing(SpcFile::getArtist, nullSafeStringComparator)
+            .thenComparing(SpcFile::getSongTitle, nullSafeStringComparator);
+    
     private final RandomAccessFile raf;
     private final String filename;
     
@@ -268,12 +275,8 @@ final class SpcFile implements Comparable<SpcFile> {
     @Override
     public int compareTo(SpcFile o) {
         
-        return Comparator.comparing(SpcFile::getGameTitle)
-                .thenComparing(SpcFile::getArtist,Comparator.nullsFirst(Comparator.naturalOrder()))
-                .thenComparing(SpcFile::getSongTitle)
-                .compare(this, o);
+        return SpcFileComparator.compare(this, o);
     }
-
     
     // These methods are intended for unit testing only
     
@@ -291,7 +294,7 @@ final class SpcFile implements Comparable<SpcFile> {
 
     @Override
     public String toString() {
-        return "SpcFile{" + "artist=" + artist + ", songTitle=" + songTitle + ", gameTitle=" + gameTitle + ", emulatorUsedToCreateDump=" + emulatorUsedToCreateDump + ", hasId666Tags=" + hasId666Tags + ", binaryTagFormat=" + binaryTagFormat + '}';
+        return "SpcFile{" + "gameTitle=" + gameTitle + ", artist=" + artist+ " gameTitle = " + gameTitle + ", emulatorUsedToCreateDump=" + emulatorUsedToCreateDump + ", hasId666Tags=" + hasId666Tags + ", binaryTagFormat=" + binaryTagFormat + '}';
     }
     
     
