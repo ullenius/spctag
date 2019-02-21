@@ -1,6 +1,8 @@
 package se.anosh.spctag;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -96,6 +98,28 @@ public class TestSPCWithTextFormatTags {
          assertNotEquals(clone,spcFile);
          
     }
+    
+    @Test
+    public void testComparableSorting() throws IOException {
+        
+        SpcFile other = new SpcFile("../binary.spc");
+        
+        List<SpcFile> myList = new ArrayList<>();
+        myList.add(other);
+        myList.add(spcFile);
+        myList.add(other);
+        myList.add(spcFile);
+        
+        System.out.println("list order");
+        for (SpcFile s : myList)
+            System.out.println(s);
+        
+        fail();
+        
+        
+        
+    }
+    
     
     
     

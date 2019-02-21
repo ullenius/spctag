@@ -3,20 +3,21 @@ package se.anosh.spctag;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Comparator;
 import java.util.Objects;
 
 /**
  *
  * @author Anosh D. Ullenius <anosh@anosh.se>
  */
-final class SpcFile {
+final class SpcFile implements Comparable<SpcFile> {
     
     // version may vary, most recent is 0.31 (?) from 2006
     private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data"; 
     private static final int CONTAINS_ID666_TAG = 26;
     private static final int MISSING_ID666_TAG = 27;
     
-    private RandomAccessFile raf;
+    private final RandomAccessFile raf;
     private final String filename;
     
     private String header;
@@ -262,6 +263,30 @@ final class SpcFile {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int compareTo(SpcFile o) {
+        
+        return Comparator.comparing(SpcFile::getGameTitle)
+                .thenComparing(SpcFile::getArtist,Comparator.nullsFirst(Comparator.naturalOrder()))
+                .thenComparing(SpcFile::getSongTitle)
+                .compare(this, o);
+    }
+
+    
+    // These methods are intended for unit testing only
+    
+    void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    void setSongTitle(String songTitle) {
+        this.songTitle = songTitle;
+    }
+
+    void setGameTitle(String gameTitle) {
+        this.gameTitle = gameTitle;
     }
     
     
