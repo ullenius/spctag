@@ -78,7 +78,7 @@ public class TagReader {
                 System.out.println("Song title: " + myFile.getSongTitle());
                 
                 System.out.println("Game title: " + myFile.getGameTitle());
-                System.out.println("Name of dumper: " + myFile.getDumper());
+                System.out.println("Name of dumper: " + myFile.getNameOfDumper());
                 System.out.println("Comments: " + myFile.getComments());
                 
                 System.out.println("Date SPC was dumped:" + myFile.getDateDumpWasCreated());

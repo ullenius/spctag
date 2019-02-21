@@ -21,7 +21,7 @@ class SpcFile {
     private String artist;
     private String songTitle;
     private String gameTitle;
-    private String dumper;
+    private String nameOfDumper;
     private String comments;
     private String dateDumpWasCreated;
     private String emulatorUsedToCreateDump;
@@ -52,7 +52,7 @@ class SpcFile {
             songTitle = readStuff(Id666Tag.SONG_TITLE_OFFSET, Id666Tag.SONG_TITLE_LENGTH).trim();
             gameTitle = readStuff(Id666Tag.GAME_TITLE_OFFSET, Id666Tag.GAME_TITLE_LENGTH).trim();
 
-            dumper = readStuff(Id666Tag.NAME_OF_DUMPER_OFFSET, Id666Tag.NAME_OF_DUMPER_LENGTH).trim();
+            nameOfDumper = readStuff(Id666Tag.NAME_OF_DUMPER_OFFSET, Id666Tag.NAME_OF_DUMPER_LENGTH).trim();
             comments = readStuff(Id666Tag.COMMENTS_OFFSET, Id666Tag.COMMENTS_LENGTH).trim();
             dateDumpWasCreated = (readStuff(Id666Tag.DUMP_DATE_OFFSET, Id666Tag.DUMP_DATE_LENGTH)).trim();
             
@@ -202,8 +202,8 @@ class SpcFile {
         return gameTitle;
     }
 
-    public String getDumper() {
-        return dumper;
+    public String getNameOfDumper() {
+        return nameOfDumper;
     }
 
     public String getComments() {
@@ -237,7 +237,7 @@ class SpcFile {
         hash = 79 * hash + Objects.hashCode(this.artist);
         hash = 79 * hash + Objects.hashCode(this.songTitle);
         hash = 79 * hash + Objects.hashCode(this.gameTitle);
-        hash = 79 * hash + Objects.hashCode(this.dumper);
+        hash = 79 * hash + Objects.hashCode(this.nameOfDumper);
         hash = 79 * hash + Objects.hashCode(this.comments);
         hash = 79 * hash + Objects.hashCode(this.dateDumpWasCreated);
         return hash;
@@ -267,7 +267,7 @@ class SpcFile {
         if (!Objects.equals(this.gameTitle, other.gameTitle)) {
             return false;
         }
-        if (!Objects.equals(this.dumper, other.dumper)) {
+        if (!Objects.equals(this.nameOfDumper, other.nameOfDumper)) {
             return false;
         }
         if (!Objects.equals(this.comments, other.comments)) {

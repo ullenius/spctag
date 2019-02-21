@@ -94,6 +94,7 @@ public class TestSPCWithTextFormatTags {
         
          SpcFile clone = new SpcFile("../binary.spc");
          assertNotEquals(clone,spcFile);
+         
     }
     
     
