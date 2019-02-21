@@ -15,6 +15,8 @@ public final class Id666Tag {
         throw new AssertionError(); //prevent instantiation
     }
     
+    public static final int HEADER_CONTAINS_ID666_TAG_OFFSET = 0x23; // 1 byte
+    
     public static final int HEADER_OFFSET = 0;
     public static final int HEADER_LENGTH = 33;
 
@@ -33,8 +35,8 @@ public final class Id666Tag {
     public static final int DUMP_DATE_OFFSET = 0x9E;
     public static final int DUMP_DATE_LENGTH = 11;
     
-    public static final int ARTIST_OF_SONG_OFFSET = 0xB1; // text format
-    public static final int ARTIST_OF_SONG_OFFSET_BINARY_FORMAT = 0xB0;
+    public static final int ARTIST_OF_SONG_TEXT_FORMAT_OFFSET = 0xB1; // text format
+    public static final int ARTIST_OF_SONG_BINARY_FORMAT_OFFSET = 0xB0;
     public static final int ARTIST_OF_SONG_LENGTH = 32;
     
     /**
@@ -43,8 +45,8 @@ public final class Id666Tag {
      * 1 = ZNES
      * 2 = Snes9x
      */
-    public static final int EMULATOR_OFFSET = 0xD2;
-    public static final int EMULATOR_OFFSET_BINARY_FORMAT = 0xD1;
+    public static final int EMULATOR_TEXT_FORMAT_OFFSET = 0xD2;
+    public static final int EMULATOR_BINARY_FORMAT_OFFSET = 0xD1;
     
     public static final int EMULATOR_LENGTH = 1;
     
