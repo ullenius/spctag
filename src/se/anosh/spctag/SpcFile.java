@@ -13,6 +13,8 @@ final class SpcFile {
     
     // version may vary, most recent is 0.31 (?) from 2006
     private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data"; 
+    private static final int CONTAINS_ID666_TAG = 26;
+    private static final int MISSING_ID666_TAG = 27;
     
     private RandomAccessFile raf;
     private final String filename;
@@ -111,23 +113,20 @@ final class SpcFile {
     }
     
     
-    private boolean containsID666Tags() throws IOException{ // temp, change to catch later. catch and return false
-        
-        byte tagValue = readByte(Id666Tag.HEADER_CONTAINS_ID666_TAG_OFFSET);
-        
-        System.out.println(tagValue);
-         // 26 contains id666 tag
-         // 27 contains no id666 tag
-         // other value, not spc file. throw exception
-        if (tagValue == 26)
+    /**
+     * 
+     * @return
+     * @throws IOException if offset has invalid value SPC-file.
+     */
+    private boolean containsID666Tags() throws IOException{
+        byte tag = readByte(Id666Tag.HEADER_CONTAINS_ID666_TAG_OFFSET);
+        if (tag == CONTAINS_ID666_TAG)
             return true;
-        else if (tagValue == 27)
+        else if (tag == MISSING_ID666_TAG)
             return false;
         else
-            throw new IOException("Does not contain valid value at offset 0x23. Is this a SPC file?");
-        
+            throw new IOException(Id666Tag.HEADER_CONTAINS_ID666_TAG_OFFSET + " offset does not contain valid value. Is this a SPC file?");
     }
-    
     
     /**
      * 
@@ -135,27 +134,21 @@ final class SpcFile {
      * It is kind of ambigious which format is used since there are
      * no real inidcator in the file format specification.
      * 
-     * text artist start at: 0xB1
-     * binary artist start at: 0xB0
-     * 
      * BUGS:
      * This method only works if the artist field is set...
      * and if the artist name doesn't start with a digit
      * 
-     * TODO: Replace this with a check to see if 0xB == NULL || 0xB1 == NULL
-     * that is ignore 1-letter artists as a workaround
-     * 
-     * On the other hand... The only other values that are affected
+     * On the other hand... The only other value that is affected
      * is the single byte that determines the emulator used for creating
-     * the dump. And who cares? It's not even properly set in most SPC-files in the wild
+     * the dump. And who cares? It's not even properly set in most SPC-files.
      * 
      * @return 
      */
     private boolean hasBinaryTagFormat() throws IOException {
         
-        String s = readStuff(0xB0,1);
-        //if 0xB0 is not a valid char or *IS* a digit then we don't allow it.
-        // beause sometimes we have valid digits in this offset (if the tag-format is text)
+        String s = readStuff(Id666Tag.ARTIST_OF_SONG_OFFSET_BINARY_FORMAT,1);
+        // If 0xB0 is *NOT* a valid char or *IS* a digit then don't allow it.
+        // Sometimes we have valid digits in this offset (if the tag-format is text)
         if (!Character.isLetter(s.charAt(0)) || Character.isDigit(s.charAt(0))) {
             return false;
         } else {
@@ -164,17 +157,14 @@ final class SpcFile {
     }
     
     private String readStuff(int offset, int length) throws IOException {
-        
         raf.seek(offset);
         byte[] bytes = new byte[length];
         raf.read(bytes);
-        
         return new String(bytes, "ISO-8859-1");
     }
     
     private byte readByte(int offset) throws IOException {
         raf.seek(offset);
-              
         byte result = raf.readByte();
         return result;
     }
@@ -275,8 +265,6 @@ final class SpcFile {
         }
         return true;
     }
-    
-    
     
     
 }
