@@ -288,6 +288,12 @@ final class SpcFile implements Comparable<SpcFile> {
     void setGameTitle(String gameTitle) {
         this.gameTitle = gameTitle;
     }
+
+    @Override
+    public String toString() {
+        return "SpcFile{" + "artist=" + artist + ", songTitle=" + songTitle + ", gameTitle=" + gameTitle + ", emulatorUsedToCreateDump=" + emulatorUsedToCreateDump + ", hasId666Tags=" + hasId666Tags + ", binaryTagFormat=" + binaryTagFormat + '}';
+    }
+    
     
     
 }
