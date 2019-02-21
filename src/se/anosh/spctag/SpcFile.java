@@ -66,9 +66,10 @@ final class SpcFile {
             int emulatorOffsetToUse = Id666Tag.EMULATOR_OFFSET; // default value, (text format)
             
             System.out.println("kollar 0xB0");
-            String s = readStuff(0xB0,1);
+            String s = readStuff(0xB0,2);
             try {
                 System.out.println("s = " + s);
+                
                 int value = Integer.parseInt(s);
                 System.out.println("value = " + value);
             } catch (NumberFormatException ex) {
@@ -141,29 +142,25 @@ final class SpcFile {
      * This method only works if the artist field is set...
      * and if the artist name doesn't start with a digit
      * 
+     * TODO: Replace this with a check to see if 0xB == NULL || 0xB1 == NULL
+     * that is ignore 1-letter artists as a workaround
+     * 
      * On the other hand... The only other values that are affected
      * is the single byte that determines the emulator used for creating
      * the dump. And who cares? It's not even properly set in most SPC-files in the wild
-     * 
      * 
      * @return 
      */
     private boolean hasBinaryTagFormat() throws IOException {
         
-        //System.out.println("kollar 0xB0");
-            String s = readStuff(0xB0,1);
-            try {
-                Integer.parseInt(s); // if the data we read is a digit (or NULL) then it is NOT a binary artist offset being used
-            } catch (NumberFormatException ex) {
-                //0xB0 if this is not a valid number.
-                // NULL-chars cause exception as well. But String.trim() removes them :)
-                // then the tag uses binary-format and offsets :)
-                if (s.trim().isEmpty()) { // this statement true if it uses binary format. NULL is trimmed out
-                    // idea: I guess i could check if the next byte is set to NULL as well... then we can ignore the artist field
-                    return false;
-                } 
-            }
+        String s = readStuff(0xB0,1);
+        //if 0xB0 is not a valid char or *IS* a digit then we don't allow it.
+        // beause sometimes we have valid digits in this offset (if the tag-format is text)
+        if (!Character.isLetter(s.charAt(0)) || Character.isDigit(s.charAt(0))) {
+            return false;
+        } else {
         return true;
+        }
     }
     
     private String readStuff(int offset, int length) throws IOException {
