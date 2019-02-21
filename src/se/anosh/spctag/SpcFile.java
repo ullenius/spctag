@@ -98,7 +98,7 @@ final class SpcFile {
             }
             this.emulatorUsedToCreateDump = emulator;
             
-        
+        raf.close(); // close the file
     }
     
     private boolean isValidSPCFile() throws IOException {
