@@ -50,6 +50,17 @@ public class TestSPCWithTextFormatTags {
         
         spcFile = new SpcFile("../containsNoTagSetToTrue.spc");
         assertFalse(spcFile.containsID666Tags());
+    }
+    
+    @Test
+    public void testValidTextTagFormattedTags() throws IOException {
+        System.out.println("NU KOLLAR I VALID TEXT TAG FORMAT");
+        assertTrue(spcFile.hasTextTagFormat());
+    }
+    
+    @Test
+    public void testIfTextTagsAreDetectedAsBinary() throws IOException {
+        assertFalse(spcFile.hasBinaryTagFormat());
         
     }
     

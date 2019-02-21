@@ -115,32 +115,43 @@ class SpcFile {
     
     /**
      * 
-     * Checks if tag format is binary of String-based
+     * Checks if tag format is text format (as opposed to binary)
+     * 
+     * text artist start at: 0xB1
+     * binary artist start at: 0xB0
+     * 
+     * BUGS:
+     * This method only works if the artist field is set...
+     * and if the artist name doesn't start with a digit
+     * 
      * @return 
      */
-    public boolean binaryTagFormat() throws IOException {
+    public boolean hasBinaryTagFormat() throws IOException {
         
-        throw new UnsupportedOperationException("not yet implemented");
-//        System.out.println("kollar 0xB0");
-//            String s = readStuff(0xB0,1);
-//            try {
-//                System.out.println("s = " + s);
-//                int value = Integer.parseInt(s);
-//                System.out.println("value = " + value);
-//            } catch (NumberFormatException ex) {
-//                System.out.println("kastar exception...");
-//                //0xB0 if this is not a valid number.
-//                // NULL-chars cause exception as well. But String.trim() removes them :)
-//                // then the tag uses binary-format and offsets :)
-//              
-//                if (s.trim().isEmpty()) {
-//                    
-//                    System.out.println("contains null (is empty after trim)");
-//                }
-//            }
-//        
-        
-        
+       // throw new UnsupportedOperationException("not yet implemented");
+        System.out.println("kollar 0xB0");
+            String s = readStuff(0xB0,1);
+            try {
+                System.out.println("a = " + s);
+                int value = Integer.parseInt(s); // if the data we read is a digit (or NULL) then it is NOT a binary artist offset being used
+                System.out.println("VALUE = " + value);
+            } catch (NumberFormatException ex) {
+                System.out.println("kastar exception...");
+                //0xB0 if this is not a valid number.
+                // NULL-chars cause exception as well. But String.trim() removes them :)
+                // then the tag uses binary-format and offsets :)
+              
+                if (s.trim().isEmpty()) { // this statement true if it uses binary format. NULL is trimmed out
+                    System.out.println("returning false");
+                    return false;
+                } 
+            }
+            System.out.println("returning true");
+        return true;
+    }
+    
+    public boolean hasTextTagFormat() throws IOException {
+        return (!hasBinaryTagFormat());
     }
     
     
