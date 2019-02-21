@@ -9,7 +9,7 @@ import java.util.Objects;
  *
  * @author Anosh D. Ullenius <anosh@anosh.se>
  */
-class SpcFile {
+final class SpcFile {
     
     // version may vary, most recent is 0.31 (?) from 2006
     private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data"; 
@@ -27,7 +27,7 @@ class SpcFile {
     private String emulatorUsedToCreateDump;
     
     private boolean hasId666Tags;
-    private boolean binaryTagFormat;
+    private boolean binaryTagFormat; // boolean isTextTagFormat() returns the opposite of this value
 
     
     public SpcFile(String filename) throws FileNotFoundException, IOException {
