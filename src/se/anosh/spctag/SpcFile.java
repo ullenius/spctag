@@ -95,6 +95,55 @@ class SpcFile {
     }
     
     
+    public boolean containsID666Tags() throws IOException{ // temp, change to catch later. catch and return false
+        
+        byte tagValue = readByte(Id666Tag.HEADER_CONTAINS_ID666_TAG_OFFSET);
+        
+        System.out.println(tagValue);
+         // 26 contains id666 tag
+         // 27 contains no id666 tag
+         // other value, not spc file. throw exception
+        if (tagValue == 26)
+            return true;
+        else if (tagValue == 27)
+            return false;
+        else
+            throw new IOException("Does not contain valid value at offset 0x23. Is this a SPC file?");
+        
+    }
+    
+    
+    /**
+     * 
+     * Checks if tag format is binary of String-based
+     * @return 
+     */
+    public boolean binaryTagFormat() throws IOException {
+        
+        throw new UnsupportedOperationException("not yet implemented");
+//        System.out.println("kollar 0xB0");
+//            String s = readStuff(0xB0,1);
+//            try {
+//                System.out.println("s = " + s);
+//                int value = Integer.parseInt(s);
+//                System.out.println("value = " + value);
+//            } catch (NumberFormatException ex) {
+//                System.out.println("kastar exception...");
+//                //0xB0 if this is not a valid number.
+//                // NULL-chars cause exception as well. But String.trim() removes them :)
+//                // then the tag uses binary-format and offsets :)
+//              
+//                if (s.trim().isEmpty()) {
+//                    
+//                    System.out.println("contains null (is empty after trim)");
+//                }
+//            }
+//        
+        
+        
+    }
+    
+    
       private String readStuff(int offset, int length) throws IOException {
         
         raf.seek(offset);

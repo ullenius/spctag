@@ -15,6 +15,9 @@ public final class Id666Tag {
         throw new AssertionError(); //prevent instantiation
     }
     
+    public static final int HEADER_CONTAINS_ID666_TAG_OFFSET = 0x23; // 1 byte
+    
+    
     public static final int HEADER_OFFSET = 0;
     public static final int HEADER_LENGTH = 33;
 
