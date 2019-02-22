@@ -1,5 +1,4 @@
 package se.anosh.spctag;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -89,7 +88,7 @@ public class TagReader {
                 
             } catch (IOException ex) {
                 System.out.println("I/O error");
-                ex.printStackTrace();
+                //ex.printStackTrace();
                 System.exit(0);
             }
         } // end of for-each-loop

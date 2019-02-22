@@ -109,12 +109,6 @@ public class TestSPCWithTextFormatTags {
         myList.add(other);
         myList.add(spcFile);
         
-//        System.out.println("list order");
-//        for (SpcFile s : myList)
-//            System.out.println(s);
-        
-        // sort
-//        System.out.println("\nSorting...\n");
         myList.sort(null);
         myList.forEach(System.out::println);
         assertEquals(spcFile,myList.get(0));
@@ -140,9 +134,6 @@ public class TestSPCWithTextFormatTags {
         myList.add(other);
         
         myList.sort(null);
-//        System.out.println("list order");
-//        for (SpcFile s : myList)
-//            System.out.println(s);
         
         assertNull(myList.get(0).getSongTitle());
         assertNull(myList.get(0).getGameTitle());
