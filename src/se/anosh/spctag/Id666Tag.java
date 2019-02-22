@@ -1,12 +1,9 @@
-/**
- * 
- * ID666 tag offsets used in SPC-files (Sony SPC-700 sound chip)
- * 
- */
 package se.anosh.spctag;
 
 /**
  *
+ * ID666 tag offsets used in SPC-files (Sony SPC-700 sound chip)
+ * 
  * @author Anosh D. Ullenius <anosh@anosh.se>
  */
 public final class Id666Tag {
@@ -16,7 +13,6 @@ public final class Id666Tag {
     }
     
     public static final int HEADER_CONTAINS_ID666_TAG_OFFSET = 0x23; // 1 byte
-    
     public static final int HEADER_OFFSET = 0;
     public static final int HEADER_LENGTH = 33;
 
@@ -39,16 +35,8 @@ public final class Id666Tag {
     public static final int ARTIST_OF_SONG_BINARY_FORMAT_OFFSET = 0xB0;
     public static final int ARTIST_OF_SONG_LENGTH = 32;
     
-    /**
-     * Emulator used:
-     * 0 = unknown
-     * 1 = ZNES
-     * 2 = Snes9x
-     */
     public static final int EMULATOR_TEXT_FORMAT_OFFSET = 0xD2;
     public static final int EMULATOR_BINARY_FORMAT_OFFSET = 0xD1;
-    
     public static final int EMULATOR_LENGTH = 1;
-    
        
 }

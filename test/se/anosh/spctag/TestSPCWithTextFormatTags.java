@@ -96,7 +96,6 @@ public class TestSPCWithTextFormatTags {
         
          SpcFile clone = new SpcFile("../binary.spc");
          assertNotEquals(clone,spcFile);
-         
     }
     
     @Test
@@ -110,14 +109,38 @@ public class TestSPCWithTextFormatTags {
         myList.add(other);
         myList.add(spcFile);
         
-        System.out.println("list order");
-        for (SpcFile s : myList)
-            System.out.println(s);
+        myList.sort(null);
+        myList.forEach(System.out::println);
+        assertEquals(spcFile,myList.get(0));
+        assertEquals(spcFile,myList.get(1));
+        assertEquals(other,myList.get(2));
+        assertEquals(other,myList.get(3));
         
-        fail();
+    }
+    
+    @Test
+    public void testComparableWithNullValues() throws IOException {
         
+        SpcFile other = new SpcFile("../binary.spc");
         
+        other.setGameTitle(null);
+        other.setSongTitle(null);
+        other.setArtist(null);
         
+        spcFile.setGameTitle(null);
+        
+        List<SpcFile> myList = new ArrayList<>();
+        myList.add(spcFile);
+        myList.add(other);
+        
+        myList.sort(null);
+        
+        assertNull(myList.get(0).getSongTitle());
+        assertNull(myList.get(0).getGameTitle());
+        assertNull(myList.get(0).getArtist());
+        assertNull(myList.get(1).getGameTitle());
+        assertNotNull(myList.get(1).getArtist());
+        assertNotNull(myList.get(1).getSongTitle());
     }
     
     

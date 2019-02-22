@@ -1,4 +1,5 @@
 package se.anosh.spctag;
+import java.io.IOException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -72,8 +73,9 @@ public class TagReader {
             try {
                 SpcFile myFile = new SpcFile(file);
                 
-                if (cmd.hasOption("v")) // verbose output
+                if (cmd.hasOption("v")) { // verbose output
                     System.out.println("File header: " + myFile.getHeader());
+                }
                 System.out.println("Artist: " + myFile.getArtist()); // composer
                 System.out.println("Song title: " + myFile.getSongTitle());
                 
@@ -84,11 +86,10 @@ public class TagReader {
                 System.out.println("Date SPC was dumped:" + myFile.getDateDumpWasCreated());
                 System.out.println("Emulator used to dump SPC: " + myFile.getEmulatorUsedToCreateDump()); // composer
                 
-            } catch (Exception ex) {
+            } catch (IOException ex) {
                 System.out.println("I/O error");
-                ex.printStackTrace();
+                //ex.printStackTrace();
                 System.exit(0);
-                
             }
         } // end of for-each-loop
     }

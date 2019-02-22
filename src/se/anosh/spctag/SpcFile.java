@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Comparator;
 import java.util.Objects;
+import static se.anosh.spctag.Id666Tag.*;
+import se.anosh.spctag.emulator.DumpEmulator;
+import se.anosh.spctag.emulator.Emulator;
 
 /**
  *
@@ -17,6 +20,13 @@ final class SpcFile implements Comparable<SpcFile> {
     private static final int CONTAINS_ID666_TAG = 26;
     private static final int MISSING_ID666_TAG = 27;
     
+    // Thanks to Lukasz Wiktor @ stack overflow (2014)
+    private static final Comparator<String> nullSafeStringComparator = Comparator.nullsFirst(String::compareToIgnoreCase);
+    private static final Comparator<SpcFile> SpcFileComparator = Comparator
+            .comparing(SpcFile::getGameTitle, nullSafeStringComparator)
+            .thenComparing(SpcFile::getArtist, nullSafeStringComparator)
+            .thenComparing(SpcFile::getSongTitle, nullSafeStringComparator);
+    
     private final RandomAccessFile raf;
     private final String filename;
     
@@ -27,7 +37,7 @@ final class SpcFile implements Comparable<SpcFile> {
     private String nameOfDumper;
     private String comments;
     private String dateDumpWasCreated;
-    private String emulatorUsedToCreateDump;
+    private Emulator emulatorUsedToCreateDump;
     
     private boolean hasId666Tags;
     private boolean binaryTagFormat; // boolean isTextTagFormat() returns the opposite of this value
@@ -51,27 +61,27 @@ final class SpcFile implements Comparable<SpcFile> {
      */
     private void readAll() throws FileNotFoundException, IOException {
         
-            header = readStuff(Id666Tag.HEADER_OFFSET, Id666Tag.HEADER_LENGTH).trim(); // removes NULL character
-            songTitle = readStuff(Id666Tag.SONG_TITLE_OFFSET, Id666Tag.SONG_TITLE_LENGTH).trim();
-            gameTitle = readStuff(Id666Tag.GAME_TITLE_OFFSET, Id666Tag.GAME_TITLE_LENGTH).trim();
+            header = readStuff(HEADER_OFFSET, HEADER_LENGTH).trim(); // removes NULL character
+            songTitle = readStuff(SONG_TITLE_OFFSET, SONG_TITLE_LENGTH).trim();
+            gameTitle = readStuff(GAME_TITLE_OFFSET, GAME_TITLE_LENGTH).trim();
 
-            nameOfDumper = readStuff(Id666Tag.NAME_OF_DUMPER_OFFSET, Id666Tag.NAME_OF_DUMPER_LENGTH).trim();
-            comments = readStuff(Id666Tag.COMMENTS_OFFSET, Id666Tag.COMMENTS_LENGTH).trim();
-            dateDumpWasCreated = (readStuff(Id666Tag.DUMP_DATE_OFFSET, Id666Tag.DUMP_DATE_LENGTH)).trim();
+            nameOfDumper = readStuff(NAME_OF_DUMPER_OFFSET, NAME_OF_DUMPER_LENGTH).trim();
+            comments = readStuff(COMMENTS_OFFSET, COMMENTS_LENGTH).trim();
+            dateDumpWasCreated = (readStuff(DUMP_DATE_OFFSET, DUMP_DATE_LENGTH)).trim();
             
             hasId666Tags = containsID666Tags();
             binaryTagFormat = hasBinaryTagFormat();
            
             // emulator offset to use...
-            artist = readStuff(Id666Tag.ARTIST_OF_SONG_TEXT_FORMAT_OFFSET, Id666Tag.ARTIST_OF_SONG_LENGTH).trim();
+            artist = readStuff(ARTIST_OF_SONG_TEXT_FORMAT_OFFSET, ARTIST_OF_SONG_LENGTH).trim();
             
             if (hasBinaryTagFormat()) {
-                artist = readStuff(Id666Tag.ARTIST_OF_SONG_BINARY_FORMAT_OFFSET, Id666Tag.ARTIST_OF_SONG_LENGTH).trim();
-                setEmulatorUsedToCreateDump(Id666Tag.EMULATOR_BINARY_FORMAT_OFFSET);
+                artist = readStuff(ARTIST_OF_SONG_BINARY_FORMAT_OFFSET, ARTIST_OF_SONG_LENGTH).trim();
+                setEmulatorUsedToCreateDump(EMULATOR_BINARY_FORMAT_OFFSET);
             }
             else if (isTextTagFormat()) {
-                artist = readStuff(Id666Tag.ARTIST_OF_SONG_TEXT_FORMAT_OFFSET, Id666Tag.ARTIST_OF_SONG_LENGTH).trim();
-                setEmulatorUsedToCreateDump(Id666Tag.EMULATOR_TEXT_FORMAT_OFFSET);
+                artist = readStuff(ARTIST_OF_SONG_TEXT_FORMAT_OFFSET, ARTIST_OF_SONG_LENGTH).trim();
+                setEmulatorUsedToCreateDump(EMULATOR_TEXT_FORMAT_OFFSET);
             }
             else {
                 throw new IOException("Something unthinkable occured!");
@@ -79,33 +89,15 @@ final class SpcFile implements Comparable<SpcFile> {
         raf.close(); // close the file
     }
     
-    /**
-     * This method is called by readAll()
-     * 
-     * ZSNES saves in binary format
-     * Snes9x saves in text format
-     * (as of 2006)
-     * 
-     * TODO: Fix this method using the japanese ID666-tag spec
-     */
     private void setEmulatorUsedToCreateDump(final int offset) throws IOException {
-        String emulator = "unknown";
+        
         byte result = readByte(offset);
-        switch (result) {
-            case 1:
-                emulator = "ZSNES";
-                break;
-            case 2:
-                emulator = "Snes9x";
-                break;
-        }
-        this.emulatorUsedToCreateDump = emulator;
+        this.emulatorUsedToCreateDump = DumpEmulator.getName(result);
     }
-    
     
     private boolean isValidSPCFile() throws IOException {
         raf.seek(0);
-        final String fileHeader = readStuff(Id666Tag.HEADER_OFFSET, Id666Tag.HEADER_LENGTH)
+        final String fileHeader = readStuff(HEADER_OFFSET, HEADER_LENGTH)
                 .trim()
                 .substring(0, CORRECT_HEADER.length());
         return (CORRECT_HEADER.equalsIgnoreCase(fileHeader));
@@ -118,13 +110,13 @@ final class SpcFile implements Comparable<SpcFile> {
      */
     private boolean containsID666Tags() throws IOException{
         
-        byte tag = readByte(Id666Tag.HEADER_CONTAINS_ID666_TAG_OFFSET);
+        byte tag = readByte(HEADER_CONTAINS_ID666_TAG_OFFSET);
         if (tag == CONTAINS_ID666_TAG)
             return true;
         else if (tag == MISSING_ID666_TAG)
             return false;
         else
-            throw new IOException(Id666Tag.HEADER_CONTAINS_ID666_TAG_OFFSET + " offset does not contain valid value. Is this a SPC file?");
+            throw new IOException(HEADER_CONTAINS_ID666_TAG_OFFSET + " offset does not contain valid value. Is this a SPC file?");
     }
     
     /**
@@ -145,7 +137,7 @@ final class SpcFile implements Comparable<SpcFile> {
      */
     private boolean hasBinaryTagFormat() throws IOException {
         
-        String s = readStuff(Id666Tag.ARTIST_OF_SONG_BINARY_FORMAT_OFFSET,1);
+        String s = readStuff(ARTIST_OF_SONG_BINARY_FORMAT_OFFSET,1);
         // If 0xB0 is *NOT* a valid char or *IS* a digit then don't allow it.
         // Sometimes we have valid digits in this offset (if the tag-format is text)
         if (!Character.isLetter(s.charAt(0)) || Character.isDigit(s.charAt(0))) {
@@ -201,7 +193,7 @@ final class SpcFile implements Comparable<SpcFile> {
     }
 
     public String getEmulatorUsedToCreateDump() {
-        return emulatorUsedToCreateDump;
+        return emulatorUsedToCreateDump.name();
     }
     
     public boolean isId666TagsPresent() { // 0-1 grammar vs java convention :(
@@ -268,12 +260,8 @@ final class SpcFile implements Comparable<SpcFile> {
     @Override
     public int compareTo(SpcFile o) {
         
-        return Comparator.comparing(SpcFile::getGameTitle)
-                .thenComparing(SpcFile::getArtist,Comparator.nullsFirst(Comparator.naturalOrder()))
-                .thenComparing(SpcFile::getSongTitle)
-                .compare(this, o);
+        return SpcFileComparator.compare(this, o);
     }
-
     
     // These methods are intended for unit testing only
     
@@ -288,6 +276,12 @@ final class SpcFile implements Comparable<SpcFile> {
     void setGameTitle(String gameTitle) {
         this.gameTitle = gameTitle;
     }
+
+    @Override
+    public String toString() {
+        return "SpcFile{" + "gameTitle=" + gameTitle + ", artist=" + artist+ " gameTitle = " + gameTitle + ", emulatorUsedToCreateDump=" + emulatorUsedToCreateDump + ", hasId666Tags=" + hasId666Tags + ", binaryTagFormat=" + binaryTagFormat + '}';
+    }
+    
     
     
 }

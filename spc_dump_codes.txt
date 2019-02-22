@@ -1,0 +1,57 @@
+Codes for Emulators used to dump SPC-files
+==========================================
+Compiled by A. Ullenius
+2019-02-22 Stockholm, Sweden
+
+THe "Emulator used for dumping"-value is set by 1 byte-flag. In two different 
+offset locations depending on if SPC is using binary or text-format for 
+storing the ID666-tag.
+
+Binary offset:	0xD1
+Text offset:	0xD2
+
+
+There are several versions of the SPC-specification. The most recent I've found
+ is v0.31.
+
+And there's also this Japanese website (dated 2008/12/04) that has a more 
+extensive document on the ID666-format. Note: Japan uses YYYY-mm-dd
+
+* The v0.31 spec only mentions 2 emulator values
+* The Japanese doc mentions a lot more
+
+From drgfactory.jp:
+https://dgrfactory.jp/spcplay/id666.html
+
+ID666 TEXT format
+---------------------
+Emulator type: 
+0x30 = Unknown, 
+0x31 = ZSNES, 
+0x32 = Snes9x, 
+0x33 = ZST2SPC, 
+0x34 = Other, 
+0x35 = SNEShout, 
+0x36 = ZSNES / W,
+0x37 = Snes9xpp,
+0x38 = SNESGT
+
+
+ID 666 BINARY format
+--------------------
+Emulator type: 
+0x00 = Unknown,
+0x01 = ZSNES, 
+0x02 = Snes9x, 
+0x03 = ZST2SPC,
+0x04 = Other,
+0x05 = SNEShout,
+0x06 = ZSNES / W,
+0x07 = Snes9xpp, 
+0x08 = SNESGT
+
+ZST2SPC - is an old program written by Caithsith2 (caithsith2.com)
+SNEShout - is a japanese program by jtksoft made for Windows95
+SNes9xpp - This is a custom version of Snes9x which adds an HQ2X filter. A processor with a
+SNESGT - an emulator (last version is from 2008).
+
