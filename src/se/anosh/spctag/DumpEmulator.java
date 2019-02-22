@@ -14,42 +14,33 @@ package se.anosh.spctag;
  */
 public class DumpEmulator {
     
+    
+    // emulator values for the TEXT tag offset
     private static final int ZSNES_TEXT = 0x31;
     private static final int SNES9X_TEXT = 0x32;
     private static final int ZST2SPC_TEXT = 0x33;
+    
     private static final int OTHER_TEXT = 0x34;
     private static final int SNESSHOUT_TEXT = 0x35;
     private static final int ZSNES_W_TEXT = 0x36;
+    
     private static final int SNES9XPP = 0x37;
     private static final int SNESGT = 0x38;
     
-    private static final int UNKNOWN_BINARY = 0x0;
-    private static final int ZSNES_BINARY = 0x01;
-    private static final int SNES9x_BINARY = 0x02;
-    private static final int ZST2SPC_BINARY = 0x03;
-    private static final int OTHER_BINARY = 0x04;
-    private static final int ZSNES_BINARY = 0x01;
-    private static final int ZSNES_BINARY = 0x01;
-    private static final int ZSNES_BINARY = 0x01;
-    private static final int ZSNES_BINARY = 0x01;
-   
-            
-//            ID 666 binary format
-//Emulator type: 
-//0x00 = Unknown, 
-//0x01 = ZSNES,  
-//0x02 = Snes9x, 
-//0x03 = ZST2SPC, 
-//0x04 = Other,
-//0x05 = SNEShout, 
-//0x06 = ZSNES / W, 
-//0x07 = Snes9xpp, 
-//0x08 = SNESGT
-
-
-            
-            
     
+    // emulator values for the BINARY tag offset
+    private static final int UNKNOWN_BINARY = 0x0;
+    private static final int ZSNES_BINARY = 0x1;
+    private static final int SNES9x_BINARY = 0x2;
+    
+    private static final int ZST2SPC_BINARY = 0x3;
+    private static final int OTHER_BINARY = 0x4;
+    private static final int SNESSHOUT_BINARY = 0x5;
+    
+    private static final int ZSNES_W_BINARY = 0x6;
+    private static final int SNES9XPP_BINARY = 0x7;
+    private static final int SNESGT_BINARY= 0x8;
+   
     public String getEmulatorType(int emulatorId) {
     
         String result;
