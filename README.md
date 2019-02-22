@@ -1,4 +1,5 @@
 # SPCtag : Java SPC tag reader (SNES Sound Files)
+<img src="spc700.jpg" width="395" height="326" align="right">
 
 [SPCTag](https://github.com/ullenius/spctag) is Java stand-alone command line app for reading the ID666 tags from SNES SPC-files.
 
@@ -51,6 +52,31 @@ Java is multi-platform and you can run and compile 20-year old Java programs wit
 
 Hopefully doing it in Java makes it easy to convert to XML and JSON, as well as persisting it in databases using SQL.
 
+### Emulator Dump Tag
+The *Emulator used for dumping*-value is set by 1 byte-flag. In two different 
+offset locations depending on if SPC is using binary or text-format for 
+storing the ID666-tag.
+
+* Binary offset 	 `0xD1`
+* Text offset:    `0xD2`
+
+
+**SPCtag** correctly recognises tags from the following emulators:
+* ZSNES 
+* Snes9x 
+* ZST2SPC
+* SNEShout
+* ZSNES / W
+* Snes9xpp 
+* SNESGT
+
+As well as:
+* Other
+* Unknown
+
+Which are both specified with unique values (?) somehow...
+
+Please see `spc_dump_codes.txt` for more technical details.
 
 ## Changelog
 * 0.1 - first release! February 2019
