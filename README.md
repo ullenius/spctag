@@ -56,7 +56,7 @@ Hopefully doing it in Java makes it easy to convert to XML and JSON, as well as 
 * 0.1 - first release! February 2019
 
 ## Licence
-GPL 3 only. See LICENCE
+GPL 3 only. See COPYING
 
 ### Libraries and copyright
 * Apache Commons CLI-library - Apache Licence version 2
@@ -64,4 +64,4 @@ GPL 3 only. See LICENCE
 
 
 ## Dedication
-spctag is dedicated to my favourite OC remixer [Avien](https://ocremix.org/artist/4402/avien) (1986-2004). RIP :notes: :saxophone:
+SPCtag is dedicated to my favourite OC remixer [Avien](https://ocremix.org/artist/4402/avien) (1986-2004). RIP :notes: :saxophone:
