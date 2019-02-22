@@ -6,6 +6,8 @@ import java.io.RandomAccessFile;
 import java.util.Comparator;
 import java.util.Objects;
 import static se.anosh.spctag.Id666Tag.*;
+import se.anosh.spctag.emulator.DumpEmulator;
+import se.anosh.spctag.emulator.Emulator;
 
 /**
  *
@@ -35,7 +37,8 @@ final class SpcFile implements Comparable<SpcFile> {
     private String nameOfDumper;
     private String comments;
     private String dateDumpWasCreated;
-    private String emulatorUsedToCreateDump;
+//    private String emulatorUsedToCreateDump;
+    private Emulator emulatorUsedToCreateDump;
     
     private boolean hasId666Tags;
     private boolean binaryTagFormat; // boolean isTextTagFormat() returns the opposite of this value
@@ -97,19 +100,11 @@ final class SpcFile implements Comparable<SpcFile> {
      * TODO: Fix this method using the japanese ID666-tag spec
      */
     private void setEmulatorUsedToCreateDump(final int offset) throws IOException {
-        String emulator = "unknown";
+       
         byte result = readByte(offset);
-        switch (result) {
-            case 1:
-                emulator = "ZSNES";
-                break;
-            case 2:
-                emulator = "Snes9x";
-                break;
-        }
-        this.emulatorUsedToCreateDump = emulator;
+        this.emulatorUsedToCreateDump = DumpEmulator.getName(result);
+            
     }
-    
     
     private boolean isValidSPCFile() throws IOException {
         raf.seek(0);
@@ -209,7 +204,7 @@ final class SpcFile implements Comparable<SpcFile> {
     }
 
     public String getEmulatorUsedToCreateDump() {
-        return emulatorUsedToCreateDump;
+        return emulatorUsedToCreateDump.name();
     }
     
     public boolean isId666TagsPresent() { // 0-1 grammar vs java convention :(
