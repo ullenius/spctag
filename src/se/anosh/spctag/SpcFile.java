@@ -89,20 +89,10 @@ final class SpcFile implements Comparable<SpcFile> {
         raf.close(); // close the file
     }
     
-    /**
-     * This method is called by readAll()
-     * 
-     * ZSNES saves in binary format
-     * Snes9x saves in text format
-     * (as of 2006)
-     * 
-     * TODO: Fix this method using the japanese ID666-tag spec
-     */
     private void setEmulatorUsedToCreateDump(final int offset) throws IOException {
-       
+        
         byte result = readByte(offset);
         this.emulatorUsedToCreateDump = DumpEmulator.getName(result);
-            
     }
     
     private boolean isValidSPCFile() throws IOException {
