@@ -27,7 +27,6 @@ public class DumpEmulator {
     private static final int SNES9XPP = 0x37;
     private static final int SNESGT = 0x38;
     
-    
     // emulator values for the BINARY tag offset
     private static final int UNKNOWN_BINARY = 0x0;
     private static final int ZSNES_BINARY = 0x1;
@@ -71,28 +70,7 @@ public class DumpEmulator {
                 break;
             default:
                 result = "unknown";
-        }
-        
-            
-            
-//id666 text tag format
-//Emulator type: 0x30 = Unknown,
-//0x31 = ZSNES,
-//0x32 = Snes9x,
-//0x33 = ZST2SPC,
-//0x34 = Other, 
-//0x35 = SNEShout, 
-//0x36 = ZSNES / W, 
-//0x37 = Snes9xpp,
-//0x38 = SNESGT
-
-            
-            
-        }
-        
-    
+        } // end of switch-statement
+        return result;
     }
-    
-    
-    
 }
