@@ -1,3 +1,23 @@
+/**
+ *
+ * This file is part of SPCtag.
+ *
+ * SPCtag is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3 only.
+ *
+ * SPCtag is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ * @author Anosh D. Ullenius <anosh@anosh.se>
+ */
+
 package se.anosh.spctag;
 
 import java.io.FileNotFoundException;
@@ -9,10 +29,6 @@ import static se.anosh.spctag.Id666Tag.*;
 import se.anosh.spctag.emulator.DumpEmulator;
 import se.anosh.spctag.emulator.Emulator;
 
-/**
- *
- * @author Anosh D. Ullenius <anosh@anosh.se>
- */
 final class SpcFile implements Comparable<SpcFile> {
     
     // version may vary, most recent is 0.31 (?) from 2006
