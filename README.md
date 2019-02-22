@@ -1,7 +1,7 @@
 # SPCtag : Java SPC tag reader (SNES Sound Files)
 <img src="spc700.jpg" width="395" height="326" align="right">
 
-[SPCTag](https://github.com/ullenius/spctag) is Java stand-alone command line app for reading the ID666 tags from SNES SPC-files.
+[SPCTag](https://github.com/ullenius/spctag) is a Java stand-alone command line app for reading the ID666 tags from SNES SPC-files.
 
 SPC-files are sound files containing ripped chiptune music from Super Nintendo and Super Famicom games. They are named after the Sony SPC-700 sound chip created by Ken Kutaragi (who later became the father of the Playstation).
 
