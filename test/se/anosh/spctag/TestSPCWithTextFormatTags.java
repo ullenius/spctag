@@ -21,7 +21,7 @@ public class TestSPCWithTextFormatTags {
     @Before
     public void setup() throws IOException {
         
-        spcFile = new SpcFile("../text.spc");
+        spcFile = new SpcFile("spc/text.spc");
     }
     
     @Test
@@ -35,7 +35,7 @@ public class TestSPCWithTextFormatTags {
     @Test(expected=IOException.class)
     public void testFileWithInvalidHeader() throws IOException {
         // tests a file that is not SPC
-        spcFile = new SpcFile("../randomBytes.spc"); // will throw exception
+        spcFile = new SpcFile("spc/randomBytes.spc"); // will throw exception
         
     }
     
@@ -50,13 +50,12 @@ public class TestSPCWithTextFormatTags {
     @Test
     public void testIfHeaderDoesNotContainsTags() throws IOException {
         
-        spcFile = new SpcFile("../containsNoTagSetToTrue.spc");
+        spcFile = new SpcFile("spc/containsNoTagSetToTrue.spc");
         assertFalse(spcFile.isId666TagsPresent());
     }
     
     @Test
     public void testValidTextTagFormattedTags() throws IOException {
-        System.out.println("NU KOLLAR I VALID TEXT TAG FORMAT");
         assertTrue(spcFile.isTextTagFormat());
     }
     
@@ -68,7 +67,7 @@ public class TestSPCWithTextFormatTags {
     
     @Test
     public void testIdenticalHashCodes() throws IOException {
-        SpcFile clone = new SpcFile("../text.spc");
+        SpcFile clone = new SpcFile("spc/text.spc");
         assertNotSame(clone,spcFile); // don't cheat
         assertEquals(spcFile.hashCode(),clone.hashCode());
     }
@@ -76,7 +75,7 @@ public class TestSPCWithTextFormatTags {
     @Test
     public void testNotIdenticalHashCodes() throws IOException {
         
-        SpcFile different = new SpcFile("../binary.spc");
+        SpcFile different = new SpcFile("spc/binary.spc");
         assertNotSame(different,spcFile); // object references
         assertNotEquals(different,spcFile); // while we're at it
         assertNotEquals(different.hashCode(),spcFile.hashCode());
@@ -85,7 +84,7 @@ public class TestSPCWithTextFormatTags {
     @Test
     public void testEqualObjects() throws IOException {
         
-        SpcFile clone = new SpcFile("../text.spc");
+        SpcFile clone = new SpcFile("spc/text.spc");
         assertNotSame(clone,spcFile); // no cheating
         assertEquals(clone.hashCode(),spcFile.hashCode()); // equal objects *MUST* have equals hashcodes
         assertEquals(clone,spcFile);
@@ -94,14 +93,14 @@ public class TestSPCWithTextFormatTags {
     @Test
     public void testNonEqualObjects() throws IOException {
         
-         SpcFile clone = new SpcFile("../binary.spc");
+         SpcFile clone = new SpcFile("spc/binary.spc");
          assertNotEquals(clone,spcFile);
     }
     
     @Test
     public void testComparableSorting() throws IOException {
         
-        SpcFile other = new SpcFile("../binary.spc");
+        SpcFile other = new SpcFile("spc/binary.spc");
         
         List<SpcFile> myList = new ArrayList<>();
         myList.add(other);
@@ -121,7 +120,7 @@ public class TestSPCWithTextFormatTags {
     @Test
     public void testComparableWithNullValues() throws IOException {
         
-        SpcFile other = new SpcFile("../binary.spc");
+        SpcFile other = new SpcFile("spc/binary.spc");
         
         other.setGameTitle(null);
         other.setSongTitle(null);

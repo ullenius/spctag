@@ -1,0 +1,3 @@
+These are chopped off SPC-headers from real SPC files. Used by the JUnit tests in
+the program. Couldn't find any public domain SPCs and didn't want to include any
+copyrighted files for legal reasons.
