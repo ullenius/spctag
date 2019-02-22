@@ -37,7 +37,6 @@ final class SpcFile implements Comparable<SpcFile> {
     private String nameOfDumper;
     private String comments;
     private String dateDumpWasCreated;
-//    private String emulatorUsedToCreateDump;
     private Emulator emulatorUsedToCreateDump;
     
     private boolean hasId666Tags;
