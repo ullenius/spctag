@@ -1,20 +1,16 @@
-package se.anosh.spctag;
-
-import static se.anosh.spctag.Emulator.Other;
-import static se.anosh.spctag.Emulator.SNESGT;
-import static se.anosh.spctag.Emulator.SNEShout;
-import static se.anosh.spctag.Emulator.Snes9x;
-import static se.anosh.spctag.Emulator.Snes9xpp;
-import static se.anosh.spctag.Emulator.Unknown;
-import static se.anosh.spctag.Emulator.ZSNES;
-import static se.anosh.spctag.Emulator.ZSNES_W;
-import static se.anosh.spctag.Emulator.ZST2SPC;
+package se.anosh.spctag.emulator;
 
 /**
+ * 
+ * This class only contains static methods
  *
  * @author Anosh D. Ullenius <anosh@anosh.se>
  */
-public class DumpEmulatorImproved {
+public final class DumpEmulator {
+    
+     private DumpEmulator() {
+        throw new AssertionError(); // exists to prevent instantiation
+    }
     
     // emulator values for the TEXT tag offset
     private static final int ZSNES_TEXT = 0x31;
@@ -41,53 +37,60 @@ public class DumpEmulatorImproved {
     private static final int SNES9XPP_BINARY = 0x7;
     private static final int SNESGT_BINARY= 0x8;
     
-    private DumpEmulatorImproved() {
-        throw new AssertionError(); // exists to prevent instantiation
-    }
-    
-    public Emulator getEmulatorUsed(int code) {
+    /**
+     * 
+     * Accepts a code present at the offset defined in
+     * the specification that contains an (unsigned?) byte
+     * that determines the emulator used to create the dump.
+     * 
+     * Matches the code provided (according to the japanese spec)
+     * and returns a matching enumeration.
+     * 
+     * @param code
+     * @return 
+     */
+    public static Emulator getName(final int code) {
         
         Emulator result;
         
         switch (code) {
-            
             case ZSNES_TEXT:
             case ZSNES_BINARY:
-                result = ZSNES;
+                result = Emulator.ZSNES;
                 break;
             case SNES9X_BINARY:
             case SNES9X_TEXT:
-                result = Snes9x;
+                result = Emulator.Snes9x;
                 break;
             case ZST2SPC_BINARY:
             case ZST2SPC_TEXT:
-                result = ZST2SPC;
+                result = Emulator.ZST2SPC;
                 break;
             case OTHER_TEXT:
             case OTHER_BINARY:
-                result = Other;
+                result = Emulator.Other;
                 break;
             case SNESHOUT_TEXT:
             case SNESHOUT_BINARY:
-                result = SNEShout;
+                result = Emulator.SNEShout;
                 break;
             case UNKNOWN_BINARY:
-                result = Unknown;
+                result = Emulator.Unknown;
                 break;
             case ZSNES_W_TEXT:
             case ZSNES_W_BINARY:
-                result = ZSNES_W;
+                result = Emulator.ZSNES_W;
                 break;
             case SNES9XPP_TEXT:
             case SNES9XPP_BINARY:
-                result = Snes9xpp;
+                result = Emulator.Snes9xpp;
                 break;
             case SNESGT_BINARY:
             case SNESGT_TEXT:
-                result = SNESGT;
+                result = Emulator.SNESGT;
                 break;
             default:
-                result = Unknown; 
+                result = Emulator.Unknown; 
         }
         return result;
     }

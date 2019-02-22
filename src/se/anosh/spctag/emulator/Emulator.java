@@ -4,9 +4,12 @@
   * the emulator used to dump this SPC-tag defined
   * in the spec v0.31 and the Japanese specifiation
   * on drgfactory.jp
+  * 
+  * Note: 'Other' and 'Unknown' have different codes
+  * according to the japanese spec.
   *
   */
-package se.anosh.spctag;
+package se.anosh.spctag.emulator;
 
 /**
  *

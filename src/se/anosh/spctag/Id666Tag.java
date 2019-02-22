@@ -1,12 +1,9 @@
-/**
- * 
- * ID666 tag offsets used in SPC-files (Sony SPC-700 sound chip)
- * 
- */
 package se.anosh.spctag;
 
 /**
  *
+ * ID666 tag offsets used in SPC-files (Sony SPC-700 sound chip)
+ * 
  * @author Anosh D. Ullenius <anosh@anosh.se>
  */
 public final class Id666Tag {
