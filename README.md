@@ -38,7 +38,12 @@ Emulator used to dump SPC: unknown
 * :x: Edit tags (as of yet)
 
 ## Installation
-I've included a compiled jar-file with /lib dir to simplify for end-users who can't compile stuff on their platform. Download [spctag-bin.zip](https://github.com/ullenius/spctag/blob/master/spctag-bin.zip)
+This is a Maven-project.
+```sh
+mvn clean install assembly:single
+```
+
+I've included a compiled jar-file with /lib dir to simplify for end-users who can't compile stuff on their platform. It is in **spctag-bin.zip**
 
 
 ## Development
