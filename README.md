@@ -37,18 +37,23 @@ Emulator used to dump SPC: unknown
 * :x: No xid6 support as of yet. Perhaps in the future
 * :x: Edit tags (as of yet)
 
-## Installation
+## Building
 This is a Maven-project.
+
+Run:
 ```sh
 mvn clean install assembly:single
 ```
+to build the JAR-file.
 
-I've included a compiled jar-file with /lib dir to simplify for end-users who can't compile stuff on their platform. It is in **spctag-bin.zip**
+## Binaries
+I've included a compiled jar-file with /lib dir to simplify for end-users who can't compile stuff on their platform.
+* Download **spctag-bin.zip**
 
 
 ## Development
 1. I wrote this because there was a lack of tools supporting the SPC-format.
-1. And it would be fun to do in OOP (object oriented programming).
+1. And it would be a fun project to learn binary I/O in Java.
 1. Lastly, **spctag** has the best support for parsing the *"Emulator used for dumping SPC"*-tag :grin:
 
 Most of the existing tools are 15-20 year old legacy Windows programs that won't run on modern computers. The source code is lost. Or it was written in C/C++ for 32-bit architecture and won't compile on modern 64-bit computers.
