@@ -64,29 +64,28 @@ Hopefully doing it in Java makes it easy to convert to XML and JSON, as well as 
 
 ### Emulator Dump Tag
 The *Emulator used for dumping*-value is set by 1 byte-flag. In two different 
-offset locations depending on if SPC is using binary or text-format for 
+offset locations depending on if the SPC-file is using binary or text-format for 
 storing the ID666-tag.
 
-* Binary offset 	 `0xD1`
+
+* Binary offset   `0xD1`
 * Text offset:    `0xD2`
 
+The following byte-values are used according to the [Japanese spec](https://dgrfactory.jp/spcplay/id666.html):
 
-**SPCtag** correctly recognises tags from the following emulators:
-* ZSNES 
-* Snes9x 
-* ZST2SPC
-* SNEShout
-* ZSNES / W
-* Snes9xpp 
-* SNESGT
+Emulator name | Text format | Binary format
+------------ | -------------| -------------
+Unknown | 0x30 | 0x00
+ZSNES | 0x31 | 0x01
+Snes9x| 0x32 | 0x02
+ZST2SPC| 0x33| 0x03
+Other | 0x34 | 0x04
+SNEShout| 0x35 | 0x05
+ZSNES / W | 0x36 | 0x06
+Snes9xpp | 0x37 | 0x07
+SNESGT | 0x38 | 0x08
 
-As well as:
-* Other
-* Unknown
-
-Which are both specified with unique values (?) somehow...
-
-Please see `spc_dump_codes.txt` for more technical details.
+Note: *Other* and *Unknown* are both specified with unique values (?) somehow...
 
 ## Changelog
 * 0.1 - first release! February 2019
