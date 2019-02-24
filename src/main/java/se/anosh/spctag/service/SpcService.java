@@ -14,7 +14,7 @@ import se.anosh.spctag.dao.Model;
  */
 public interface SpcService {
 	
-	public Model read(String filename) throws FileNotFoundException, IOException;
+	public Model read() throws FileNotFoundException, IOException;
 	public void deleteSpcTags();
 	public void update(String song);
 	

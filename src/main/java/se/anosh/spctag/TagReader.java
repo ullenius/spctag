@@ -6,6 +6,11 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+
+import se.anosh.spctag.dao.Model;
+import se.anosh.spctag.dao.SpcFileImplementation;
+import se.anosh.spctag.service.SpcManager;
+import se.anosh.spctag.service.SpcService;
 /**
  *
  * SPC tag 0.1
@@ -71,7 +76,12 @@ public class TagReader {
         
         for (String file : fileNames) {
             try {
-                SpcFile myFile = new SpcFile(file);
+            	
+            	SpcService service = new SpcManager(new SpcFileImplementation(file));
+            	Model myFile = service.read();
+            	
+            	
+//                SpcFile myFile = new SpcFile(file);
                 
                 if (cmd.hasOption("v")) { // verbose output
                     System.out.println("File header: " + myFile.getHeader());

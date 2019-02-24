@@ -17,9 +17,9 @@ public class SpcManager implements SpcService {
 	}
 
 	@Override
-	public Model read(String filename) throws FileNotFoundException, IOException {
+	public Model read() throws FileNotFoundException, IOException {
 		
-		return dao.read(filename);
+		return dao.read();
 	}
 
 	@Override
