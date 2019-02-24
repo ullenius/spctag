@@ -30,10 +30,9 @@ Emulator used to dump SPC: unknown
 
 ## Features
 * :heavy_check_mark: 100% Java (Java 8) :coffee:
-* :heavy_check_mark: Supports ISO-8859-1 encoding in the tags!
+* :heavy_check_mark: Supports Latin-1 (ISO-8859-1) encoding in the tags!
 * :heavy_check_mark: Command line. Multi-platform.
 * :heavy_check_mark: Batch processing using wildcards is possible! E.g. `java -jar spctag *.spc`
-* :heavy_check_mark: Latin-1 (ISO-8859-1) support
 * :x: No xid6 support as of yet. Perhaps in the future
 * :x: Edit tags (as of yet)
 
