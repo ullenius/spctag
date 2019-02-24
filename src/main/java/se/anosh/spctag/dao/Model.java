@@ -13,8 +13,12 @@ public class Model {
 	private String dateDumpWasCreated;
 	private Emulator emulatorUsedToCreateDump;
 
-	private boolean hasId666Tags;
-	private boolean binaryTagFormat;
+	// primitive type wrappers so that they will cause
+	// nullpointerexception instead of default value
+	// if setMethod is never called
+	private Boolean hasId666Tags;
+	private Boolean binaryTagFormat;
+	
 	public String getHeader() {
 		return header;
 	}
@@ -45,6 +49,41 @@ public class Model {
 	public boolean isBinaryTagFormat() {
 		return binaryTagFormat;
 	}
+	public boolean isTextTagFormat() { // the opposite boolean result of isBinaryTagFormat
+		return !isBinaryTagFormat();
+	}
+	
+	public void setHeader(String header) {
+		this.header = header;
+	}
+	public void setArtist(String artist) {
+		this.artist = artist;
+	}
+	public void setSongTitle(String songTitle) {
+		this.songTitle = songTitle;
+	}
+	public void setGameTitle(String gameTitle) {
+		this.gameTitle = gameTitle;
+	}
+	public void setNameOfDumper(String nameOfDumper) {
+		this.nameOfDumper = nameOfDumper;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+	public void setDateDumpWasCreated(String dateDumpWasCreated) {
+		this.dateDumpWasCreated = dateDumpWasCreated;
+	}
+	public void setEmulatorUsedToCreateDump(Emulator emulatorUsedToCreateDump) {
+		this.emulatorUsedToCreateDump = emulatorUsedToCreateDump;
+	}
+	public void setHasId666Tags(boolean hasId666Tags) {
+		this.hasId666Tags = hasId666Tags;
+	}
+	public void setBinaryTagFormat(boolean binaryTagFormat) {
+		this.binaryTagFormat = binaryTagFormat;
+	}
+	
 
 	
 }
