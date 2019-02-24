@@ -29,7 +29,7 @@ import static se.anosh.spctag.Id666Tag.*;
 import se.anosh.spctag.emulator.DumpEmulator;
 import se.anosh.spctag.emulator.Emulator;
 
-final class SpcFile implements Comparable<SpcFile> {
+final public class SpcFile implements Comparable<SpcFile> {
     
     // version may vary, most recent is 0.31 (?) from 2006
     private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data"; 
