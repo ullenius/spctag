@@ -14,8 +14,13 @@ import se.anosh.spctag.dao.SpcDao;
 import se.anosh.spctag.dao.SpcFileImplementation;
 
 public class TestModelWithData {
+	
+	
+    public TestModelWithData() {
+		super();
+	}
 
-    SpcFileImplementation spcFile;
+	SpcFileImplementation spcFile;
     Id666 id666;
     
     
