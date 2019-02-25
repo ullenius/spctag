@@ -2,7 +2,7 @@ package se.anosh.spctag.dao;
 
 import java.util.Comparator;
 
-import se.anosh.spctag.emulator.Emulator;
+import se.anosh.spctag.emulator.factory.Emulator;
 
 public class Id666 implements Comparable <Id666> {
 	
@@ -98,6 +98,14 @@ public class Id666 implements Comparable <Id666> {
 	        
 	        return id666Comparator.compare(this, o);
 	    }
+	
+
+	@Override
+	public String toString() {
+		return "Id666 [artist=" + artist + ", songTitle=" + songTitle + ", gameTitle=" + gameTitle + ", nameOfDumper="
+				+ nameOfDumper + ", emulatorUsedToCreateDump=" + emulatorUsedToCreateDump + ", hasId666Tags="
+				+ hasId666Tags + ", binaryTagFormat=" + binaryTagFormat + "]";
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -114,9 +122,8 @@ public class Id666 implements Comparable <Id666> {
 		return result;
 	}
 	
-	
+
 	/**
-	 * 
 	 * Using all fields to compare except hasId666Tags.
 	 * Even the Header is used. Since older versions used a different
 	 * version number in the header.
@@ -150,7 +157,10 @@ public class Id666 implements Comparable <Id666> {
 				return false;
 		} else if (!dateDumpWasCreated.equals(other.dateDumpWasCreated))
 			return false;
-		if (emulatorUsedToCreateDump != other.emulatorUsedToCreateDump)
+		if (emulatorUsedToCreateDump == null) {
+			if (other.emulatorUsedToCreateDump != null)
+				return false;
+		} else if (!emulatorUsedToCreateDump.equals(other.emulatorUsedToCreateDump))
 			return false;
 		if (gameTitle == null) {
 			if (other.gameTitle != null)
@@ -174,9 +184,9 @@ public class Id666 implements Comparable <Id666> {
 			return false;
 		return true;
 	}
-
 	 
-	 
-	 
+	
+	
+	
 	
 }
