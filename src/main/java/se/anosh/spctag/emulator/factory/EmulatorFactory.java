@@ -3,6 +3,9 @@ package se.anosh.spctag.emulator.factory;
 import java.util.Objects;
 
 /**
+ * 
+ * This package uses Factory method pattern (Gang Of Four)
+ * 
  *
  * @author Anosh D. Ullenius <anosh@anosh.se>
  */
