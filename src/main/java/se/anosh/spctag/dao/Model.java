@@ -1,8 +1,17 @@
 package se.anosh.spctag.dao;
 
+import java.util.Comparator;
+
 import se.anosh.spctag.emulator.Emulator;
 
-public class Model {
+public class Model implements Comparable <Model> {
+	
+	// Thanks to Lukasz Wiktor @ stack overflow (2014)
+    private static final Comparator<String> nullSafeStringComparator = Comparator.nullsFirst(String::compareToIgnoreCase);
+    private static final Comparator<Model> id666Comparator = Comparator
+            .comparing(Model::getGameTitle, nullSafeStringComparator)
+            .thenComparing(Model::getArtist, nullSafeStringComparator)
+            .thenComparing(Model::getSongTitle, nullSafeStringComparator);
 
 	private String header;
 	private String artist;
@@ -43,7 +52,7 @@ public class Model {
 	public Emulator getEmulatorUsedToCreateDump() {
 		return emulatorUsedToCreateDump;
 	}
-	public boolean isHasId666Tags() {
+	public boolean hasId666Tags() {
 		return hasId666Tags;
 	}
 	public boolean isBinaryTagFormat() {
@@ -84,6 +93,11 @@ public class Model {
 		this.binaryTagFormat = binaryTagFormat;
 	}
 	
+	 @Override
+	    public int compareTo(Model o) {
+	        
+	        return id666Comparator.compare(this, o);
+	    }
 
 	
 }
