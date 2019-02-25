@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+
+import se.anosh.spctag.dao.Model;
+import se.anosh.spctag.dao.SpcFileImplementation;
+
 import static org.junit.Assert.*;
 import org.junit.Before;
 
@@ -16,26 +20,31 @@ public class TestSPCWithTextFormatTags {
     public TestSPCWithTextFormatTags() {
     }
     
-    SpcFile spcFile;
+//    SpcFile spcFile;
+    SpcFileImplementation spcFile;
+    Model id666;
+    
     
     @Before
     public void setup() throws IOException {
         
-        spcFile = new SpcFile("spc/text.spc");
+        spcFile = new SpcFileImplementation("spc/text.spc");
+        id666 = spcFile.read();
+        
     }
     
     @Test
     public void testFileWithValidHeader() {
         
         // first 27 of string should equal "SNES-SPC700 Sound File Data"
-        String headerWithoutVersionNumber = spcFile.getHeader().substring(0,27);
+        String headerWithoutVersionNumber = id666.getHeader().substring(0,27);
         assertEquals("SNES-SPC700 Sound File Data",headerWithoutVersionNumber); // case sensitive
     }
     
     @Test(expected=IOException.class)
     public void testFileWithInvalidHeader() throws IOException {
         // tests a file that is not SPC
-        spcFile = new SpcFile("spc/randomBytes.spc"); // will throw exception
+        spcFile = new SpcFileImplementation("spc/randomBytes.spc"); // will throw exception
         
     }
     
@@ -44,30 +53,31 @@ public class TestSPCWithTextFormatTags {
      * SPC-files have a byte set to 26 or 27 if tags are present or not
      */
     public void testIfHeaderContainsTags() throws IOException {
-        assertTrue(spcFile.isId666TagsPresent());
+        assertTrue(id666.hasId666Tags());
     }
     
     @Test
     public void testIfHeaderDoesNotContainsTags() throws IOException {
         
-        spcFile = new SpcFile("spc/containsNoTagSetToTrue.spc");
-        assertFalse(spcFile.isId666TagsPresent());
+        spcFile = new SpcFileImplementation("spc/containsNoTagSetToTrue.spc");
+        id666 = spcFile.read();
+        assertFalse(id666.hasId666Tags());
     }
     
     @Test
     public void testValidTextTagFormattedTags() throws IOException {
-        assertTrue(spcFile.isTextTagFormat());
+        assertTrue(id666.isTextTagFormat());
     }
     
     @Test
     public void testIfTextTagsAreDetectedAsBinary() throws IOException {
-        assertFalse(spcFile.isBinaryTagFormat());
+        assertFalse(id666.isBinaryTagFormat());
         
     }
     
     @Test
     public void testIdenticalHashCodes() throws IOException {
-        SpcFile clone = new SpcFile("spc/text.spc");
+        SpcFileImplementation clone = new SpcFileImplementation("spc/text.spc");
         assertNotSame(clone,spcFile); // don't cheat
         assertEquals(spcFile.hashCode(),clone.hashCode());
     }
