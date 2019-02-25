@@ -30,7 +30,7 @@ import se.anosh.spctag.emulator.DumpEmulator;
 
 public class SpcFileImplementation implements SpcDao {
 
-	private Model id666;
+	private Id666 id666;
 	private Path file;
 	private RandomAccessFile raf;
 
@@ -41,7 +41,7 @@ public class SpcFileImplementation implements SpcDao {
 
 
 	@Override
-	public Model read() {
+	public Id666 read() {
 		Objects.requireNonNull(id666, "id666 cannot be null!");
 		return this.id666;
 	}
@@ -62,7 +62,7 @@ public class SpcFileImplementation implements SpcDao {
 
 		file = Paths.get(filename);
 		raf = new RandomAccessFile(file.toString(),"r");
-		id666 = new Model();
+		id666 = new Id666();
 
 		if (!isValidSPCFile())
 			throw new IOException("File is missing correct SPC-header. Exiting");

@@ -4,14 +4,14 @@ import java.util.Comparator;
 
 import se.anosh.spctag.emulator.Emulator;
 
-public class Model implements Comparable <Model> {
+public class Id666 implements Comparable <Id666> {
 	
 	// Thanks to Lukasz Wiktor @ stack overflow (2014)
     private static final Comparator<String> nullSafeStringComparator = Comparator.nullsFirst(String::compareToIgnoreCase);
-    private static final Comparator<Model> id666Comparator = Comparator
-            .comparing(Model::getGameTitle, nullSafeStringComparator)
-            .thenComparing(Model::getArtist, nullSafeStringComparator)
-            .thenComparing(Model::getSongTitle, nullSafeStringComparator);
+    private static final Comparator<Id666> id666Comparator = Comparator
+            .comparing(Id666::getGameTitle, nullSafeStringComparator)
+            .thenComparing(Id666::getArtist, nullSafeStringComparator)
+            .thenComparing(Id666::getSongTitle, nullSafeStringComparator);
 
 	private String header;
 	private String artist;
@@ -94,7 +94,7 @@ public class Model implements Comparable <Model> {
 	}
 	
 	 @Override
-	    public int compareTo(Model o) {
+	    public int compareTo(Id666 o) {
 	        
 	        return id666Comparator.compare(this, o);
 	    }
@@ -129,7 +129,7 @@ public class Model implements Comparable <Model> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Model other = (Model) obj;
+		Id666 other = (Id666) obj;
 		if (artist == null) {
 			if (other.artist != null)
 				return false;

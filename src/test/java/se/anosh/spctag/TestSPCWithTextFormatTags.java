@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
 
-import se.anosh.spctag.dao.Model;
+import se.anosh.spctag.dao.Id666;
 import se.anosh.spctag.dao.SpcDao;
 import se.anosh.spctag.dao.SpcFileImplementation;
 
@@ -22,7 +22,7 @@ public class TestSPCWithTextFormatTags {
     }
     
     SpcFileImplementation spcFile;
-    Model id666;
+    Id666 id666;
     
     
     @Before

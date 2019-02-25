@@ -7,7 +7,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import se.anosh.spctag.dao.Model;
+import se.anosh.spctag.dao.Id666;
 import se.anosh.spctag.dao.SpcFileImplementation;
 import se.anosh.spctag.service.SpcManager;
 import se.anosh.spctag.service.SpcService;
@@ -78,7 +78,7 @@ public class TagReader {
             try {
             	
             	SpcService service = new SpcManager(new SpcFileImplementation(file));
-            	Model myFile = service.read();
+            	Id666 myFile = service.read();
             	
             	
 //                SpcFile myFile = new SpcFile(file);

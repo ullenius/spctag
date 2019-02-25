@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public interface SpcDao {
 	
-	public Model read() throws FileNotFoundException, IOException;
+	public Id666 read() throws FileNotFoundException, IOException;
 	public void update(String song); // example
 	public void remove(); // remove all fields
 

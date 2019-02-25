@@ -9,14 +9,14 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import se.anosh.spctag.dao.Model;
+import se.anosh.spctag.dao.Id666;
 import se.anosh.spctag.dao.SpcDao;
 import se.anosh.spctag.dao.SpcFileImplementation;
 
 public class TestModelWithData {
 
     SpcFileImplementation spcFile;
-    Model id666;
+    Id666 id666;
     
     
     @Before
@@ -58,7 +58,7 @@ public class TestModelWithData {
     @Test
     public void testIdenticalHashCodes() throws IOException {
         SpcFileImplementation cloneFile = new SpcFileImplementation("spc/text.spc");
-        Model clone = cloneFile.read();
+        Id666 clone = cloneFile.read();
         
         assertNotSame(clone,id666); // don't cheat
         assertEquals(id666.hashCode(),clone.hashCode());
@@ -68,7 +68,7 @@ public class TestModelWithData {
     public void testNotIdenticalHashCodes() throws IOException {
         
         SpcFileImplementation different = new SpcFileImplementation("spc/binary.spc");
-        Model differentId666 = different.read();
+        Id666 differentId666 = different.read();
         
         assertNotSame(differentId666,id666); // object references
         assertNotEquals(differentId666,id666); // while we're at it
@@ -79,7 +79,7 @@ public class TestModelWithData {
     public void testEqualObjects() throws IOException {
         
         SpcFileImplementation cloneFile = new SpcFileImplementation("spc/text.spc");
-        Model clone = cloneFile.read();
+        Id666 clone = cloneFile.read();
         
         assertNotSame(clone,id666); // no cheating
         assertEquals(clone.hashCode(),id666.hashCode()); // equal objects *MUST* have equals hashcodes
@@ -90,7 +90,7 @@ public class TestModelWithData {
     public void testNonEqualObjects() throws IOException {
         
          SpcFileImplementation cloneFile = new SpcFileImplementation("spc/binary.spc");
-         Model clone = cloneFile.read();
+         Id666 clone = cloneFile.read();
          
          assertNotEquals(clone,spcFile);
     }
@@ -99,9 +99,9 @@ public class TestModelWithData {
     public void testComparableSorting() throws IOException {
         
         SpcFileImplementation otherFile = new SpcFileImplementation("spc/binary.spc");
-        Model other = otherFile.read();
+        Id666 other = otherFile.read();
         
-        List<Model> myList = new ArrayList<>();
+        List<Id666> myList = new ArrayList<>();
         myList.add(other);
         myList.add(id666);
         myList.add(other);
@@ -120,7 +120,7 @@ public class TestModelWithData {
     public void testComparableWithNullValues() throws IOException {
         
         SpcDao otherFile = new SpcFileImplementation("spc/binary.spc");
-        Model other = otherFile.read();
+        Id666 other = otherFile.read();
         
         
         other.setGameTitle(null);
@@ -129,7 +129,7 @@ public class TestModelWithData {
         
         id666.setGameTitle(null);
         
-        List<Model> myList = new ArrayList<>();
+        List<Id666> myList = new ArrayList<>();
         myList.add(id666);
         myList.add(other);
         

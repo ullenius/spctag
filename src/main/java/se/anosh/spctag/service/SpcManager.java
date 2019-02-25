@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 
-import se.anosh.spctag.dao.Model;
+import se.anosh.spctag.dao.Id666;
 import se.anosh.spctag.dao.SpcDao;
 
 public class SpcManager implements SpcService {
@@ -17,7 +17,7 @@ public class SpcManager implements SpcService {
 	}
 
 	@Override
-	public Model read() throws FileNotFoundException, IOException {
+	public Id666 read() throws FileNotFoundException, IOException {
 		
 		return dao.read();
 	}
