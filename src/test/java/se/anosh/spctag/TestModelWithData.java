@@ -20,8 +20,8 @@ public class TestModelWithData {
 		super();
 	}
 
-	SpcFileImplementation spcFile;
-    Id666 id666;
+	private SpcFileImplementation spcFile;
+    private Id666 id666;
     
     
     @Before
@@ -29,7 +29,6 @@ public class TestModelWithData {
         
         spcFile = new SpcFileImplementation("spc/text.spc");
         id666 = spcFile.read();
-        
     }
 	
 

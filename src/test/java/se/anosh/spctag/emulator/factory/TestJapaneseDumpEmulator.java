@@ -1,6 +1,5 @@
 package se.anosh.spctag.emulator.factory;
 
-import java.io.IOException;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -11,7 +10,7 @@ import se.anosh.spctag.emulator.factory.ModernEmulatorFactory;
 import se.anosh.spctag.emulator.factory.Name;
 
 /**
- * Testing the DumpEmulator class
+ * Testing the JapaneseEmulator class
  * 
  *
  * @author Anosh D. Ullenius <anosh@anosh.se>
@@ -25,7 +24,7 @@ public class TestJapaneseDumpEmulator {
     }
     
     @Before
-    public void setup() throws IOException {
+    public void setup() {
     	
     	factory = new ModernEmulatorFactory();
         
