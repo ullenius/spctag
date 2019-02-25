@@ -6,6 +6,7 @@ package se.anosh.spctag.emulator;
  *
  * @author Anosh D. Ullenius <anosh@anosh.se>
  */
+@Deprecated
 public final class DumpEmulator {
     
      private DumpEmulator() {
