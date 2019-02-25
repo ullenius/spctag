@@ -26,7 +26,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-import se.anosh.spctag.emulator.DumpEmulator;
+import se.anosh.spctag.emulator.factory.Emulator;
+import se.anosh.spctag.emulator.factory.EmulatorFactory;
+import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
+import se.anosh.spctag.emulator.factory.ModernEmulatorFactory;
 
 public class SpcFileImplementation implements SpcDao {
 
@@ -112,8 +115,16 @@ public class SpcFileImplementation implements SpcDao {
 
 	private void setEmulatorUsedToCreateDump(final int offset) throws IOException {
 
-		byte result = readByte(offset);
-		id666.setEmulatorUsedToCreateDump(DumpEmulator.getName(result));
+		byte result = readByte(offset); // result is the code
+		
+		// creating factory
+		EmulatorFactory factory = new ModernEmulatorFactory();
+		
+		// create using factory
+		// Emulator's constructor has access modifier "protected"
+		// use values from the Japanese spec
+		Emulator emulator = factory.orderEmulator(result, Type.JAPANESE);
+		id666.setEmulatorUsedToCreateDump(emulator);
 	}
 
 	private boolean isValidSPCFile() throws IOException {

@@ -2,7 +2,7 @@ package se.anosh.spctag.dao;
 
 import java.util.Comparator;
 
-import se.anosh.spctag.emulator.Emulator;
+import se.anosh.spctag.emulator.factory.Emulator;
 
 public class Id666 implements Comparable <Id666> {
 	

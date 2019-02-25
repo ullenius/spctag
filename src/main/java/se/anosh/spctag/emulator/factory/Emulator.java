@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 public abstract class Emulator {
     
-    public Emulator(Name name, Integer offset) {
+    protected Emulator(Name name, Integer offset) {
         
         if (name == null) // Map returns NULL if value is not in Map
             this.name = Name.Unknown;

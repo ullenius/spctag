@@ -31,7 +31,7 @@ public class TestDumpEmulator {
      * enumeration based on the code provided
      */
     @Test
-    public void testValidEmulatorCodes() {
+    public void testValidJapaneseEmulatorCodes() {
         
         result = DumpEmulator.getName(0x31);
         assertEquals(Emulator.ZSNES,result);
@@ -80,7 +80,7 @@ public class TestDumpEmulator {
     }
     
     @Test
-    public void testInvalidEmulatorCodes() {
+    public void testInvalidJapaneseEmulatorCodes() {
         
         result = DumpEmulator.getName(0x32);
         assertNotEquals(Emulator.ZSNES,result);
