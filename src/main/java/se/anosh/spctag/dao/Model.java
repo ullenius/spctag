@@ -98,6 +98,85 @@ public class Model implements Comparable <Model> {
 	        
 	        return id666Comparator.compare(this, o);
 	    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
+		result = prime * result + ((binaryTagFormat == null) ? 0 : binaryTagFormat.hashCode());
+		result = prime * result + ((comments == null) ? 0 : comments.hashCode());
+		result = prime * result + ((dateDumpWasCreated == null) ? 0 : dateDumpWasCreated.hashCode());
+		result = prime * result + ((emulatorUsedToCreateDump == null) ? 0 : emulatorUsedToCreateDump.hashCode());
+		result = prime * result + ((gameTitle == null) ? 0 : gameTitle.hashCode());
+		result = prime * result + ((header == null) ? 0 : header.hashCode());
+		result = prime * result + ((nameOfDumper == null) ? 0 : nameOfDumper.hashCode());
+		result = prime * result + ((songTitle == null) ? 0 : songTitle.hashCode());
+		return result;
+	}
+	
+	
+	/**
+	 * 
+	 * Using all fields to compare except hasId666Tags.
+	 * Even the Header is used. Since older versions used a different
+	 * version number in the header.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Model other = (Model) obj;
+		if (artist == null) {
+			if (other.artist != null)
+				return false;
+		} else if (!artist.equals(other.artist))
+			return false;
+		if (binaryTagFormat == null) {
+			if (other.binaryTagFormat != null)
+				return false;
+		} else if (!binaryTagFormat.equals(other.binaryTagFormat))
+			return false;
+		if (comments == null) {
+			if (other.comments != null)
+				return false;
+		} else if (!comments.equals(other.comments))
+			return false;
+		if (dateDumpWasCreated == null) {
+			if (other.dateDumpWasCreated != null)
+				return false;
+		} else if (!dateDumpWasCreated.equals(other.dateDumpWasCreated))
+			return false;
+		if (emulatorUsedToCreateDump != other.emulatorUsedToCreateDump)
+			return false;
+		if (gameTitle == null) {
+			if (other.gameTitle != null)
+				return false;
+		} else if (!gameTitle.equals(other.gameTitle))
+			return false;
+		if (header == null) {
+			if (other.header != null)
+				return false;
+		} else if (!header.equals(other.header))
+			return false;
+		if (nameOfDumper == null) {
+			if (other.nameOfDumper != null)
+				return false;
+		} else if (!nameOfDumper.equals(other.nameOfDumper))
+			return false;
+		if (songTitle == null) {
+			if (other.songTitle != null)
+				return false;
+		} else if (!songTitle.equals(other.songTitle))
+			return false;
+		return true;
+	}
 
+	 
+	 
+	 
 	
 }
