@@ -39,8 +39,8 @@ public class SpcFileImplementation implements SpcDao {
 
 	// version may vary, most recent is 0.31 (?) from 2006
 	private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data"; 
-	private static final int CONTAINS_ID666_TAG = 26;
-	private static final int MISSING_ID666_TAG = 27;
+	private static final byte CONTAINS_ID666_TAG = 26;
+	private static final byte MISSING_ID666_TAG = 27;
 
 
 	@Override
@@ -51,14 +51,12 @@ public class SpcFileImplementation implements SpcDao {
 
 	@Override
 	public void update(String song) {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("not yet implemented");
 	}
 
 	@Override
 	public void remove() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("not yet implemented");
 	}
 
 	public SpcFileImplementation(String filename) throws FileNotFoundException, IOException {
