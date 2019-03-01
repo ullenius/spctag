@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 public abstract class Emulator {
     
-    protected Emulator(Name name, Integer offset) {
+    protected Emulator(Name name, Integer code) {
         
         if (name == null) // Map returns NULL if value is not in Map
             this.name = Name.Unknown;
@@ -21,7 +21,7 @@ public abstract class Emulator {
         // the model object knows if it is binary of textTag
         // so it knows where to put this value. But this object (Emulator)
         // does not need to know what it is
-        this.code = Objects.requireNonNull(offset); //auto-unboxing
+        this.code = Objects.requireNonNull(code); //auto-unboxing
     }
     
     private Name name;
