@@ -80,9 +80,6 @@ public class TagReader {
             	SpcService service = new SpcManager(new SpcFileImplementation(file));
             	Id666 myFile = service.read();
             	
-            	
-//                SpcFile myFile = new SpcFile(file);
-                
                 if (cmd.hasOption("v")) { // verbose output
                     System.out.println("File header: " + myFile.getHeader());
                 }
@@ -94,7 +91,7 @@ public class TagReader {
                 System.out.println("Comments: " + myFile.getComments());
                 
                 System.out.println("Date SPC was dumped:" + myFile.getDateDumpWasCreated());
-                System.out.println("Emulator used to dump SPC: " + myFile.getEmulatorUsedToCreateDump()); // composer
+                System.out.println("Emulator used to dump SPC: " + myFile.getEmulatorUsedToCreateDump());
                 
             } catch (IOException ex) {
                 System.out.println("I/O error");

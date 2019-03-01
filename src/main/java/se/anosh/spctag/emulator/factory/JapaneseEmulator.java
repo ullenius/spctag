@@ -9,6 +9,7 @@ import java.util.Map;
  */
 public class JapaneseEmulator extends Emulator {
     
+    // emulator values for the TEXT tag offset
     private static final int ZSNES_TEXT = 0x31;
     private static final int SNES9X_TEXT = 0x32;
     private static final int ZST2SPC_TEXT = 0x33;
