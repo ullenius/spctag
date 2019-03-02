@@ -28,7 +28,7 @@ Date SPC was dumped:
 Emulator used to dump SPC: unknown
 ```
 
-## :pushpin: Features
+## Features
 
 * :heavy_check_mark: 100% Java (Java 8) :coffee:
 * :heavy_check_mark: Supports Latin-1 (ISO-8859-1) encoding in the tags!
