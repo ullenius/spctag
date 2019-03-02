@@ -7,7 +7,7 @@ SPC-files are sound files containing ripped chiptune music from Super Nintendo a
 
 **Not** for *PKCS#7* certificates who share the same filename extension.
 
-## Usage
+## :desktop_computer: Usage
 
 ```sh
 usage: spctag <filename>
@@ -28,7 +28,8 @@ Date SPC was dumped:
 Emulator used to dump SPC: unknown
 ```
 
-## Features
+## :pushpin: Features
+
 * :heavy_check_mark: 100% Java (Java 8) :coffee:
 * :heavy_check_mark: Supports Latin-1 (ISO-8859-1) encoding in the tags!
 * :heavy_check_mark: Command line. Multi-platform.
@@ -36,7 +37,8 @@ Emulator used to dump SPC: unknown
 * :x: No xid6 support as of yet. Perhaps in the future
 * :x: Edit tags (as of yet)
 
-## Building
+
+## :floppy_disk: Building
 This is a Maven-project.
 
 Run:
@@ -45,12 +47,12 @@ mvn clean install assembly:single
 ```
 to build the JAR-file.
 
-## Binaries
+## :file_folder: Binaries
 I've included a compiled jar-file with /lib dir to simplify for end-users who can't compile stuff on their platform.
 * Download **spctag-bin.zip**
 
 
-## Development
+## :wrench: Development
 1. I wrote this because there was a lack of tools supporting the SPC-format.
 1. And it would be a fun project to learn binary I/O in Java.
 1. Lastly, **spctag** has the best support for parsing the *"Emulator used for dumping SPC"*-tag :grin:
@@ -61,15 +63,25 @@ Java is multi-platform and you can run and compile 20-year old Java programs wit
 
 Hopefully doing it in Java makes it easy to convert to XML and JSON, as well as persisting it in databases using SQL.
 
-### Emulator Dump Tag
+## :id: Emulator Dump Tag
 The *Emulator used for dumping*-value is set by 1 byte-flag. In two different 
 offset locations depending on if the SPC-file is using binary or text-format for 
 storing the ID666-tag.
 
-
 * Binary offset   `0xD1`
 * Text offset:    `0xD2`
 
+There are two different set of specifications for emulator codes available. The legacy SPC-file specification and the newer Japanese one. SPCTag supports both of them.
+### :older_woman: Legacy spec
+Only 3 values are defined in the legacy spec (SPC File Format v.0.31 txt-file)
+
+Emulator name | Text format | Binary format
+------------ | -------------| -------------
+Unknown | 0x0 | 0x00
+ZSNES | 0x01 | 0x01
+Snes9x| 0x02 | 0x02
+
+### :jp: Japanese spec
 The following byte-values are used according to the [Japanese spec](https://dgrfactory.jp/spcplay/id666.html):
 
 Emulator name | Text format | Binary format
@@ -86,13 +98,55 @@ SNESGT | 0x38 | 0x08
 
 Note: *Other* and *Unknown* are both specified with unique values (?) somehow...
 
+### :factory: Factory Method
+Package *se.anosh.spctag.emulator.factory* contains a factory method pattern (*Gang of Four*) for creating immutable Emulator-objects based on the two aforementioned tables.
+```java
+public abstract class EmulatorFactory {
+
+    public Emulator orderEmulator(int magicNumber,Type style)
+```
+
+Where *Type* is an nested enum within *EmulatorFactory* defined as follows:
+```java
+    public enum Type {
+        JAPANESE,
+        LEGACY
+```
+
+For example:
+```java
+Emulator emulatorUsed = myFacftory.orderEmulator(0x31, Type.JAPANESE)
+```
+will return an *Emulator* object
+
+The immutable *Emulator*-object contains two fields:
+```java
+private Name name;
+final int code;
+```
+
+*Name* is a public enum containing the emulator names:
+```java
+public enum Name {
+    Unknown,
+    Other,
+    ZSNES,
+    Snes9x,
+    ZST2SPC,
+    SNEShout,
+    ZSNES_W,
+    Snes9xpp,
+    SNESGT;
+}
+```
+
 ## Changelog
 * 0.1 - first release! February 2019
 
-## Licence
+## :scroll::Licence
 GPL 3 only. See COPYING
 
-### Libraries and copyright
+### Libraries used & credit
 * Apache Commons CLI-library - Apache Licence version 2
 * spc700.jpg - made by Yaca2671 (2007). From Wikimedia Commons. Creative Commons Attribution-Share-Alike 3.0 Unported licence.
 
