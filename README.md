@@ -72,14 +72,6 @@ storing the ID666-tag.
 * Text offset:    `0xD2`
 
 There are two different set of specifications for emulator codes available. The legacy SPC-file specification and the newer Japanese one. SPCTag supports both of them.
-### :older_woman: Legacy spec
-Only 3 values are defined in the legacy spec (SPC File Format v.0.31 txt-file)
-
-Emulator name | Text format | Binary format
------------- | -------------| -------------
-Unknown | 0x0 | 0x00
-ZSNES | 0x01 | 0x01
-Snes9x| 0x02 | 0x02
 
 ### :jp: Japanese spec
 The following byte-values are used according to the [Japanese spec](https://dgrfactory.jp/spcplay/id666.html):
@@ -98,34 +90,43 @@ SNESGT | 0x38 | 0x08
 
 Note: *Other* and *Unknown* are both specified with unique values (?) somehow...
 
+### :older_woman: Legacy spec
+Only 3 values are defined in the legacy spec (SPC File Format v.0.31 txt-file)
+
+Emulator name | Text format | Binary format
+------------ | -------------| -------------
+Unknown | 0x0 | 0x00
+ZSNES | 0x01 | 0x01
+Snes9x| 0x02 | 0x02
+
 ### :factory: Factory Method
-Package *se.anosh.spctag.emulator.factory* contains a factory method pattern (*Gang of Four*) for creating immutable Emulator-objects based on the two aforementioned tables.
-```java
-public abstract class EmulatorFactory {
+* Package *se.anosh.spctag.emulator.factory* contains a factory method pattern (*Gang of Four*). 
+* Used for creating immutable Emulator-objects based on the two aforementioned tables.
 
-    public Emulator orderEmulator(int magicNumber,Type style)
+#### Usage example:
+```java
+EmulatorFactory myFactory = new ModernEmulatorFactory(); // First we create the factory
+
+Emulator emulatorUsed = myFacftory.orderEmulator(0x31, Type.JAPANESE) // Type.LEGACY is also available
 ```
+##### Type enum
+**Type** is an nested enum within *EmulatorFactory.java* defined as follows:
 
-Where *Type* is an nested enum within *EmulatorFactory* defined as follows:
 ```java
+
     public enum Type {
         JAPANESE,
         LEGACY
+    }
 ```
-
-For example:
+##### Emulator class
+Objects of type **Emulator** are immutable and contain two fields:
 ```java
-Emulator emulatorUsed = myFacftory.orderEmulator(0x31, Type.JAPANESE)
+    private Name name;
+    final int code;
 ```
-will return an *Emulator* object
-
-The immutable *Emulator*-object contains two fields:
-```java
-private Name name;
-final int code;
-```
-
-*Name* is a public enum containing the emulator names:
+##### Name enum
+**Name.java** is a public enum containing the emulator names:
 ```java
 public enum Name {
     Unknown,
