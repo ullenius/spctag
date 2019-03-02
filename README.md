@@ -100,45 +100,14 @@ ZSNES | 0x01 | 0x01
 Snes9x| 0x02 | 0x02
 
 ### :factory: Factory Method
-* Package *se.anosh.spctag.emulator.factory* contains a factory method pattern (*Gang of Four*). 
-* Used for creating immutable Emulator-objects based on the two aforementioned tables.
+* *se.anosh.spctag.emulator.factory* contains a factory method pattern (*Gang of Four*). 
+* Used for creating immutable *Emulator*-objects based on the two aforementioned tables.
 
 #### Usage example:
 ```java
 EmulatorFactory myFactory = new ModernEmulatorFactory(); // First we create the factory
 
 Emulator emulatorUsed = myFacftory.orderEmulator(0x31, Type.JAPANESE) // Type.LEGACY is also available
-```
-##### Type enum
-**Type** is an nested enum within *EmulatorFactory.java* defined as follows:
-
-```java
-
-    public enum Type {
-        JAPANESE,
-        LEGACY
-    }
-```
-##### Emulator class
-Objects of type **Emulator** are immutable and contain two fields:
-```java
-    private Name name;
-    final int code;
-```
-##### Name enum
-**Name.java** is a public enum containing the emulator names:
-```java
-public enum Name {
-    Unknown,
-    Other,
-    ZSNES,
-    Snes9x,
-    ZST2SPC,
-    SNEShout,
-    ZSNES_W,
-    Snes9xpp,
-    SNESGT;
-}
 ```
 
 ## Changelog
