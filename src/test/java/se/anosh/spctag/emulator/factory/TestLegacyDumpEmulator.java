@@ -8,9 +8,13 @@ import se.anosh.spctag.emulator.factory.EmulatorFactory;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 import se.anosh.spctag.emulator.factory.ModernEmulatorFactory;
 import se.anosh.spctag.emulator.factory.Name;
+import static se.anosh.spctag.emulator.factory.LegacyEmulator.*;
+import se.anosh.spctag.emulator.factory.JapaneseEmulator;
+import static se.anosh.spctag.emulator.factory.TestJapaneseDumpEmulator.INVALID_NEGATIVE_NUMBER;
+import static se.anosh.spctag.emulator.factory.TestJapaneseDumpEmulator.INVALID_POSITIVE_NUMBER;
 
 /**
- * Testing the JapaneseEmulator class
+ * Testing the LegacyEmulator class
  * 
  *
  * @author Anosh D. Ullenius <anosh@anosh.se>
@@ -38,28 +42,27 @@ public class TestLegacyDumpEmulator {
     @Test
     public void testValidLegacyEmulatorCodes() {
     	
-    	 result = factory.orderEmulator(0x0, Type.LEGACY);
+    	 result = factory.orderEmulator(UNKNOWN, Type.LEGACY);
          assertEquals(Name.Unknown,result.getName());
          
-         result = factory.orderEmulator(0x1, Type.LEGACY);
+         result = factory.orderEmulator(ZSNES, Type.LEGACY);
          assertEquals(Name.ZSNES,result.getName());
          
-         result = factory.orderEmulator(0x2, Type.LEGACY);
+         result = factory.orderEmulator(SNES9x, Type.LEGACY);
          assertEquals(Name.Snes9x,result.getName());
     }
     
     @Test
     public void testInvalidLegacyEmulatorCodes() {
         
-        result = factory.orderEmulator(0x32, Type.LEGACY);
+        result = factory.orderEmulator(JapaneseEmulator.SNES9X_TEXT, Type.LEGACY); // testing a valid value from the jp-spec
         assertNotEquals(Name.ZSNES,result.getName());
         
-        result = factory.orderEmulator(1337, Type.LEGACY);
+        result = factory.orderEmulator(INVALID_POSITIVE_NUMBER, Type.LEGACY);
         assertEquals(Name.Unknown,result.getName()); // unknown is default
         
-        result = factory.orderEmulator(-15, Type.LEGACY);
+        result = factory.orderEmulator(INVALID_NEGATIVE_NUMBER, Type.LEGACY);
         assertEquals(Name.Unknown,result.getName()); // unknown is default
-        
     }
     
     

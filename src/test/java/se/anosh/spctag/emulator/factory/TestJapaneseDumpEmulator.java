@@ -21,6 +21,12 @@ public class TestJapaneseDumpEmulator {
     private Emulator result;
     private EmulatorFactory factory;
     
+    // Magic number constants. Used by test-classes in this package
+    // They don't match any emulator code. Used for testing
+    // sad path
+    static int INVALID_POSITIVE_NUMBER = 1337;
+    static int INVALID_NEGATIVE_NUMBER = -15;
+    
     
     public TestJapaneseDumpEmulator() {
     }
@@ -29,7 +35,6 @@ public class TestJapaneseDumpEmulator {
     public void setup() {
     	
     	factory = new ModernEmulatorFactory();
-        
     }
     
     /**
@@ -93,11 +98,12 @@ public class TestJapaneseDumpEmulator {
         result = factory.orderEmulator(SNES9X_TEXT, Type.JAPANESE);
         assertNotEquals(Name.ZSNES,result.getName());
         
-        result = factory.orderEmulator(1337, Type.JAPANESE); // just a random number. Doesn't match anything
+        // sad path testing
+        result = factory.orderEmulator(INVALID_POSITIVE_NUMBER, Type.JAPANESE);
         assertEquals(Name.Unknown,result.getName()); // unknown is default
         
-        result = factory.orderEmulator(-15, Type.JAPANESE);  // just a random negative number. Doesn't match anything
-        assertEquals(Name.Unknown,result.getName()); // unknown is default
+        result = factory.orderEmulator(INVALID_NEGATIVE_NUMBER, Type.JAPANESE);
+        assertEquals(Name.Unknown,result.getName());
         
     }
     
