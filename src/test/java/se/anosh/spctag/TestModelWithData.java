@@ -123,9 +123,8 @@ public class TestModelWithData {
     @Test
     public void testComparableWithNullValues() throws IOException {
         
-        SpcDao otherFile = new SpcFileImplementation("spc/binary.spc");
+        SpcDao otherFile = new SpcFileImplementation("spc/binary.spc"); //accessing using the interface this time
         Id666 other = otherFile.read();
-        
         
         other.setGameTitle(null);
         other.setSongTitle(null);

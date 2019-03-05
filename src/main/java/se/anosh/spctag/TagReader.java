@@ -80,9 +80,12 @@ public class TagReader {
             	SpcService service = new SpcManager(new SpcFileImplementation(file));
             	Id666 myFile = service.read();
             	
-                if (cmd.hasOption("v")) { // verbose output
-                    System.out.println("File header: " + myFile.getHeader());
-                }
+            	if (cmd.hasOption("v")) { // verbose output
+            		System.out.println("File header: " + myFile.getHeader());
+
+            		String format = myFile.isBinaryTagFormat() ? "Binary" : "Text"; // ternary operator
+            		System.out.println("Tag format: " + format);
+            	}
                 System.out.println("Artist: " + myFile.getArtist()); // composer
                 System.out.println("Song title: " + myFile.getSongTitle());
                 
@@ -91,7 +94,7 @@ public class TagReader {
                 System.out.println("Comments: " + myFile.getComments());
                 
                 System.out.println("Date SPC was dumped:" + myFile.getDateDumpWasCreated());
-                System.out.println("Emulator used to dump SPC: " + myFile.getEmulatorUsedToCreateDump());
+                System.out.println("Emulator used to dump SPC: " + myFile.getEmulatorUsedToCreateDump().getName());
                 
             } catch (IOException ex) {
                 System.out.println("I/O error");
