@@ -8,9 +8,7 @@ public class SpcFileImplementation implements SpcDao {
 	private SpcFileReader spcFile;
 	
 	public SpcFileImplementation(String filename) throws FileNotFoundException, IOException {
-		
 		spcFile = new SpcFileReader(filename);
-		
 	}
 	
 	
@@ -18,19 +16,16 @@ public class SpcFileImplementation implements SpcDao {
 	public Id666 read() throws FileNotFoundException, IOException {
 		
 		return spcFile.getId666();
-		
 	}
 
 	@Override
 	public void update(String song) {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("not yet implemented");
 	}
 
 	@Override
 	public void remove() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("not yet implemented");
 	}
 
 }
