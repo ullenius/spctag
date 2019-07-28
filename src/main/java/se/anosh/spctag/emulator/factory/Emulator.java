@@ -18,7 +18,7 @@ public abstract class Emulator {
         else
             this.name = name;
         
-        // the model object knows if it is binary of textTag
+        // the model object knows whether its tag format is binary or text,
         // so it knows where to put this value. But this object (Emulator)
         // does not need to know what it is
         this.code = Objects.requireNonNull(code); //auto-unboxing
@@ -55,7 +55,7 @@ public abstract class Emulator {
 
 	/**
 	 * 
-	 * Objects will differ is code is different
+	 * Objects will differ if code is different
 	 * even if Name is equals
 	 */
 	@Override
