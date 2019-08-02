@@ -178,7 +178,6 @@ public class SpcFileReader {
 	}
 
 	private boolean isValidSPCFile() throws IOException {
-		raf.seek(0);
 		final String fileHeader = readStuff(HEADER_OFFSET, HEADER_LENGTH)
 				.trim()
 				.substring(0, CORRECT_HEADER.length());
