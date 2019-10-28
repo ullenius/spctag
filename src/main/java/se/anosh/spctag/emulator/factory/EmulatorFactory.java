@@ -20,7 +20,6 @@ public abstract class EmulatorFactory {
         Objects.requireNonNull(style);
         Emulator emulator = createEmulator(magicNumber,style);
         return emulator;
-        
     }
     
     // Method overloading

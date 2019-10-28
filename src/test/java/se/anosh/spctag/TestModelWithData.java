@@ -15,18 +15,11 @@ import se.anosh.spctag.dao.SpcFileImplementation;
 
 public class TestModelWithData {
 	
-	
-    public TestModelWithData() {
-		super();
-	}
-
 	private SpcFileImplementation spcFile;
     private Id666 id666;
     
-    
     @Before
     public void setup() throws IOException {
-        
         spcFile = new SpcFileImplementation("spc/text.spc");
         id666 = spcFile.read();
     }

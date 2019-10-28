@@ -27,13 +27,8 @@ public class TestJapaneseDumpEmulator {
     static int INVALID_POSITIVE_NUMBER = 1337;
     static int INVALID_NEGATIVE_NUMBER = -15;
     
-    
-    public TestJapaneseDumpEmulator() {
-    }
-    
     @Before
     public void setup() {
-    	
     	factory = new ModernEmulatorFactory();
     }
     

@@ -1,10 +1,8 @@
 package se.anosh.spctag.emulator.factory;
 
 import java.util.Objects;
-
 /**
  *
- * 
  * Immutable class
  * 
  * @author Anosh D. Ullenius <anosh@anosh.se>
@@ -13,10 +11,7 @@ public abstract class Emulator {
     
     protected Emulator(Name name, Integer code) {
         
-        if (name == null) // Map returns NULL if value is not in Map
-            this.name = Name.Unknown;
-        else
-            this.name = name;
+    	this.name = (name == null) ? Name.Unknown : name;// Map returns NULL if value is not in Map
         
         // the model object knows whether its tag format is binary or text,
         // so it knows where to put this value. But this object (Emulator)
@@ -24,7 +19,7 @@ public abstract class Emulator {
         this.code = Objects.requireNonNull(code); //auto-unboxing
     }
     
-    private Name name;
+    private final Name name;
     final int code;
 
     public Name getName() {

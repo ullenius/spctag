@@ -21,9 +21,8 @@ public class TestSPCWithTextFormatTags {
     public TestSPCWithTextFormatTags() {
     }
     
-    SpcFileImplementation spcFile;
-    Id666 id666;
-    
+    private SpcFileImplementation spcFile;
+    private Id666 id666;
     
     @Before
     public void setup() throws IOException {
@@ -45,10 +44,7 @@ public class TestSPCWithTextFormatTags {
     public void testFileWithInvalidHeader() throws IOException {
         // tests a file that is not SPC
         spcFile = new SpcFileImplementation("spc/randomBytes.spc"); // will throw exception
-        
     }
-    
-    
     
     
 }

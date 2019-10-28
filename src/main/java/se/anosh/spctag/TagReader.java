@@ -27,7 +27,7 @@ import se.anosh.spctag.service.SpcService;
  * @author Anosh D. Ullenius <anosh@anosh.se>
  * code written in February 2019
  */
-public class TagReader {
+public final class TagReader {
     
     private static final String VERSION ="spctag version 0.1";
     private static final String ABOUT = "code by A. Ullenius 2019";

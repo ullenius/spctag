@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 import se.anosh.spctag.emulator.factory.Emulator;
 
-public class Id666 implements Comparable <Id666> {
+public final class Id666 implements Comparable <Id666> {
 	
 	// Thanks to Lukasz Wiktor @ stack overflow (2014)
     private static final Comparator<String> nullSafeStringComparator = Comparator.nullsFirst(String::compareToIgnoreCase);
