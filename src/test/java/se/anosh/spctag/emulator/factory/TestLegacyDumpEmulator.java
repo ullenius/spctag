@@ -1,17 +1,17 @@
 package se.anosh.spctag.emulator.factory;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import se.anosh.spctag.emulator.factory.Emulator;
-import se.anosh.spctag.emulator.factory.EmulatorFactory;
-import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
-import se.anosh.spctag.emulator.factory.ModernEmulatorFactory;
-import se.anosh.spctag.emulator.factory.Name;
-import static se.anosh.spctag.emulator.factory.LegacyEmulator.*;
-import se.anosh.spctag.emulator.factory.JapaneseEmulator;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static se.anosh.spctag.emulator.factory.LegacyEmulator.SNES9x;
+import static se.anosh.spctag.emulator.factory.LegacyEmulator.UNKNOWN;
+import static se.anosh.spctag.emulator.factory.LegacyEmulator.ZSNES;
 import static se.anosh.spctag.emulator.factory.TestJapaneseDumpEmulator.INVALID_NEGATIVE_NUMBER;
 import static se.anosh.spctag.emulator.factory.TestJapaneseDumpEmulator.INVALID_POSITIVE_NUMBER;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 
 /**
  * Testing the LegacyEmulator class

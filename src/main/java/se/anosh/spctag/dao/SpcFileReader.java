@@ -3,6 +3,7 @@ package se.anosh.spctag.dao;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -232,7 +233,7 @@ public class SpcFileReader {
 		raf.seek(offset);
 		byte[] bytes = new byte[length];
 		raf.read(bytes);
-		return new String(bytes, "ISO-8859-1");
+		return new String(bytes, StandardCharsets.ISO_8859_1);
 	}
 
 	private byte readByte(int offset) throws IOException {

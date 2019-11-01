@@ -1,25 +1,20 @@
 package se.anosh.spctag;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import se.anosh.spctag.dao.Id666;
-import se.anosh.spctag.dao.SpcDao;
 import se.anosh.spctag.dao.SpcFileImplementation;
-
-import static org.junit.Assert.*;
-import org.junit.Before;
 
 /**
  *
  * @author Anosh D. Ullenius <anosh@anosh.se>
  */
 public class TestSPCWithTextFormatTags {
-    
-    public TestSPCWithTextFormatTags() {
-    }
     
     private SpcFileImplementation spcFile;
     private Id666 id666;
