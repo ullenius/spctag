@@ -31,9 +31,9 @@ Emulator used to dump SPC: unknown
 ## Features
 
 * :heavy_check_mark: 100% Java (Java 8) :coffee:
-* :heavy_check_mark: Supports Latin-1 (ISO-8859-1) encoding in the tags!
+* :heavy_check_mark: Supports UTF-8 encoding in the tags!
 * :heavy_check_mark: Command line. Multi-platform.
-* :heavy_check_mark: Batch processing using wildcards is possible! E.g. `java -jar spctag *.spc`
+* :heavy_check_mark: Batch processing using wildcards is possible! For example: `java -jar spctag *.spc`
 * :x: No xid6 support as of yet. Perhaps in the future
 * :x: Edit tags (as of yet)
 
@@ -112,13 +112,14 @@ Emulator emulatorUsed = myFacftory.orderEmulator(0x31, Type.JAPANESE) // Type.LE
 
 ## Changelog
 * 0.1 - first release! February 2019
+* 0.2 - utf8 support. November 2019
 
 ## :scroll::Licence
 GPL 3 only. See COPYING
 
 ### Libraries used & credit
-* Apache Commons CLI-library - Apache Licence version 2
-* spc700.jpg - made by Yaca2671 (2007). From Wikimedia Commons. Creative Commons Attribution-Share-Alike 3.0 Unported licence.
+* Apache Commons CLI-library - [Apache Licence version 2](https://www.apache.org/licenses/LICENSE-2.0)
+* [S-SMP chip for SFC](https://commons.wikimedia.org/wiki/File:S-SMP_01.jpg) - made by [Yaca2671](https://commons.wikimedia.org/wiki/User_talk:Yaca2671) (2007). [Creative Commons Attribution-Share-Alike](https://creativecommons.org/licenses/by-sa/3.0/) 3.0 Unported licence.
 
 
 ## Dedication
