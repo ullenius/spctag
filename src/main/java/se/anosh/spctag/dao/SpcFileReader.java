@@ -44,9 +44,9 @@ public class SpcFileReader {
     public static final int EMULATOR_LENGTH = 1;
 	
 
-	private Id666 id666;
-	private Path file;
-	private RandomAccessFile raf;
+	private final Id666 id666;
+	private final Path file;
+	private final RandomAccessFile raf;
 
 	// version may vary, most recent is 0.31 (?) from 2006
 	private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data"; 
@@ -233,7 +233,7 @@ public class SpcFileReader {
 		raf.seek(offset);
 		byte[] bytes = new byte[length];
 		raf.read(bytes);
-		return new String(bytes, StandardCharsets.ISO_8859_1);
+		return new String(bytes, StandardCharsets.UTF_8);
 	}
 
 	private byte readByte(int offset) throws IOException {
