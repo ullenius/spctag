@@ -42,16 +42,17 @@ public class SpcFileReader {
     public static final int EMULATOR_TEXT_FORMAT_OFFSET = 0xD2;
     public static final int EMULATOR_BINARY_FORMAT_OFFSET = 0xD1;
     public static final int EMULATOR_LENGTH = 1;
-	
 
 	private final Id666 id666;
 	private final Path file;
 	private final RandomAccessFile raf;
 
 	// version may vary, most recent is 0.31 (?) from 2006
-	private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data"; 
+	private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data";
 	private static final byte CONTAINS_ID666_TAG = 26;
 	private static final byte MISSING_ID666_TAG = 27;
+	
+	private static final String READ_ONLY = "r";
 
 
 	public Id666 getId666() {
@@ -63,20 +64,18 @@ public class SpcFileReader {
 	public SpcFileReader(String filename) throws FileNotFoundException, IOException {
 
 		file = Paths.get(filename);
-		raf = new RandomAccessFile(file.toString(),"r");
+		raf = new RandomAccessFile(file.toString(), READ_ONLY);
 		id666 = new Id666();
 
 		if (!isValidSPCFile())
-			throw new IOException("File is missing correct SPC-header. Exiting");
+			throw new IOException("File is missing correct SPC-header");
 		readAndSetAllFields();
-
 		raf.close();
 	}
 
 	public String getFilename() {
 		return file.toString();
 	}
-	
 	
 	/**
 	 * 
@@ -136,7 +135,6 @@ public class SpcFileReader {
 		id666.setBinaryTagFormat(hasBinaryTagFormat());
 	}
 	
-	
 	/**
 	 * This method reads the Artist & Emulator- (Used to Create Dump) fields.
 	 * The offsets differ depending on the tag format being used (binary or text).
@@ -161,8 +159,6 @@ public class SpcFileReader {
 		}
 		id666.setArtist(artist); // sets it using local variable
 	}
-	
-	
 	
 	private void setEmulatorUsedToCreateDump(final int offset) throws IOException {
 
