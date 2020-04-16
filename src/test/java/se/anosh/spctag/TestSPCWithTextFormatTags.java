@@ -3,12 +3,8 @@ package se.anosh.spctag;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import se.anosh.spctag.dao.Id666;
-import se.anosh.spctag.dao.SpcFileImplementation;
+import org.junit.*;
+import se.anosh.spctag.dao.*;
 
 /**
  *

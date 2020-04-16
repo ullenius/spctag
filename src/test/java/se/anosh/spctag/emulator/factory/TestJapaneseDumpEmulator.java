@@ -3,28 +3,8 @@ package se.anosh.spctag.emulator.factory;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 // contains constants, package private
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.OTHER_BINARY;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.OTHER_TEXT;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.SNES9XPP_BINARY;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.SNES9XPP_TEXT;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.SNES9X_BINARY;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.SNES9X_TEXT;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.SNESGT_BINARY;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.SNESGT_TEXT;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.SNESHOUT_BINARY;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.SNESHOUT_TEXT;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.UNKNOWN_BINARY;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.UNKNOWN_TEXT;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.ZSNES_BINARY;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.ZSNES_TEXT;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.ZSNES_W_BINARY;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.ZSNES_W_TEXT;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.ZST2SPC_BINARY;
-import static se.anosh.spctag.emulator.factory.JapaneseEmulator.ZST2SPC_TEXT;
-
-import org.junit.Before;
-import org.junit.Test;
-
+import static se.anosh.spctag.emulator.factory.JapaneseEmulator.*;
+import org.junit.*;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 
 /**

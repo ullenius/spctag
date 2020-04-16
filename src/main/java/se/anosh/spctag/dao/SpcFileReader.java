@@ -1,17 +1,12 @@
 package se.anosh.spctag.dao;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.Objects;
 
-import se.anosh.spctag.emulator.factory.Emulator;
-import se.anosh.spctag.emulator.factory.EmulatorFactory;
+import se.anosh.spctag.emulator.factory.*;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
-import se.anosh.spctag.emulator.factory.ModernEmulatorFactory;
 
 public class SpcFileReader {
 	

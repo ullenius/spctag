@@ -3,15 +3,10 @@ package se.anosh.spctag;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import org.junit.*;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import se.anosh.spctag.dao.Id666;
-import se.anosh.spctag.dao.SpcDao;
-import se.anosh.spctag.dao.SpcFileImplementation;
+import se.anosh.spctag.dao.*;
 
 public class TestModelWithData {
 	

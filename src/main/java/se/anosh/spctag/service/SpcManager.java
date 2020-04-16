@@ -1,11 +1,9 @@
 package se.anosh.spctag.service;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Objects;
 
-import se.anosh.spctag.dao.Id666;
-import se.anosh.spctag.dao.SpcDao;
+import se.anosh.spctag.dao.*;
 
 public class SpcManager implements SpcService {
 	

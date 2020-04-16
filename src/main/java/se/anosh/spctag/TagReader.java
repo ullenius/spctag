@@ -1,16 +1,9 @@
 package se.anosh.spctag;
 import java.io.IOException;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 
-import se.anosh.spctag.dao.Id666;
-import se.anosh.spctag.dao.SpcFileImplementation;
-import se.anosh.spctag.service.SpcManager;
-import se.anosh.spctag.service.SpcService;
+import se.anosh.spctag.dao.*;
+import se.anosh.spctag.service.*;
 /**
  *
  * SPC tag 0.1

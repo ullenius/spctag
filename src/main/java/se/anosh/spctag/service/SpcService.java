@@ -1,7 +1,6 @@
 package se.anosh.spctag.service;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 import se.anosh.spctag.dao.Id666;
 

@@ -1,16 +1,10 @@
 package se.anosh.spctag.emulator.factory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static se.anosh.spctag.emulator.factory.LegacyEmulator.SNES9x;
-import static se.anosh.spctag.emulator.factory.LegacyEmulator.UNKNOWN;
-import static se.anosh.spctag.emulator.factory.LegacyEmulator.ZSNES;
-import static se.anosh.spctag.emulator.factory.TestJapaneseDumpEmulator.INVALID_NEGATIVE_NUMBER;
-import static se.anosh.spctag.emulator.factory.TestJapaneseDumpEmulator.INVALID_POSITIVE_NUMBER;
+import static org.junit.Assert.*;
+import static se.anosh.spctag.emulator.factory.LegacyEmulator.*;
+import static se.anosh.spctag.emulator.factory.TestJapaneseDumpEmulator.*;
 
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.*;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 
 /**

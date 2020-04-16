@@ -1,7 +1,6 @@
 package se.anosh.spctag.emulator.factory;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  *

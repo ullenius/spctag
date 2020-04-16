@@ -1,7 +1,6 @@
 package se.anosh.spctag.dao;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 public class SpcFileImplementation implements SpcDao {
 
