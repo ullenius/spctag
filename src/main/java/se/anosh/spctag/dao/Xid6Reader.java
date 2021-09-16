@@ -57,9 +57,10 @@ public class Xid6Reader {
     }
 
     private void mappedVersion() throws IOException {
-        List<Path> files = listFilesUsingFilesList("/");
+        List<Path> files = List.of(Paths.get("/"));
         System.out.println("Size of set: " + files.size());
         List<Byte> unknownMappings = new LinkedList<>();
+        List<String> filesWith20Tag = new LinkedList<>();
 
         final long offset = 0x10200;
 
@@ -67,7 +68,11 @@ public class Xid6Reader {
         for (Path spc : files) {
             System.out.println("Filename: " + spc.getFileName());
 
-            if (Files.size(spc) <= offset) {
+            final long fileSize = Files.size(spc);
+            final long xid6Size = fileSize - offset;
+            final long xid6SizeMinusHeader = xid6Size - 8; // size of header
+
+            if (fileSize <= offset) {
                 throw new IllegalArgumentException("File too small. Does not contain xid6");
             }
 
@@ -75,7 +80,7 @@ public class Xid6Reader {
             fileChannel.position(offset);
 
             var buffer = fileChannel.map(
-                    FileChannel.MapMode.READ_ONLY, offset, Files.size(spc) - offset
+                    FileChannel.MapMode.READ_ONLY, offset, xid6Size
             );
             buffer.order(ByteOrder.LITTLE_ENDIAN);
             System.out.println("Position: " + buffer.position());
@@ -84,12 +89,17 @@ public class Xid6Reader {
             byte[] magic = new byte[4];
             buffer.get(magic);
             System.out.println(new String(magic, StandardCharsets.UTF_8));
-            int chunkSize = buffer.getInt();
+
+            // workaround if header is broken and actual filesize is less than chunk size in header
+            int tmp = buffer.getInt();
+            final int chunkSize = (tmp > xid6SizeMinusHeader) ? (int) xid6SizeMinusHeader : tmp;
+
+            System.out.println("Filesize minus header = " + xid6SizeMinusHeader);
+
             System.out.println("Chunk size: " + chunkSize);
             System.out.println("Current pos: " + buffer.position());
 
             byte[] subChunkArr = new byte[chunkSize]; // chunkSize exclusive header
-
             buffer.get(subChunkArr); // innehåller alla sub-chunks, med sub-chunk headers
             var subChunks = ByteBuffer.wrap(subChunkArr).order(ByteOrder.LITTLE_ENDIAN); // FIXME felaktigt namn, är hela subchunken
 
@@ -102,8 +112,11 @@ public class Xid6Reader {
                 byte id = subChunks.get();
                 if (!mappningar.containsKey(id)) {
                     unknownMappings.add(id);
+                    if (id == (byte)0x20) {
+                        filesWith20Tag.add(spc + " har 0x20-taggen");
+                    }
                     //throw new IllegalArgumentException("No mapping found for id: 0x" + toHexString(id));
-                    continue;
+                    break;
                 }
                 Id mappatId = mappningar.get(id);
                 Type type = mappatId.type;
@@ -199,6 +212,7 @@ public class Xid6Reader {
             fileChannel.close();
         }
         System.out.println("Unknown mappings: " + unknownMappings);
+        System.out.println("Files with 0x20: " + filesWith20Tag);
     }
 
     private static short toShort(byte buf[]) { // little endian
