@@ -1,20 +1,13 @@
 package se.anosh.spctag.dao;
 
 import se.anosh.spctag.domain.Id666;
+import se.anosh.spctag.domain.Xid6;
 
 import java.io.*;
 
-/**
- * 
- * Defines CRUD-operations on the DAO
- * 
- * @author Anosh D. Ullenius <anosh@anosh.se>
- *
- */
 public interface SpcDao {
 	
-	public Id666 read() throws FileNotFoundException, IOException;
-	public void update(String song); // example
-	public void remove(); // remove all fields
+	public Id666 read() throws IOException;
+	public Xid6 readXid6() throws IOException;
 
 }
