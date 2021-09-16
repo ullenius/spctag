@@ -4,18 +4,7 @@ import java.io.*;
 
 import se.anosh.spctag.domain.Id666;
 
-/**
- * 
- * Service layer
- * 
- * @author Anosh D. Ullenius <anosh@anosh.se>
- *
- */
 public interface SpcService {
 	
-	public Id666 read() throws FileNotFoundException, IOException;
-	public void deleteSpcTags();
-	public void update(String song);
-	
-
+	public Id666 read() throws IOException;
 }

@@ -21,15 +21,4 @@ public class SpcManager implements SpcService {
 		return dao.read();
 	}
 
-	@Override
-	public void deleteSpcTags() {
-		dao.remove();
-	}
-
-	@Override
-	public void update(String song) {
-		dao.update(song);
-		
-	}
-
 }

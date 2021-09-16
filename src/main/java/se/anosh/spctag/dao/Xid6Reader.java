@@ -9,9 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -51,133 +49,151 @@ public class Xid6Reader {
         demo.mappedVersion();
     }
 
-    public Set listFilesUsingFilesList(String dir) throws IOException {
+    public List<Path> listFilesUsingFilesList(String dir) throws IOException {
         try (Stream<Path> stream = Files.list(Paths.get(dir))) {
             return stream
                     .filter(file -> !Files.isDirectory(file))
-                    .map(Path::getFileName)
-                    .map(Path::toString)
-                    .collect(Collectors.toSet());
+                    .filter(file -> file.getFileName().toString().toLowerCase().endsWith(".spc"))
+                    .collect(Collectors.toList());
         }
     }
 
     private void mappedVersion() throws IOException {
-        long offset = 0x10200;
-        Path spc = Paths.get("/tmp/foobar.spc");
-        if (Files.size(spc) <= offset) {
-            throw new IllegalArgumentException("File too small. Does not contain xid6");
-        }
+        List<Path> files = listFilesUsingFilesList("");
+        System.out.println("Size of set: " + files.size());
 
-        var fileChannel = FileChannel.open(spc, StandardOpenOption.READ);
-        fileChannel.position(offset);
+        final long offset = 0x10200;
 
-        var buffer = fileChannel.map(
-                FileChannel.MapMode.READ_ONLY, offset, Files.size(spc) - offset
-        );
-        buffer.order(ByteOrder.LITTLE_ENDIAN);
-        System.out.println("Position: " + buffer.position());
-        System.out.println("Limit: " + buffer.limit());
+        //Path spc = Paths.get("/tmp/foobar.spc");
+        for (Path spc : files) {
+            System.out.println("Filename: " + spc.getFileName());
 
-        byte[] magic = new byte[4];
-        buffer.get(magic);
-        System.out.println(new String(magic, StandardCharsets.UTF_8));
-        int chunkSize = buffer.getInt();
-        System.out.println("Chunk size: " + chunkSize);
-        System.out.println("Current pos: " + buffer.position());
-
-        byte[] subChunkArr = new byte[chunkSize]; // chunkSize exclusive header
-
-        buffer.get(subChunkArr); // innehåller alla sub-chunks, med sub-chunk headers
-        var subChunks = ByteBuffer.wrap(subChunkArr).order(ByteOrder.LITTLE_ENDIAN); // FIXME felaktigt namn, är hela subchunken
-
-        System.out.println("Subchunk contents");
-        while (subChunks.position() < subChunks.limit()) {
-            System.out.println("-----------");
-            System.out.println("Subchunk header");
-            System.out.println("Current pos: " + subChunks.position());
-
-            byte id = subChunks.get();
-            if (!mappningar.containsKey(id)) {
-                throw new IllegalArgumentException("No mapping found for id: 0x" + toHexString(id));
+            if (Files.size(spc) <= offset) {
+                throw new IllegalArgumentException("File too small. Does not contain xid6");
             }
-            Id mappatId = mappningar.get(id);
 
-            boolean dataStoredInHeader = subChunks.get() == 0;
+            var fileChannel = FileChannel.open(spc, StandardOpenOption.READ);
+            fileChannel.position(offset);
 
-            System.out.println("Id: 0x" + toHexString(id));
-            System.out.println("Mappat id: " + mappatId);
-            System.out.println("Data stored in header: " + dataStoredInHeader);
+            var buffer = fileChannel.map(
+                    FileChannel.MapMode.READ_ONLY, offset, Files.size(spc) - offset
+            );
+            buffer.order(ByteOrder.LITTLE_ENDIAN);
+            System.out.println("Position: " + buffer.position());
+            System.out.println("Limit: " + buffer.limit());
 
-            Type type = mappatId.type;
+            byte[] magic = new byte[4];
+            buffer.get(magic);
+            System.out.println(new String(magic, StandardCharsets.UTF_8));
+            int chunkSize = buffer.getInt();
+            System.out.println("Chunk size: " + chunkSize);
+            System.out.println("Current pos: " + buffer.position());
 
-            int size = (dataStoredInHeader)
-                    ? mappatId.type.size()
-                    : subChunks.getShort(); // changes current offset
-            System.out.println("Size: " + size);
+            byte[] subChunkArr = new byte[chunkSize]; // chunkSize exclusive header
 
-            if (dataStoredInHeader) { // max 2 bytes
-                if (size > 2) {
-                    throw new IllegalStateException("Data stored in header. Yet size is larger than 2 bytes");
+            buffer.get(subChunkArr); // innehåller alla sub-chunks, med sub-chunk headers
+            var subChunks = ByteBuffer.wrap(subChunkArr).order(ByteOrder.LITTLE_ENDIAN); // FIXME felaktigt namn, är hela subchunken
+
+            System.out.println("Subchunk contents");
+            while (subChunks.position() < subChunks.limit()) {
+                System.out.println("-----------");
+                System.out.println("Subchunk header");
+                System.out.println("Current pos: " + subChunks.position());
+
+                byte id = subChunks.get();
+                if (!mappningar.containsKey(id)) {
+                    throw new IllegalArgumentException("No mapping found for id: 0x" + toHexString(id));
                 }
-                byte[] data = new byte[2]; // always allocate 2 bytes
-                subChunks.get(data);
+                Id mappatId = mappningar.get(id);
 
-                switch (type) {
-                    case OST:
-                        byte hibyte = data[0];
-                        byte lobyte = data[1];
-                        boolean hasHiByte = hibyte != (byte) 0;
-                        System.out.println("Has hi byte: " + hasHiByte);
+                boolean dataStoredInHeader = subChunks.get() == 0;
 
-                        System.out.println("Upper byte (char): " + ((hasHiByte)
-                                ? Character.getNumericValue(Byte.toUnsignedInt(hibyte))
-                                : "0"));
-                        System.out.println("Lower byte (number): " + lobyte);
-                        if (lobyte < 0 || lobyte > 99) {
-                            throw new IllegalStateException("track no is invalid: " + lobyte);
-                        }
-                        break;
-                    case YEAR:
-                        System.out.println("Year: " + toShort(data));
-                        break;
-                    default:
-                        if (type.size == 1) {
-                            System.out.println("Data (1 byte): " + data[0]);
-                        }
-                }
-            } else {
-                switch (type) {
-                    case TEXT:
-                        int bufsize = size;
-                        while (bufsize % 4 != 0) {
-                            bufsize++;
-                            System.out.println("Increasing bufsize: " + bufsize);
-                        }
+                System.out.println("Id: 0x" + toHexString(id));
+                System.out.println("Mappat id: " + mappatId);
+                System.out.println("Data stored in header: " + dataStoredInHeader);
 
-                        byte buf[] = new byte[bufsize];
-                        subChunks.get(buf);
-                        String text = new String(buf, StandardCharsets.UTF_8).trim();
-                        System.out.println("Text: " + text);
-                        break;
-                    case INTRO:
-                        if (type.size == Integer.BYTES) {
-                            int num = subChunks.getInt();
-                            System.out.println("Number: " + num);
-                            System.out.println("In seconds: " + num / 640000.0);
-                        }
-                        break;
-                    case NUMBER:
-                        if (type.size == Integer.BYTES) {
-                            int num = subChunks.getInt();
-                            System.out.println("Number: " + num);
-                        }
-                        break;
-                    default:
-                        throw new IllegalStateException("no mapping for type: " + type);
+                Type type = mappatId.type;
+
+                int size = (dataStoredInHeader)
+                        ? mappatId.type.size()
+                        : subChunks.getShort(); // changes current offset
+                System.out.println("Size: " + size);
+
+                if (dataStoredInHeader) { // max 2 bytes
+                    if (size > 2) {
+                        throw new IllegalStateException("Data stored in header. Yet size is larger than 2 bytes");
+                    }
+                    byte[] data = new byte[2]; // always allocate 2 bytes
+                    subChunks.get(data);
+
+                    switch (type) {
+                        case OST:
+                            byte hibyte = data[0];
+                            byte lobyte = data[1];
+                            boolean hasHiByte = hibyte != (byte) 0;
+                            System.out.println("Has hi byte: " + hasHiByte);
+
+                            System.out.println("Upper byte (char): " + ((hasHiByte)
+                                    ? Character.getNumericValue(Byte.toUnsignedInt(hibyte))
+                                    : "0"));
+                            System.out.println("Lower byte (number): " + lobyte);
+                            if (lobyte < 0 || lobyte > 99) {
+                                throw new IllegalStateException("track no is invalid: " + lobyte);
+                            }
+                            break;
+                        case YEAR:
+                            System.out.println("Year: " + toShort(data));
+                            break;
+                        default:
+                            if (type.size == 1) {
+                                System.out.println("Data (1 byte): " + data[0]);
+                            }
+                    }
+                } else {
+                    switch (type) {
+                        case TEXT:
+                            // peek at last byte, workaround for broken tags
+                            if ((size-1) % 4 == 0) {
+                                final int peekPos = size - 1;
+                                final int oldPos = subChunks.position();
+                                byte peek = subChunks.get(oldPos + peekPos);
+                                System.out.println("Peek byte: " + peek);
+                                if (mappningar.containsKey(peek)) {
+                                    size--;
+                                }
+                            }
+
+                            int bufsize = size;
+                            while (bufsize % 4 != 0) {
+                                bufsize++;
+                                System.out.println("Increasing bufsize: " + bufsize);
+                            }
+
+                            byte buf[] = new byte[bufsize];
+                            subChunks.get(buf);
+                            String text = new String(buf, StandardCharsets.UTF_8).trim();
+                            System.out.println("Text: " + text);
+                            break;
+                        case INTRO:
+                            if (type.size == Integer.BYTES) {
+                                int num = subChunks.getInt();
+                                System.out.println("Number: " + num);
+                                System.out.println("In seconds: " + num / 640000.0);
+                            }
+                            break;
+                        case NUMBER:
+                            if (type.size == Integer.BYTES) {
+                                int num = subChunks.getInt();
+                                System.out.println("Number: " + num);
+                            }
+                            break;
+                        default:
+                            throw new IllegalStateException("no mapping for type: " + type);
+                    }
                 }
             }
+            fileChannel.close();
         }
-        fileChannel.close();
     }
 
     private static short toShort(byte buf[]) { // little endian
