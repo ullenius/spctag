@@ -38,7 +38,8 @@ public class Xid6Reader {
         mappningar.put((byte) 0x32, new Id("End length", Type.NUMBER));
         mappningar.put((byte) 0x33, new Id("Fade length", Type.NUMBER));
         //mappningar.put((byte) 0x34, new Id("Mutes voices", Type.Muted)); // print bits
-        mappningar.put((byte) 0x35, new Id("Fade length", Type.DATA));
+        mappningar.put((byte) 0x35, new Id("Number of times to loop", Type.DATA));
+        mappningar.put((byte) 0x36, new Id("Mixing (preamp) level", Type.DATA));
     }
 
 
@@ -61,6 +62,7 @@ public class Xid6Reader {
     private void mappedVersion() throws IOException {
         List<Path> files = listFilesUsingFilesList("");
         System.out.println("Size of set: " + files.size());
+        List<Byte> unknownMappings = new LinkedList<>();
 
         final long offset = 0x10200;
 
@@ -102,7 +104,9 @@ public class Xid6Reader {
 
                 byte id = subChunks.get();
                 if (!mappningar.containsKey(id)) {
-                    throw new IllegalArgumentException("No mapping found for id: 0x" + toHexString(id));
+                    unknownMappings.add(id);
+                    //throw new IllegalArgumentException("No mapping found for id: 0x" + toHexString(id));
+                    break;
                 }
                 Id mappatId = mappningar.get(id);
 
@@ -194,6 +198,7 @@ public class Xid6Reader {
             }
             fileChannel.close();
         }
+        System.out.println("Unknown mappings: " + unknownMappings);
     }
 
     private static short toShort(byte buf[]) { // little endian
