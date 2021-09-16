@@ -13,7 +13,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,7 +24,7 @@ public class Xid6Reader {
     private static final double INTRO_LENGTH_DIVISOR = 64_0000.0;
 
     static {
-        mappningar.put((byte) 0x1, new Id("Song name", Type.TEXT)); // FIXME byt så att den skriver ut rätt rubriker
+        mappningar.put((byte) 0x1, new Id("Song name", Type.TEXT));
         mappningar.put((byte) 0x2, new Id("Game name", Type.TEXT));
         mappningar.put((byte) 0x3, new Id("Artist's name", Type.TEXT));
         mappningar.put((byte) 0x4, new Id("Dumper's name", Type.TEXT));
@@ -34,7 +33,7 @@ public class Xid6Reader {
         mappningar.put((byte) 0x7, new Id("Comments", Type.TEXT));
         mappningar.put((byte) 0x10, new Id("Official Soundtrack Title", Type.TEXT));
         mappningar.put((byte) 0x11, new Id("OST disc", Type.DATA));
-        mappningar.put((byte) 0x12, new Id("OST Track", Type.OST));
+        mappningar.put((byte) 0x12, new Id("OST track", Type.OST));
         mappningar.put((byte) 0x13, new Id("Publisher's name", Type.TEXT));
         mappningar.put((byte) 0x14, new Id("Copyright year", Type.YEAR));
         // song info stuff
@@ -42,7 +41,7 @@ public class Xid6Reader {
         mappningar.put((byte) 0x31, new Id("Loop length", Type.NUMBER));
         mappningar.put((byte) 0x32, new Id("End length", Type.NUMBER));
         mappningar.put((byte) 0x33, new Id("Fade length", Type.NUMBER));
-        mappningar.put((byte) 0x34, new Id("Muted voices (1 bit for each muted voice)", Type.MUTED)); // print bits
+        mappningar.put((byte) 0x34, new Id("Muted voices (1 bit for each muted voice)", Type.MUTED));
         mappningar.put((byte) 0x35, new Id("Number of times to loop", Type.DATA));
         mappningar.put((byte) 0x36, new Id("Mixing (preamp) level", Type.NUMBER));
     }
@@ -62,14 +61,20 @@ public class Xid6Reader {
         boolean hasHiByte = hibyte != (byte) 0;
         Logger.debug("Has hi byte: {}", hasHiByte);
 
-        System.out.println("Upper byte (char): " + ((hasHiByte) // FIXME check valid ascii
-                ? Character.getNumericValue(Byte.toUnsignedInt(hibyte))
+        System.out.println("Upper byte (char): " + ((hasHiByte && isAscii(hibyte))
+                ? (char) hibyte
                 : "0"));
         System.out.println("Lower byte (number): " + lobyte);
         if (lobyte < 0 || lobyte > 99) {
             throw new IllegalStateException("track no is invalid: " + lobyte);
         }
     };
+
+    private static boolean isAscii(int ch) {
+        return ch >= (int)'a' && ch <= (int)'z'
+                || ch >= (int) 'A' && ch <= (int) 'Z';
+    }
+
     final BiConsumer<Id, byte[]> oneByteData = (id, data) -> System.out.println(id.name + ": " + data[0]);
 
     private final Map<Type, BiConsumer<Id, byte[]>> mappedBehaviourDataStoredInHeader = Map.of(
@@ -94,7 +99,7 @@ public class Xid6Reader {
     }
 
     private void mappedVersion() throws IOException {
-   
+  
         Logger.debug("Size of set: {}", files.size());
         List<Byte> unknownMappings = new LinkedList<>();
         List<String> unknownMappingfiles = new LinkedList<>();
@@ -127,7 +132,7 @@ public class Xid6Reader {
             byte[] magic = new byte[4];
             buffer.get(magic);
             final String magicNumber = "xid6";
-            Logger.debug("Magic number: {}", new String(magic, StandardCharsets.UTF_8));
+            Logger.debug("Magic number: {}", new String(magic, StandardCharsets.UTF_8)); // FIXME
             if (!magicNumber.contentEquals(new String(magic, StandardCharsets.UTF_8))) {
                 throw new IllegalArgumentException("invalid magic number");
             }
