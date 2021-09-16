@@ -1,4 +1,4 @@
-package se.anosh.spctag.dao;
+package se.anosh.spctag.domain;
 
 import java.util.Comparator;
 

@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.Objects;
 
 import se.anosh.spctag.dao.*;
+import se.anosh.spctag.domain.Id666;
 
 public class SpcManager implements SpcService {
 	

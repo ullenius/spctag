@@ -1,5 +1,7 @@
 package se.anosh.spctag.dao;
 
+import se.anosh.spctag.domain.Id666;
+
 import java.io.*;
 
 /**

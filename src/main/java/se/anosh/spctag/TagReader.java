@@ -3,6 +3,7 @@ import java.io.IOException;
 import org.apache.commons.cli.*;
 
 import se.anosh.spctag.dao.*;
+import se.anosh.spctag.domain.Id666;
 import se.anosh.spctag.service.*;
 /**
  *

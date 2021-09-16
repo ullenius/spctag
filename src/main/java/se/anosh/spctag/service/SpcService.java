@@ -2,7 +2,7 @@ package se.anosh.spctag.service;
 
 import java.io.*;
 
-import se.anosh.spctag.dao.Id666;
+import se.anosh.spctag.domain.Id666;
 
 /**
  * 

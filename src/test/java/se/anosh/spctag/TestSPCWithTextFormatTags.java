@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import org.junit.*;
 import se.anosh.spctag.dao.*;
+import se.anosh.spctag.domain.Id666;
 
 /**
  *

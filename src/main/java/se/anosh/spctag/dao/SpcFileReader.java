@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.Objects;
 
+import se.anosh.spctag.domain.Id666;
 import se.anosh.spctag.emulator.factory.*;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 
