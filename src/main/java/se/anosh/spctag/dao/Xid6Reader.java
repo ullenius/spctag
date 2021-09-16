@@ -37,7 +37,7 @@ public class Xid6Reader {
         mappningar.put((byte) 0x31, new Id("Loop length", Type.NUMBER));
         mappningar.put((byte) 0x32, new Id("End length", Type.NUMBER));
         mappningar.put((byte) 0x33, new Id("Fade length", Type.NUMBER));
-        //mappningar.put((byte) 0x34, new Id("Mutes voices", Type.Muted)); // print bits
+        mappningar.put((byte) 0x34, new Id("Mutes voices", Type.MUTED)); // print bits
         mappningar.put((byte) 0x35, new Id("Number of times to loop", Type.DATA));
         mappningar.put((byte) 0x36, new Id("Mixing (preamp) level", Type.DATA));
     }
@@ -57,7 +57,7 @@ public class Xid6Reader {
     }
 
     private void mappedVersion() throws IOException {
-        List<Path> files = List.of(Paths.get("/"));
+   
         System.out.println("Size of set: " + files.size());
         List<Byte> unknownMappings = new LinkedList<>();
         List<String> filesWith20Tag = new LinkedList<>();
@@ -113,7 +113,7 @@ public class Xid6Reader {
                 if (!mappningar.containsKey(id)) {
                     unknownMappings.add(id);
                     if (id == (byte)0x20) {
-                        filesWith20Tag.add(spc + " har 0x20-taggen");
+                        filesWith20Tag.add(spc.getFileName() + " har 0x20-taggen");
                     }
                     //throw new IllegalArgumentException("No mapping found for id: 0x" + toHexString(id));
                     break;
@@ -160,6 +160,14 @@ public class Xid6Reader {
                             break;
                         case YEAR:
                             System.out.println("Year: " + toShort(data));
+                            break;
+                        case MUTED:
+                            System.out.print("Muted channel (bit set for each muted channel): ");
+                            final byte muted = data[0];
+                            for (int i = 0; i < 8; i++) {
+                                System.out.print(((1 << i) & muted) != 0 ? 0 : 1);
+                            }
+                            System.out.println();
                             break;
                         default:
                             if (type.size == 1) {
@@ -226,6 +234,7 @@ public class Xid6Reader {
         DATA(1),
         NUMBER(4),
         INTRO(4),
+        MUTED(1),
         YEAR(2);
 
         private final int size;
