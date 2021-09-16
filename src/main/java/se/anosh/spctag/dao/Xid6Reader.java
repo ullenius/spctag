@@ -11,6 +11,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.Integer.toHexString;
 
@@ -44,11 +47,21 @@ public class Xid6Reader {
     private static final String READ_ONLY = "r";
 
     public static void main(String[] args) throws IOException {
-        Demo demo = new Demo();
-        mappedVersion();
+        Xid6Reader demo = new Xid6Reader();
+        demo.mappedVersion();
     }
 
-    private static void mappedVersion() throws IOException {
+    public Set listFilesUsingFilesList(String dir) throws IOException {
+        try (Stream<Path> stream = Files.list(Paths.get(dir))) {
+            return stream
+                    .filter(file -> !Files.isDirectory(file))
+                    .map(Path::getFileName)
+                    .map(Path::toString)
+                    .collect(Collectors.toSet());
+        }
+    }
+
+    private void mappedVersion() throws IOException {
         long offset = 0x10200;
         Path spc = Paths.get("/tmp/foobar.spc");
         if (Files.size(spc) <= offset) {
