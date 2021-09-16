@@ -1,5 +1,7 @@
 package se.anosh.spctag.dao;
 
+import org.tinylog.Logger;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -19,6 +21,7 @@ import static java.lang.Integer.toHexString;
 public class Xid6Reader {
 
     private static final Map<Byte, Id> mappningar = new HashMap<>();
+    private static final double INTRO_LENGTH_DIVISOR = 64_0000.0;
 
     static {
         mappningar.put((byte) 0x1, new Id("Song name", Type.TEXT));
@@ -56,7 +59,7 @@ public class Xid6Reader {
         byte hibyte = data[0];
         byte lobyte = data[1];
         boolean hasHiByte = hibyte != (byte) 0;
-        System.out.println("Has hi byte: " + hasHiByte);
+        Logger.debug("Has hi byte: {}", hasHiByte);
 
         System.out.println("Upper byte (char): " + ((hasHiByte)
                 ? Character.getNumericValue(Byte.toUnsignedInt(hibyte))
@@ -90,16 +93,16 @@ public class Xid6Reader {
     }
 
     private void mappedVersion() throws IOException {
-        List<Path> files = listFilesUsingFilesList("");
-        System.out.println("Size of set: " + files.size());
+        List<Path> files = listFilesUsingFilesList("/");
+        Logger.debug("Size of set: {}", files.size());
         List<Byte> unknownMappings = new LinkedList<>();
         List<String> unknownMappingfiles = new LinkedList<>();
-        List<String> filesWith20Tag = new LinkedList<>();
 
         final long offset = 0x10200;
 
-        //Path spc = Paths.get("/tmp/foobar.spc");
         for (Path spc : files) {
+
+            System.out.println("-----------");
             System.out.println("Filename: " + spc.getFileName());
 
             final long fileSize = Files.size(spc);
@@ -117,8 +120,8 @@ public class Xid6Reader {
                     FileChannel.MapMode.READ_ONLY, offset, xid6Size
             );
             buffer.order(ByteOrder.LITTLE_ENDIAN);
-            System.out.println("Position: " + buffer.position());
-            System.out.println("Limit: " + buffer.limit());
+            Logger.debug("Position: {]", buffer.position());
+            Logger.debug("Limit: {]", buffer.limit());
 
             byte[] magic = new byte[4];
             buffer.get(magic);
@@ -128,26 +131,23 @@ public class Xid6Reader {
             int tmp = buffer.getInt();
             final int chunkSize = (tmp > xid6SizeMinusHeader) ? (int) xid6SizeMinusHeader : tmp;
 
-            System.out.println("Chunk size: " + chunkSize);
-            System.out.println("Current pos: " + buffer.position());
+            Logger.debug("Chunk size: {}", chunkSize);
+            Logger.debug("Current pos: {}", buffer.position());
 
             byte[] subChunkArr = new byte[chunkSize]; // chunkSize exclusive header
             buffer.get(subChunkArr); // contains all sub-chunks, including sub-chunk headers
             var subChunks = ByteBuffer.wrap(subChunkArr).order(ByteOrder.LITTLE_ENDIAN); // FIXME felaktigt namn, är hela subchunken
 
-            System.out.println("Subchunk contents");
+            Logger.debug("Subchunk contents");
+            Logger.debug("-----------");
             while (subChunks.position() < subChunks.limit()) {
-                System.out.println("-----------");
-                System.out.println("Subchunk header");
-                System.out.println("Current pos: " + subChunks.position());
+                Logger.debug("Subchunk header");
+                Logger.debug("Current pos: {}", subChunks.position());
 
                 byte id = subChunks.get();
                 if (!mappningar.containsKey(id)) {
-                    unknownMappings.add(id);
-                    unknownMappingfiles.add(spc.getFileName().toString());
-                    if (id == (byte)0x20) {
-                        filesWith20Tag.add(spc.getFileName() + " har 0x20-taggen");
-                    }
+                    unknownMappings.add(id); // debug
+                    unknownMappingfiles.add(spc.getFileName().toString()); // debug
                     break;
                 }
                 Id mappatId = mappningar.get(id);
@@ -155,14 +155,14 @@ public class Xid6Reader {
 
                 boolean dataStoredInHeader = subChunks.get() == 0 || type == Type.DATA; // workaround for broken type byte, always read from header
 
-                System.out.println("Id: 0x" + toHexString(id));
-                System.out.println("Mappat id: " + mappatId);
-                System.out.println("Data stored in header: " + dataStoredInHeader);
+                Logger.debug("Id: 0x{}", toHexString(id));
+                Logger.debug("Mapped id: {}", mappatId);
+                Logger.debug("Data stored in header: {}", dataStoredInHeader);
 
                 int size = (dataStoredInHeader)
                         ? mappatId.type.size()
                         : subChunks.getShort(); // changes current offset
-                System.out.println("Size: " + size);
+                Logger.debug("Size: {}", size);
 
                 if (dataStoredInHeader) { // max 2 bytes
                     if (size > 2) {
@@ -182,18 +182,16 @@ public class Xid6Reader {
                                 final int peekPos = size - 1;
                                 final int oldPos = subChunks.position();
                                 byte peek = subChunks.get(oldPos + peekPos);
-                                System.out.println("Peek byte: " + peek);
+                                Logger.debug("Peek byte: {}", peek);
                                 if (mappningar.containsKey(peek)) {
                                     size--;
                                 }
                             }
-
                             int bufsize = size;
                             while (bufsize % 4 != 0) {
                                 bufsize++;
-                                System.out.println("Increasing bufsize: " + bufsize);
+                                Logger.debug("Increasing bufsize: {}", bufsize);
                             }
-
                             byte buf[] = new byte[bufsize];
                             subChunks.get(buf);
                             String text = new String(buf, StandardCharsets.UTF_8).trim();
@@ -202,8 +200,8 @@ public class Xid6Reader {
                         case INTRO:
                             if (type.size == Integer.BYTES) {
                                 int num = subChunks.getInt();
-                                System.out.println("Number: " + num);
-                                System.out.println("In seconds: " + num / 640000.0);
+                                Logger.debug("Number: " + num);
+                                System.out.println("Intro length (seconds): " + num / INTRO_LENGTH_DIVISOR);
                             }
                             break;
                         case NUMBER:
@@ -219,10 +217,9 @@ public class Xid6Reader {
             }
             fileChannel.close();
         }
-        System.out.println("Unknown mappings: " + unknownMappings);
-        System.out.println("Files with 0x20: " + filesWith20Tag);
+        Logger.debug("Unknown mappings: {}", unknownMappings);
         Collections.sort(unknownMappingfiles);
-        System.out.println("Files with unkown mappings " + unknownMappingfiles);
+        Logger.debug("Files with unkown mappings {}", unknownMappingfiles);
     }
 
     private static short toShort(byte buf[]) { // little endian
