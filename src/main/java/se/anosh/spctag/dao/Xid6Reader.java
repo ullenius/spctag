@@ -42,9 +42,6 @@ public class Xid6Reader {
         mappningar.put((byte) 0x36, new Id("Mixing (preamp) level", Type.DATA));
     }
 
-
-    private static final String READ_ONLY = "r";
-
     public static void main(String[] args) throws IOException {
         Xid6Reader demo = new Xid6Reader();
         demo.mappedVersion();
@@ -60,7 +57,7 @@ public class Xid6Reader {
     }
 
     private void mappedVersion() throws IOException {
-        List<Path> files = listFilesUsingFilesList("");
+        List<Path> files = listFilesUsingFilesList("/");
         System.out.println("Size of set: " + files.size());
         List<Byte> unknownMappings = new LinkedList<>();
 
@@ -106,17 +103,20 @@ public class Xid6Reader {
                 if (!mappningar.containsKey(id)) {
                     unknownMappings.add(id);
                     //throw new IllegalArgumentException("No mapping found for id: 0x" + toHexString(id));
-                    break;
+                    continue;
                 }
                 Id mappatId = mappningar.get(id);
+                Type type = mappatId.type;
 
-                boolean dataStoredInHeader = subChunks.get() == 0;
+                boolean dataStoredInHeader = subChunks.get() == 0 || type == Type.DATA; // workaround for broken type byte, always read from header
+               // if (!dataStoredInHeader && type == Type.DATA) {
+              //      dataStoredInHeader = true;
+                    //throw new IllegalArgumentException("1 byte data not stored in header: " + spc);
+             //   }
 
                 System.out.println("Id: 0x" + toHexString(id));
                 System.out.println("Mappat id: " + mappatId);
                 System.out.println("Data stored in header: " + dataStoredInHeader);
-
-                Type type = mappatId.type;
 
                 int size = (dataStoredInHeader)
                         ? mappatId.type.size()
