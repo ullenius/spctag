@@ -141,4 +141,4 @@ ID  Type    Size  Description
 33h Integer 4     Fade length
 34h Data    1     Muted voices (a bit is set for each voice that's muted)
 35h Data    1     Number of times to loop
-36h Data    1     Mixing (preamp) level
+36h Integer 4     Mixing (preamp) level

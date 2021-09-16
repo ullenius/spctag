@@ -39,7 +39,7 @@ public class Xid6Reader {
         mappningar.put((byte) 0x33, new Id("Fade length", Type.NUMBER));
         mappningar.put((byte) 0x34, new Id("Mutes voices", Type.MUTED)); // print bits
         mappningar.put((byte) 0x35, new Id("Number of times to loop", Type.DATA));
-        mappningar.put((byte) 0x36, new Id("Mixing (preamp) level", Type.DATA));
+        mappningar.put((byte) 0x36, new Id("Mixing (preamp) level", Type.NUMBER));
     }
 
     public static void main(String[] args) throws IOException {
@@ -57,9 +57,10 @@ public class Xid6Reader {
     }
 
     private void mappedVersion() throws IOException {
-   
+
         System.out.println("Size of set: " + files.size());
         List<Byte> unknownMappings = new LinkedList<>();
+        List<String> unknownMappingfiles = new LinkedList<>();
         List<String> filesWith20Tag = new LinkedList<>();
 
         final long offset = 0x10200;
@@ -94,13 +95,11 @@ public class Xid6Reader {
             int tmp = buffer.getInt();
             final int chunkSize = (tmp > xid6SizeMinusHeader) ? (int) xid6SizeMinusHeader : tmp;
 
-            System.out.println("Filesize minus header = " + xid6SizeMinusHeader);
-
             System.out.println("Chunk size: " + chunkSize);
             System.out.println("Current pos: " + buffer.position());
 
             byte[] subChunkArr = new byte[chunkSize]; // chunkSize exclusive header
-            buffer.get(subChunkArr); // innehåller alla sub-chunks, med sub-chunk headers
+            buffer.get(subChunkArr); // contains all sub-chunks, including sub-chunk headers
             var subChunks = ByteBuffer.wrap(subChunkArr).order(ByteOrder.LITTLE_ENDIAN); // FIXME felaktigt namn, är hela subchunken
 
             System.out.println("Subchunk contents");
@@ -112,20 +111,17 @@ public class Xid6Reader {
                 byte id = subChunks.get();
                 if (!mappningar.containsKey(id)) {
                     unknownMappings.add(id);
+                    unknownMappingfiles.add(spc.getFileName().toString());
                     if (id == (byte)0x20) {
                         filesWith20Tag.add(spc.getFileName() + " har 0x20-taggen");
                     }
                     //throw new IllegalArgumentException("No mapping found for id: 0x" + toHexString(id));
-                    break;
+                    break; // continue?
                 }
                 Id mappatId = mappningar.get(id);
                 Type type = mappatId.type;
 
                 boolean dataStoredInHeader = subChunks.get() == 0 || type == Type.DATA; // workaround for broken type byte, always read from header
-               // if (!dataStoredInHeader && type == Type.DATA) {
-              //      dataStoredInHeader = true;
-                    //throw new IllegalArgumentException("1 byte data not stored in header: " + spc);
-             //   }
 
                 System.out.println("Id: 0x" + toHexString(id));
                 System.out.println("Mappat id: " + mappatId);
@@ -221,6 +217,8 @@ public class Xid6Reader {
         }
         System.out.println("Unknown mappings: " + unknownMappings);
         System.out.println("Files with 0x20: " + filesWith20Tag);
+        Collections.sort(unknownMappingfiles);
+        System.out.println("Files with unkown mappings " + unknownMappingfiles);
     }
 
     private static short toShort(byte buf[]) { // little endian
