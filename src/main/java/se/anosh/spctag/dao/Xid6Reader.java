@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -115,8 +116,7 @@ public class Xid6Reader {
                     if (id == (byte)0x20) {
                         filesWith20Tag.add(spc.getFileName() + " har 0x20-taggen");
                     }
-                    //throw new IllegalArgumentException("No mapping found for id: 0x" + toHexString(id));
-                    break; // continue?
+                    break;
                 }
                 Id mappatId = mappningar.get(id);
                 Type type = mappatId.type;
@@ -141,34 +141,17 @@ public class Xid6Reader {
 
                     switch (type) {
                         case OST:
-                            byte hibyte = data[0];
-                            byte lobyte = data[1];
-                            boolean hasHiByte = hibyte != (byte) 0;
-                            System.out.println("Has hi byte: " + hasHiByte);
-
-                            System.out.println("Upper byte (char): " + ((hasHiByte)
-                                    ? Character.getNumericValue(Byte.toUnsignedInt(hibyte))
-                                    : "0"));
-                            System.out.println("Lower byte (number): " + lobyte);
-                            if (lobyte < 0 || lobyte > 99) {
-                                throw new IllegalStateException("track no is invalid: " + lobyte);
-                            }
+                            ost.accept(data);
                             break;
                         case YEAR:
-                            System.out.println("Year: " + toShort(data));
+                            year.accept(data);
                             break;
                         case MUTED:
-                            System.out.print("Muted channel (bit set for each muted channel): ");
-                            final byte muted = data[0];
-                            for (int i = 0; i < 8; i++) {
-                                System.out.print(((1 << i) & muted) != 0 ? 0 : 1);
-                            }
-                            System.out.println();
+                            muted.accept(data);
                             break;
-                        default:
-                            if (type.size == 1) {
-                                System.out.println("Data (1 byte): " + data[0]);
-                            }
+                        case DATA:
+                            oneByteData.accept(data);
+                            break;
                     }
                 } else {
                     switch (type) {
@@ -220,6 +203,32 @@ public class Xid6Reader {
         Collections.sort(unknownMappingfiles);
         System.out.println("Files with unkown mappings " + unknownMappingfiles);
     }
+
+    final Consumer<byte[]> year = (data) -> System.out.println("Year: " + toShort(data));
+    final Consumer<byte[]> muted = (data) -> {
+        System.out.print("Muted channel (bit set for each muted channel): ");
+        final byte muted = data[0];
+        for (int i = 0; i < 8; i++) {
+            System.out.print(((1 << i) & muted) != 0 ? 0 : 1);
+        }
+        System.out.println();
+    };
+    final Consumer<byte[]> ost = (data) -> {
+        byte hibyte = data[0];
+        byte lobyte = data[1];
+        boolean hasHiByte = hibyte != (byte) 0;
+        System.out.println("Has hi byte: " + hasHiByte);
+
+        System.out.println("Upper byte (char): " + ((hasHiByte)
+                ? Character.getNumericValue(Byte.toUnsignedInt(hibyte))
+                : "0"));
+        System.out.println("Lower byte (number): " + lobyte);
+        if (lobyte < 0 || lobyte > 99) {
+            throw new IllegalStateException("track no is invalid: " + lobyte);
+        }
+    };
+    final Consumer<byte[]> oneByteData = (data) -> System.out.println("Data (1 byte): " + data[0]);
+
 
     private static short toShort(byte buf[]) { // little endian
         return (short) (
