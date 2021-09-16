@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,7 +25,7 @@ public class Xid6Reader {
     private static final double INTRO_LENGTH_DIVISOR = 64_0000.0;
 
     static {
-        mappningar.put((byte) 0x1, new Id("Song name", Type.TEXT));
+        mappningar.put((byte) 0x1, new Id("Song name", Type.TEXT)); // FIXME byt så att den skriver ut rätt rubriker
         mappningar.put((byte) 0x2, new Id("Game name", Type.TEXT));
         mappningar.put((byte) 0x3, new Id("Artist's name", Type.TEXT));
         mappningar.put((byte) 0x4, new Id("Dumper's name", Type.TEXT));
@@ -41,27 +42,27 @@ public class Xid6Reader {
         mappningar.put((byte) 0x31, new Id("Loop length", Type.NUMBER));
         mappningar.put((byte) 0x32, new Id("End length", Type.NUMBER));
         mappningar.put((byte) 0x33, new Id("Fade length", Type.NUMBER));
-        mappningar.put((byte) 0x34, new Id("Mutes voices", Type.MUTED)); // print bits
+        mappningar.put((byte) 0x34, new Id("Muted voices (1 bit for each muted voice)", Type.MUTED)); // print bits
         mappningar.put((byte) 0x35, new Id("Number of times to loop", Type.DATA));
         mappningar.put((byte) 0x36, new Id("Mixing (preamp) level", Type.NUMBER));
     }
 
-    final Consumer<byte[]> year = (data) -> System.out.println("Year: " + toShort(data));
-    final Consumer<byte[]> muted = (data) -> {
-        System.out.print("Muted channel (bit set for each muted channel): ");
+    final BiConsumer<Id, byte[]> year = (id, data) -> System.out.println("Year: " + toShort(data));
+    final BiConsumer<Id, byte[]> muted = (id, data) -> {
+        System.out.print(id.name + ": ");
         final byte muted = data[0];
         for (int i = 0; i < 8; i++) {
             System.out.print(((1 << i) & muted) != 0 ? 0 : 1);
         }
         System.out.println();
     };
-    final Consumer<byte[]> ost = (data) -> {
+    final BiConsumer<Id, byte[]> ost = (id, data) -> {
         byte hibyte = data[0];
         byte lobyte = data[1];
         boolean hasHiByte = hibyte != (byte) 0;
         Logger.debug("Has hi byte: {}", hasHiByte);
 
-        System.out.println("Upper byte (char): " + ((hasHiByte)
+        System.out.println("Upper byte (char): " + ((hasHiByte) // FIXME check valid ascii
                 ? Character.getNumericValue(Byte.toUnsignedInt(hibyte))
                 : "0"));
         System.out.println("Lower byte (number): " + lobyte);
@@ -69,9 +70,9 @@ public class Xid6Reader {
             throw new IllegalStateException("track no is invalid: " + lobyte);
         }
     };
-    final Consumer<byte[]> oneByteData = (data) -> System.out.println("Data (1 byte): " + data[0]);
+    final BiConsumer<Id, byte[]> oneByteData = (id, data) -> System.out.println(id.name + ": " + data[0]);
 
-    private final Map<Type, Consumer<byte[]>> mappedBehaviourDataStoredInHeader = Map.of(
+    private final Map<Type, BiConsumer<Id, byte[]>> mappedBehaviourDataStoredInHeader = Map.of(
             Type.OST, ost,
             Type.YEAR, year,
             Type.MUTED, muted,
@@ -93,7 +94,7 @@ public class Xid6Reader {
     }
 
     private void mappedVersion() throws IOException {
-        List<Path> files = listFilesUsingFilesList("/");
+   
         Logger.debug("Size of set: {}", files.size());
         List<Byte> unknownMappings = new LinkedList<>();
         List<String> unknownMappingfiles = new LinkedList<>();
@@ -125,7 +126,11 @@ public class Xid6Reader {
 
             byte[] magic = new byte[4];
             buffer.get(magic);
-            System.out.println(new String(magic, StandardCharsets.UTF_8));
+            final String magicNumber = "xid6";
+            Logger.debug("Magic number: {}", new String(magic, StandardCharsets.UTF_8));
+            if (!magicNumber.contentEquals(new String(magic, StandardCharsets.UTF_8))) {
+                throw new IllegalArgumentException("invalid magic number");
+            }
 
             // workaround if header is broken and actual filesize is less than chunk size in header
             int tmp = buffer.getInt();
@@ -172,7 +177,7 @@ public class Xid6Reader {
                     subChunks.get(data);
 
                     var func = mappedBehaviourDataStoredInHeader.get(type);
-                    func.accept(data); // print info
+                    func.accept(mappatId, data); // print info
 
                 } else {
                     switch (type) {
@@ -195,7 +200,7 @@ public class Xid6Reader {
                             byte buf[] = new byte[bufsize];
                             subChunks.get(buf);
                             String text = new String(buf, StandardCharsets.UTF_8).trim();
-                            System.out.println("Text: " + text);
+                            System.out.println(mappatId.name + ": " + text);
                             break;
                         case INTRO:
                             if (type.size == Integer.BYTES) {
@@ -207,7 +212,7 @@ public class Xid6Reader {
                         case NUMBER:
                             if (type.size == Integer.BYTES) {
                                 int num = subChunks.getInt();
-                                System.out.println("Number: " + num);
+                                System.out.println(mappatId.name + " : " +num);
                             }
                             break;
                         default:
@@ -222,7 +227,7 @@ public class Xid6Reader {
         Logger.debug("Files with unkown mappings {}", unknownMappingfiles);
     }
 
-    private static short toShort(byte buf[]) { // little endian
+    private short toShort(byte buf[]) { // little endian
         return (short) (
                 (((buf[1] & 0xFF) << 8) | (buf[0]) & 0xFF));
     }
