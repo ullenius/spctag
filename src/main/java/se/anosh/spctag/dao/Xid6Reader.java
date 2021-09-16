@@ -43,6 +43,38 @@ public class Xid6Reader {
         mappningar.put((byte) 0x36, new Id("Mixing (preamp) level", Type.NUMBER));
     }
 
+    final Consumer<byte[]> year = (data) -> System.out.println("Year: " + toShort(data));
+    final Consumer<byte[]> muted = (data) -> {
+        System.out.print("Muted channel (bit set for each muted channel): ");
+        final byte muted = data[0];
+        for (int i = 0; i < 8; i++) {
+            System.out.print(((1 << i) & muted) != 0 ? 0 : 1);
+        }
+        System.out.println();
+    };
+    final Consumer<byte[]> ost = (data) -> {
+        byte hibyte = data[0];
+        byte lobyte = data[1];
+        boolean hasHiByte = hibyte != (byte) 0;
+        System.out.println("Has hi byte: " + hasHiByte);
+
+        System.out.println("Upper byte (char): " + ((hasHiByte)
+                ? Character.getNumericValue(Byte.toUnsignedInt(hibyte))
+                : "0"));
+        System.out.println("Lower byte (number): " + lobyte);
+        if (lobyte < 0 || lobyte > 99) {
+            throw new IllegalStateException("track no is invalid: " + lobyte);
+        }
+    };
+    final Consumer<byte[]> oneByteData = (data) -> System.out.println("Data (1 byte): " + data[0]);
+
+    private final Map<Type, Consumer<byte[]>> mappedBehaviourDataStoredInHeader = Map.of(
+            Type.OST, ost,
+            Type.YEAR, year,
+            Type.MUTED, muted,
+            Type.DATA, oneByteData
+    );
+
     public static void main(String[] args) throws IOException {
         Xid6Reader demo = new Xid6Reader();
         demo.mappedVersion();
@@ -58,7 +90,7 @@ public class Xid6Reader {
     }
 
     private void mappedVersion() throws IOException {
-
+        List<Path> files = listFilesUsingFilesList("");
         System.out.println("Size of set: " + files.size());
         List<Byte> unknownMappings = new LinkedList<>();
         List<String> unknownMappingfiles = new LinkedList<>();
@@ -139,20 +171,9 @@ public class Xid6Reader {
                     byte[] data = new byte[2]; // always allocate 2 bytes
                     subChunks.get(data);
 
-                    switch (type) {
-                        case OST:
-                            ost.accept(data);
-                            break;
-                        case YEAR:
-                            year.accept(data);
-                            break;
-                        case MUTED:
-                            muted.accept(data);
-                            break;
-                        case DATA:
-                            oneByteData.accept(data);
-                            break;
-                    }
+                    var func = mappedBehaviourDataStoredInHeader.get(type);
+                    func.accept(data); // print info
+
                 } else {
                     switch (type) {
                         case TEXT:
@@ -203,32 +224,6 @@ public class Xid6Reader {
         Collections.sort(unknownMappingfiles);
         System.out.println("Files with unkown mappings " + unknownMappingfiles);
     }
-
-    final Consumer<byte[]> year = (data) -> System.out.println("Year: " + toShort(data));
-    final Consumer<byte[]> muted = (data) -> {
-        System.out.print("Muted channel (bit set for each muted channel): ");
-        final byte muted = data[0];
-        for (int i = 0; i < 8; i++) {
-            System.out.print(((1 << i) & muted) != 0 ? 0 : 1);
-        }
-        System.out.println();
-    };
-    final Consumer<byte[]> ost = (data) -> {
-        byte hibyte = data[0];
-        byte lobyte = data[1];
-        boolean hasHiByte = hibyte != (byte) 0;
-        System.out.println("Has hi byte: " + hasHiByte);
-
-        System.out.println("Upper byte (char): " + ((hasHiByte)
-                ? Character.getNumericValue(Byte.toUnsignedInt(hibyte))
-                : "0"));
-        System.out.println("Lower byte (number): " + lobyte);
-        if (lobyte < 0 || lobyte > 99) {
-            throw new IllegalStateException("track no is invalid: " + lobyte);
-        }
-    };
-    final Consumer<byte[]> oneByteData = (data) -> System.out.println("Data (1 byte): " + data[0]);
-
 
     private static short toShort(byte buf[]) { // little endian
         return (short) (
