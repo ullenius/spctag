@@ -15,8 +15,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.lang.Integer.toHexString;
 
@@ -284,7 +282,6 @@ public class Xid6Reader {
             this.chunkSize = size;
         }
     }
-
 
     private static final class Id {
         Id(Xid6Tag tag, Type type) {

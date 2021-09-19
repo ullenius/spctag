@@ -28,8 +28,6 @@ public class Xid6 {
     private Byte mixingLevel; // fixme
     private Integer introLength;
 
-    private static final SimpleDateFormat dumpedDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
     public String getOstTitle() {
         return ostTitle;
     }

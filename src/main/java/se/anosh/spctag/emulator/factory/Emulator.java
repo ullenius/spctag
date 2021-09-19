@@ -1,12 +1,7 @@
 package se.anosh.spctag.emulator.factory;
 
 import java.util.Objects;
-/**
- *
- * Immutable class
- * 
- * @author Anosh D. Ullenius <anosh@anosh.se>
- */
+
 public abstract class Emulator {
     
     protected Emulator(Name name, Integer code) {
@@ -24,10 +19,6 @@ public abstract class Emulator {
 
     public Name getName() {
         return name;
-    }
-
-    public int getCode() {
-        return code;
     }
 
     @Override
@@ -68,9 +59,6 @@ public abstract class Emulator {
 			return false;
 		return true;
 	}
-    
-    
-    
-    
+
     
 }

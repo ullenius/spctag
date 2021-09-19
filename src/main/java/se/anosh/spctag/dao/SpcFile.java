@@ -5,14 +5,13 @@ import se.anosh.spctag.domain.Xid6;
 
 import java.io.*;
 
-public class SpcFileImplementation implements SpcDao {
+public class SpcFile implements SpcDao {
 
 	private final SpcFileReader spcFile;
-	private final Xid6Reader xid6Reader;
+	private Xid6Reader xid6Reader;
 
-	public SpcFileImplementation(String filename) throws IOException {
+	public SpcFile(String filename) throws IOException {
 		spcFile = new SpcFileReader(filename);
-		xid6Reader = new Xid6Reader(filename);
 	}
 
 	@Override
@@ -22,6 +21,7 @@ public class SpcFileImplementation implements SpcDao {
 
 	@Override
 	public Xid6 readXid6() throws IOException {
+		xid6Reader = new Xid6Reader(spcFile.getFilename());
 		return xid6Reader.getXid6();
 	}
 

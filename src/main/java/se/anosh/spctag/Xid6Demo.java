@@ -1,7 +1,7 @@
 package se.anosh.spctag;
 
 import org.tinylog.Logger;
-import se.anosh.spctag.dao.SpcFileImplementation;
+import se.anosh.spctag.dao.SpcFile;
 import se.anosh.spctag.domain.Xid6;
 import se.anosh.spctag.domain.Xid6Tag;
 
@@ -19,15 +19,16 @@ public class Xid6Demo {
 
         Xid6Demo demo = new Xid6Demo();
         demo.mappedVersion();
-
     }
 
     private void mappedVersion() throws IOException {
-        var files = listFilesUsingFilesList(");
+        Path spcDir = Paths.get("/tmp/spcdir");
+
+        var files = listFilesUsingFilesList(spcDir);
         Logger.debug("Size of set: {}", files.size());
         for (Path spc : files) {
 
-            var reader = new SpcFileImplementation(spc.toString());
+            var reader = new SpcFile(spc.toString());
             Xid6 xid6 = reader.readXid6();
 
             System.out.println("-----------");
@@ -62,8 +63,8 @@ public class Xid6Demo {
         }
     }
 
-    public List<Path> listFilesUsingFilesList(String dir) throws IOException {
-        try (Stream<Path> stream = Files.list(Paths.get(dir))) {
+    public List<Path> listFilesUsingFilesList(Path dir) throws IOException {
+        try (Stream<Path> stream = Files.list(dir)) {
             return stream
                     .filter(file -> !Files.isDirectory(file))
                     .filter(file -> file.getFileName().toString().toLowerCase().endsWith(".spc"))

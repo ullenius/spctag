@@ -4,42 +4,32 @@ import org.apache.commons.cli.*;
 
 import se.anosh.spctag.dao.*;
 import se.anosh.spctag.domain.Id666;
-import se.anosh.spctag.service.*;
 /**
  *
- * SPC tag 0.1
+ * SPC tag 0.2
  * 
  * Java command-line tool for reading the ID666 tag from a SNES SPC file.
  * 
  * SPC-files are sound files containing ripped chiptune music 
- * from Super Nintendo and Super Famicom games. 
- * 
- * They are named after the Sony SPC-700 sound chip created by Ken Kutaragi 
- * (who later became the father of the Playstation).
- * 
- * 
- * @author Anosh D. Ullenius <anosh@anosh.se>
- * code written in February 2019
+ * from Super Nintendo and Super Famicom games.
+ *
  */
 public final class TagReader {
     
     private static final String VERSION ="spctag version 0.1";
     private static final String ABOUT = "code by A. Ullenius 2019";
     private static final String LICENCE = "Licence: Gnu General Public License - version 3.0 only";
-    private static final String TRIBUTE = "spctag is dedicated to my favourite OC remixer: Chris 'Avien' Powell (1986-2004). RIP";
+    private static final String TRIBUTE = "spctag is dedicated to my favourite OC remixer: Avien (1986-2004). RIP";
     
     public static void main(String[] args) {
-        
         Options options = new Options();
         options.addOption("v", "verbose", false, "verbose output");
         options.addOption("V", "version", false, "print version");
         
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
-
         try {
             CommandLine cmd = parser.parse(options, args);
-            
             if (cmd.hasOption("V"))
                 printVersionAndCreditsAndExit();
             
@@ -52,11 +42,9 @@ public final class TagReader {
             formatter.printHelp("spctag <filename>", options);
             System.exit(0);
         }
-        
     }
     
     private static void printVersionAndCreditsAndExit() {
-        
         System.out.println(VERSION);
         System.out.println(ABOUT);
         System.out.println(LICENCE);
@@ -65,14 +53,12 @@ public final class TagReader {
     }
     
     public void go(final CommandLine cmd)  {
-        
         String[] fileNames = cmd.getArgs();
         
         for (String file : fileNames) {
             try {
-            	
-            	SpcService service = new SpcManager(new SpcFileImplementation(file));
-            	Id666 myFile = service.read();
+            	SpcDao spcReader = new SpcFile(file);
+            	Id666 myFile = spcReader.read();
             	
             	if (cmd.hasOption("v")) { // verbose output
             		System.out.println("File header: " + myFile.getHeader());
@@ -92,7 +78,6 @@ public final class TagReader {
                 
             } catch (IOException ex) {
                 System.out.println("I/O error");
-                //ex.printStackTrace();
                 System.exit(0);
             }
         } // end of for-each-loop
