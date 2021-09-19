@@ -17,26 +17,34 @@ usage: spctag <filename>
 
 For example:
 ```sh
-$ java -jar spctag "/warez/spc/dkc2/17 Stickerbrush Symphony.spc"
+$ java -jar spctag -v "/warez/spc/dkc2/17 Stickerbrush Symphony.spc"
 
+File header: SNES-SPC700 Sound File Data v0.30
+Tag format: Text
 Artist: Dave Wise
 Song title: Stickerbrush Symphony
 Game title: Donkey Kong Country 2
 Name of dumper: Datschge
 Comments: Bramble Maze
 Date SPC was dumped:
-Emulator used to dump SPC: unknown
+Emulator used to dump SPC: Unknown
+-----------
+XID6 tags:
+-----------
+Publisher's name: Rare, Nintendo
+Copyright year: 1995
+Introduction length: 25.3
+Fade length: 640000
 ```
 
 ## Features
 
-* :heavy_check_mark: 100% Java (Java 8) :coffee:
+* :heavy_check_mark: 100% Java (Java 11) :coffee:
 * :heavy_check_mark: Supports UTF-8 encoding in the tags!
 * :heavy_check_mark: Command line. Multi-platform.
 * :heavy_check_mark: Batch processing using wildcards is possible! For example: `java -jar spctag *.spc`
-* :x: No xid6 support as of yet. Perhaps in the future
+* :heavy_check_mark:: xid6 support (extended tags).
 * :x: Edit tags (as of yet)
-
 
 ## :floppy_disk: Building
 This is a Maven-project.
@@ -111,8 +119,9 @@ Emulator emulatorUsed = myFacftory.orderEmulator(0x31, Type.JAPANESE) // Type.LE
 ```
 
 ## Changelog
-* 0.1 - first release! February 2019
+* 0.3 - add xid6 support (extended tags). Update to Java 11. September 2021
 * 0.2 - utf8 support. November 2019
+* 0.1 - first release! February 2019
 
 ## :scroll::Licence
 GPL 3 only. See COPYING

@@ -2,11 +2,10 @@ package se.anosh.spctag;
 import java.io.IOException;
 import org.apache.commons.cli.*;
 
+import org.tinylog.Logger;
 import se.anosh.spctag.dao.*;
 import se.anosh.spctag.domain.Id666;
 import se.anosh.spctag.domain.Xid6;
-
-import javax.transaction.xa.Xid;
 
 /**
  *
@@ -81,13 +80,17 @@ public final class TagReader {
                 System.out.println("Emulator used to dump SPC: " + myFile.getEmulatorUsedToCreateDump().getName());
 
                 if (cmd.hasOption("v")) {
-                    Xid6 xid6 = spcReader.readXid6();
-                    Xid6Util util = new Xid6Util();
-                    util.printTags(xid6);
+                    try {
+                        Xid6 xid6 = spcReader.readXid6();
+                        Xid6Util util = new Xid6Util();
+                        util.printTags(xid6);
+                    } catch (IOException xid6ex) {
+                        Logger.warn("Unable to read xid6 tags");
+                    }
                 }
                 
             } catch (IOException ex) {
-                System.out.println("I/O error");
+                Logger.error("I/O error");
                 System.exit(0);
             }
         } // end of for-each-loop
