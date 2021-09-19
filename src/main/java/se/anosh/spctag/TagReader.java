@@ -90,7 +90,7 @@ public final class TagReader {
                 }
                 
             } catch (IOException ex) {
-                Logger.error("I/O error");
+                Logger.error("I/O error", ex);
                 System.exit(0);
             }
         } // end of for-each-loop

@@ -47,7 +47,6 @@ public class Xid6Util {
             System.out.println("-----------");
             System.out.println("XID6 tags:");
             System.out.println("-----------");
-            //parseXid6(spc);
             printLine(Xid6Tag.SONG, xid6.getSong());
             printLine(Xid6Tag.GAME, xid6.getGame());
             printLine(Xid6Tag.ARTIST, xid6.getArtist());
@@ -66,7 +65,6 @@ public class Xid6Util {
             printLine(Xid6Tag.FADE, xid6.getFadeLength() != null ? Integer.toString(xid6.getFadeLength()) : null);
             if (xid6.hasMutedChannels()) {
                 System.out.println("Muted channels: " + xid6.getMutedChannels());
-                throw new IllegalArgumentException("found them!");
             }
             printLine(Xid6Tag.LOOP_TIMES, xid6.getLoops() != null ? Integer.toString(xid6.getLoops()) : null);
             printLine(Xid6Tag.MIXING, xid6.getMixingLevel() != null ? Integer.toString(xid6.getMixingLevel()) : null);
