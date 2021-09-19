@@ -22,6 +22,7 @@ public class Xid6Reader {
 
     private static final Map<Byte, Id> mappningar = new HashMap<>();
     private static final double INTRO_LENGTH_DIVISOR = 64_0000.0;
+    private static final long XID6_OFFSET = 0x10200L;
 
     static {
         mappningar.put((byte) 0x1, new Id("Song name", Type.TEXT));
@@ -99,12 +100,10 @@ public class Xid6Reader {
     }
 
     private void mappedVersion() throws IOException {
-  
+
         Logger.debug("Size of set: {}", files.size());
         List<Byte> unknownMappings = new LinkedList<>();
         List<String> unknownMappingfiles = new LinkedList<>();
-
-        final long offset = 0x10200;
 
         for (Path spc : files) {
 
@@ -112,18 +111,18 @@ public class Xid6Reader {
             System.out.println("Filename: " + spc.getFileName());
 
             final long fileSize = Files.size(spc);
-            final long xid6Size = fileSize - offset;
+            final long xid6Size = fileSize - XID6_OFFSET;
             final long xid6SizeMinusHeader = xid6Size - 8; // size of header
 
-            if (fileSize <= offset) {
+            if (fileSize <= XID6_OFFSET) {
                 throw new IllegalArgumentException("File too small. Does not contain xid6");
             }
 
             var fileChannel = FileChannel.open(spc, StandardOpenOption.READ);
-            fileChannel.position(offset);
+            fileChannel.position(XID6_OFFSET);
 
             var buffer = fileChannel.map(
-                    FileChannel.MapMode.READ_ONLY, offset, xid6Size
+                    FileChannel.MapMode.READ_ONLY, XID6_OFFSET, xid6Size
             );
             buffer.order(ByteOrder.LITTLE_ENDIAN);
             Logger.debug("Position: {]", buffer.position());
@@ -208,14 +207,14 @@ public class Xid6Reader {
                             System.out.println(mappatId.name + ": " + text);
                             break;
                         case INTRO:
-                            if (type.size == Integer.BYTES) {
+                            if (type.size() == Integer.BYTES) {
                                 int num = subChunks.getInt();
                                 Logger.debug("Number: " + num);
                                 System.out.println("Intro length (seconds): " + num / INTRO_LENGTH_DIVISOR);
                             }
                             break;
                         case NUMBER:
-                            if (type.size == Integer.BYTES) {
+                            if (type.size() == Integer.BYTES) {
                                 int num = subChunks.getInt();
                                 System.out.println(mappatId.name + " : " +num);
                             }
@@ -235,26 +234,6 @@ public class Xid6Reader {
     private short toShort(byte buf[]) { // little endian
         return (short) (
                 (((buf[1] & 0xFF) << 8) | (buf[0]) & 0xFF));
-    }
-
-    private enum Type {
-        TEXT(256),
-        OST(2),
-        DATA(1),
-        NUMBER(4),
-        INTRO(4),
-        MUTED(1),
-        YEAR(2);
-
-        private final int size;
-
-        Type(int size) {
-            this.size = size;
-        }
-
-        int size() {
-            return size;
-        }
     }
 
     private static final class Id {
