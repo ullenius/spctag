@@ -51,9 +51,9 @@ public class Xid6Demo {
             printLine(Xid6Tag.LOOP_LENGTH, xid6.getLoopLength() != null ? Integer.toString(xid6.getLoopLength()) : null);
             printLine(Xid6Tag.END, xid6.getEndLength() != null ? Integer.toString(xid6.getEndLength()) : null);
             printLine(Xid6Tag.FADE, xid6.getFadeLength() != null ? Integer.toString(xid6.getFadeLength()) : null);
-            if (xid6.hasMutedVoices()) {
-                System.out.print("Muted voices: ");
-                xid6.printMutedVoices();
+            if (xid6.hasMutedChannels()) {
+                System.out.println("Muted channels: " + xid6.getMutedChannels());
+                throw new IllegalArgumentException("found them!");
             }
             printLine(Xid6Tag.LOOP_TIMES, xid6.getLoops() != null ? Integer.toString(xid6.getLoops()) : null);
             printLine(Xid6Tag.MIXING, xid6.getMixingLevel() != null ? Integer.toString(xid6.getMixingLevel()) : null);

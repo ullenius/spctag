@@ -48,7 +48,8 @@ public class Xid6Reader {
     private Xid6 xid6 = null;
 
     final BiConsumer<Id, byte[]> year = (id, data) -> xid6.setYear(toShort(data));
-    final BiConsumer<Id, byte[]> muted = (id, data) -> xid6.setMutedVoices(data[0]);
+    final BiConsumer<Id, byte[]> muted = (id, data) -> xid6.setMutedChannels( (short) (data[0] & 0xFF) );
+
     final BiConsumer<Id, byte[]> ost = (id, data) -> {
         byte hibyte = data[0];
         byte lobyte = data[1];
@@ -97,10 +98,6 @@ public class Xid6Reader {
     Xid6Reader(String filename) throws IOException {
         this.filename = Paths.get(filename);
         parseXid6(this.filename);
-    }
-
-    Xid6Reader() {
-        this.filename = null;
     }
 
     private void parseXid6(Path spc) throws IOException {
@@ -223,7 +220,7 @@ public class Xid6Reader {
                 xid6.setFadeLength(num);
                 break;
             case MUTED:
-                xid6.setMutedVoices( (byte) num);
+                xid6.setMutedChannels((short) num);
                 break;
             case MIXING:
                 xid6.setMixingLevel( (byte) num);

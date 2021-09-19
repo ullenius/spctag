@@ -27,7 +27,7 @@ public class Xid6 {
     private Integer loopLength;
     private Integer endLength;
     private Integer fadeLength;
-    private byte mutedVoices; // fixme unsigned
+    private short mutedChannels; // unsigned byte
     private Byte loops;
     private Byte mixingLevel; // fixme
     private Integer introLength;
@@ -156,22 +156,23 @@ public class Xid6 {
         this.fadeLength = fadeLength;
     }
 
-    public boolean hasMutedVoices() {
-        return mutedVoices != 0;
+    public boolean hasMutedChannels() {
+        return mutedChannels != 0;
     }
 
-    public void printMutedVoices() {
-        if (mutedVoices == 0) {
-            return; // do nothing
+    public String getMutedChannels() {
+        if (mutedChannels == 0) {
+            return null;
         }
-        for (int i = 0; i < 8; i++) {
-            System.out.print(((1 << i) & mutedVoices) != 0 ? 0 : 1);
+        StringBuilder sb = new StringBuilder();
+        for (int i = Byte.SIZE - 1; i >= 0; i--) {
+            sb.append( (((1 << i) & mutedChannels) > 0) ? 1 : 0);
         }
-        System.out.println();
+        return sb.toString();
     }
 
-    public void setMutedVoices(byte mutedVoices) {
-        this.mutedVoices = mutedVoices;
+    public void setMutedChannels(short mutedVoices) {
+        this.mutedChannels = mutedVoices;
     }
 
     public Byte getLoops() {

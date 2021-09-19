@@ -31,7 +31,7 @@ public class Xid6Test {
 
     @Test
     public void dateDumpedNotSet() {
-        assertEquals(0, uut.getDate());
+        assertNull(uut.getDate());
     }
 
     @Test
@@ -80,12 +80,28 @@ public class Xid6Test {
         assertEquals(expected, uut2.getDate());
     }
 
+    @Test
+    public void mutedChannelHasEightBits() {
+        short mutedChannels = 0xFF;
+        final Xid6 uut2 = new Xid6();
+        uut2.setMutedChannels(mutedChannels);
+        final String expected = "11111111";
+        assertEquals(expected, uut2.getMutedChannels());
+    }
 
+    @Test
+    public void parseMutedChannelsFromFile() throws IOException {
+        Path spc2 = Paths.get("spc/bar.spc");
+        SpcDao dao2 = new SpcFile(spc2.toString());
+        Xid6 uut2 = dao2.readXid6();
+        final String bitpattern = "01000011";
+        assertEquals(bitpattern, uut2.getMutedChannels());
+    }
 
     // ------------ NULL CHECKS -------------------------------------
     @Test
     public void mutedVoices() {
-        assertFalse(uut.hasMutedVoices());
+        assertFalse(uut.hasMutedChannels());
     }
 
     @Test
