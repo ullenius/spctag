@@ -1,8 +1,7 @@
 #
 # Project specific excludes
 #
-
-tomcat
+src/main/java/se/anosh/spctag/Foobar.java
 
 #
 # Default excludes
@@ -46,8 +45,7 @@ nbactions.xml
 nb-configuration.xml
 bin/
 
-
-# OS
+# MacOS
 .DS_Store
 
 # Misc
@@ -59,5 +57,3 @@ pom.xml.tag
 *.odt
 .~lock.*
 /nbproject/
-
-src/main/java/se/anosh/spctag/Foobar.java
