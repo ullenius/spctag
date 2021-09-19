@@ -36,9 +36,7 @@ public class Xid6Test {
 
     @Test
     public void emulatorUsedNotSet() {
-        EmulatorFactory factory = new ModernEmulatorFactory();
-        Emulator emulator = factory.orderEmulator(uut.getEmulator());
-        assertEquals(Name.Snes9x, emulator.getName());
+        assertEquals(Name.Snes9x, uut.getEmulator().getName());
     }
 
     @Test

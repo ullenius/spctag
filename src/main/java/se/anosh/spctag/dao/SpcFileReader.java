@@ -55,7 +55,7 @@ final class SpcFileReader {
 		return this.id666;
 	}
 
-	public SpcFileReader(String filename) throws FileNotFoundException, IOException {
+	public SpcFileReader(String filename) throws IOException {
 		file = Paths.get(filename);
 		raf = new RandomAccessFile(file.toString(), READ_ONLY);
 		id666 = new Id666();

@@ -4,6 +4,10 @@ import org.apache.commons.cli.*;
 
 import se.anosh.spctag.dao.*;
 import se.anosh.spctag.domain.Id666;
+import se.anosh.spctag.domain.Xid6;
+
+import javax.transaction.xa.Xid;
+
 /**
  *
  * SPC tag 0.2
@@ -25,7 +29,7 @@ public final class TagReader {
         Options options = new Options();
         options.addOption("v", "verbose", false, "verbose output");
         options.addOption("V", "version", false, "print version");
-        
+
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         try {
@@ -59,7 +63,7 @@ public final class TagReader {
             try {
             	SpcDao spcReader = new SpcFile(file);
             	Id666 myFile = spcReader.read();
-            	
+
             	if (cmd.hasOption("v")) { // verbose output
             		System.out.println("File header: " + myFile.getHeader());
 
@@ -75,6 +79,12 @@ public final class TagReader {
                 
                 System.out.println("Date SPC was dumped:" + myFile.getDateDumpWasCreated());
                 System.out.println("Emulator used to dump SPC: " + myFile.getEmulatorUsedToCreateDump().getName());
+
+                if (cmd.hasOption("v")) {
+                    Xid6 xid6 = spcReader.readXid6();
+                    Xid6Util util = new Xid6Util();
+                    util.printTags(xid6);
+                }
                 
             } catch (IOException ex) {
                 System.out.println("I/O error");

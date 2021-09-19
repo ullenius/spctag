@@ -18,7 +18,7 @@ import java.util.function.BiConsumer;
 
 import static java.lang.Integer.toHexString;
 
-public class Xid6Reader {
+final class Xid6Reader {
 
     private static final Map<Byte, Id> mappningar = new HashMap<>();
     private static final long XID6_OFFSET = 0x10200L;

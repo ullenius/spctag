@@ -1,10 +1,6 @@
 package se.anosh.spctag.emulator.factory;
 
-/**
- *
- * @author Anosh D. Ullenius <anosh@anosh.se>
- */
-public enum Name { 
+public enum Name {
     Unknown,
     Other,
     ZSNES,

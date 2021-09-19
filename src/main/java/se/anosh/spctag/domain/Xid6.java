@@ -1,11 +1,15 @@
 package se.anosh.spctag.domain;
 
 import org.tinylog.Logger;
+import se.anosh.spctag.emulator.factory.Emulator;
+import se.anosh.spctag.emulator.factory.EmulatorFactory;
+import se.anosh.spctag.emulator.factory.ModernEmulatorFactory;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class Xid6 {
 
@@ -17,7 +21,7 @@ public class Xid6 {
     private String dumper;
     private LocalDate dumped;
     private Year year;
-    private Byte emulator; // fixme unsigned
+    private Emulator emulator;
     private String comments;
     private String ostTitle;
     private Byte ostDisc;
@@ -29,7 +33,7 @@ public class Xid6 {
     private Integer fadeLength;
     private short mutedChannels; // unsigned byte
     private Byte loops;
-    private Byte mixingLevel; // fixme
+    private Byte mixingLevel;
     private Integer introLength;
 
     private static final DateTimeFormatter dumpedDateFromatter = DateTimeFormatter.BASIC_ISO_DATE;
@@ -95,13 +99,13 @@ public class Xid6 {
         this.dumper = dumper;
     }
 
-
-    public Byte getEmulator() {
+    public Emulator getEmulator() {
         return emulator;
     }
 
     public void setEmulator(byte emulator) {
-        this.emulator = emulator;
+        EmulatorFactory factory = new ModernEmulatorFactory();
+        this.emulator = factory.orderEmulator(emulator);
     }
 
     public String getComments() {
@@ -220,4 +224,25 @@ public class Xid6 {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Xid6 xid6 = (Xid6) o;
+        return mutedChannels == xid6.mutedChannels && Objects.equals(song, xid6.song) && Objects.equals(game, xid6.game)
+                && Objects.equals(artist, xid6.artist) && Objects.equals(dumper, xid6.dumper)
+                && Objects.equals(dumped, xid6.dumped) && Objects.equals(year, xid6.year)
+                && Objects.equals(emulator, xid6.emulator) && Objects.equals(comments, xid6.comments)
+                && Objects.equals(ostTitle, xid6.ostTitle) && Objects.equals(ostDisc, xid6.ostDisc)
+                && Objects.equals(ostTrack, xid6.ostTrack) && Objects.equals(publisher, xid6.publisher)
+                && Objects.equals(loopLength, xid6.loopLength) && Objects.equals(endLength, xid6.endLength)
+                && Objects.equals(fadeLength, xid6.fadeLength) && Objects.equals(loops, xid6.loops)
+                && Objects.equals(mixingLevel, xid6.mixingLevel) && Objects.equals(introLength, xid6.introLength);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(song, game, artist, dumper, dumped, year, emulator, comments, ostTitle, ostDisc, ostTrack,
+                publisher, loopLength, endLength, fadeLength, mutedChannels, loops, mixingLevel, introLength);
+    }
 }
