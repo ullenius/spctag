@@ -20,12 +20,12 @@ public class Xid6 {
     private final char[] ostTrack = new char[2];
     private String publisher;
 
-    private int loopLength;
-    private int endLength;
-    private int fadeLength;
+    private Integer loopLength;
+    private Integer endLength;
+    private Integer fadeLength;
     private byte mutedVoices; // fixme unsigned
-    private byte loop; // fixme
-    private byte mixingLevel; // fixme
+    private Byte loops;
+    private Byte mixingLevel; // fixme
     private Integer introLength;
 
     private static final SimpleDateFormat dumpedDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -42,75 +42,6 @@ public class Xid6 {
         return dumped;
     }
 
-    public void setData(Xid6Tag tag, byte b) {
-        switch (tag) {
-            case EMULATOR:
-                setEmulator(b);
-                break;
-            case OST_DISC:
-                setOstDisc(b);
-                break;
-            case LOOP:
-                setLoop(b);
-                break;
-            default:
-                throw new IllegalArgumentException("no mapping found for: " + tag);
-        }
-    }
-
-    public void setNumber(Xid6Tag tag, int num) {
-        switch (tag) {
-            case DATE:
-                setDate(num);
-                break;
-            case LOOP:
-                setLoop((byte) num);
-                break;
-            case END:
-                setEndLength(num);
-                break;
-            case FADE:
-                setFadeLength(num);
-                break;
-            case MUTED:
-                setMutedVoices( (byte) num);
-                break;
-            case MIXING:
-                setMixingLevel( (byte) num);
-                break;
-            default:
-                throw new IllegalArgumentException("no mapping found for: " + tag);
-        }
-    }
-
-    public void setText(Xid6Tag tag, String text) {
-        switch (tag) {
-            case SONG:
-                setSong(text);
-                break;
-            case GAME:
-                setGame(text);
-                break;
-            case ARTIST:
-                setArtist(text);
-                break;
-            case DUMPER:
-                setDumper(text);
-                break;
-            case COMMENTS:
-                setComments(text);
-                break;
-            case OST_TITLE:
-                setOstTitle(text);
-                break;
-            case PUBLISHER:
-                setPublisher(text);
-                break;
-            default:
-                throw new IllegalArgumentException("no mapping found for: " + tag);
-        }
-    }
-
     public void setOstTitle(String title) {
         ostTitle = title;
     }
@@ -120,7 +51,7 @@ public class Xid6 {
     }
 
     public Double getIntrolength() {
-        return (introLength != null) ? introLength / INTRO_LENGTH_DIVISOR : null;
+        return introLength != null ? introLength / INTRO_LENGTH_DIVISOR : null;
     }
 
     public String getSong() {
@@ -192,7 +123,7 @@ public class Xid6 {
         this.publisher = publisher;
     }
 
-    public int getLoopLength() {
+    public Integer getLoopLength() {
         return loopLength;
     }
 
@@ -200,7 +131,7 @@ public class Xid6 {
         this.loopLength = loopLength;
     }
 
-    public int getEndLength() {
+    public Integer getEndLength() {
         return endLength;
     }
 
@@ -208,7 +139,7 @@ public class Xid6 {
         this.endLength = endLength;
     }
 
-    public int getFadeLength() {
+    public Integer getFadeLength() {
         return fadeLength;
     }
 
@@ -221,6 +152,9 @@ public class Xid6 {
     }
 
     public void printMutedVoices() {
+        if (mutedVoices == 0) {
+            return; // do nothing
+        }
         for (int i = 0; i < 8; i++) {
             System.out.print(((1 << i) & mutedVoices) != 0 ? 0 : 1);
         }
@@ -231,15 +165,15 @@ public class Xid6 {
         this.mutedVoices = mutedVoices;
     }
 
-    public byte getLoop() {
-        return loop;
+    public Byte getLoops() {
+        return loops;
     }
 
-    public void setLoop(byte loop) {
-        this.loop = loop;
+    public void setLoop(byte loops) {
+        this.loops = loops;
     }
 
-    public byte getMixingLevel() {
+    public Byte getMixingLevel() {
         return mixingLevel;
     }
 

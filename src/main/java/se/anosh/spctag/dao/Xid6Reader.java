@@ -4,7 +4,6 @@ import org.tinylog.Logger;
 import se.anosh.spctag.domain.Xid6;
 import se.anosh.spctag.domain.Xid6Tag;
 
-import javax.transaction.xa.Xid;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -40,23 +39,18 @@ public class Xid6Reader {
         mappningar.put((byte) 0x14, new Id(Xid6Tag.COPYRIGHT_YEAR, Type.YEAR));
         // song info stuff
         mappningar.put((byte) 0x30, new Id(Xid6Tag.INTRO, Type.INTRO));
-        mappningar.put((byte) 0x31, new Id(Xid6Tag.LOOP, Type.NUMBER));
+        mappningar.put((byte) 0x31, new Id(Xid6Tag.LOOP_LENGTH, Type.NUMBER));
         mappningar.put((byte) 0x32, new Id(Xid6Tag.END, Type.NUMBER));
         mappningar.put((byte) 0x33, new Id(Xid6Tag.FADE, Type.NUMBER));
         mappningar.put((byte) 0x34, new Id(Xid6Tag.MUTED, Type.MUTED));
-        mappningar.put((byte) 0x35, new Id(Xid6Tag.LOOP, Type.DATA));
+        mappningar.put((byte) 0x35, new Id(Xid6Tag.LOOP_TIMES, Type.DATA));
         mappningar.put((byte) 0x36, new Id(Xid6Tag.MIXING, Type.NUMBER));
     }
 
     private Xid6 xid6 = null;
 
-    final BiConsumer<Id, byte[]> year = (id, data) -> {
-        xid6.setYear(toShort(data));
-        //System.out.println("Year: " + xid6.getYear());
-    };
-    final BiConsumer<Id, byte[]> muted = (id, data) -> {
-        xid6.setMutedVoices(data[0]);
-    };
+    final BiConsumer<Id, byte[]> year = (id, data) -> xid6.setYear(toShort(data));
+    final BiConsumer<Id, byte[]> muted = (id, data) -> xid6.setMutedVoices(data[0]);
     final BiConsumer<Id, byte[]> ost = (id, data) -> {
         byte hibyte = data[0];
         byte lobyte = data[1];
@@ -77,10 +71,23 @@ public class Xid6Reader {
                 || ch >= (int) 'A' && ch <= (int) 'Z';
     }
 
-    final BiConsumer<Id, byte[]> oneByteData = (id, data) -> {
-        xid6.setData(id.tag, data[0]);
-        //System.out.println(id.tag + ": " + data[0]);
-    };
+    final BiConsumer<Id, byte[]> oneByteData = (id, data) -> setData(id.tag, data[0]);
+
+    private void setData(Xid6Tag tag, byte b) {
+        switch (tag) {
+            case EMULATOR:
+                xid6.setEmulator(b);
+                break;
+            case OST_DISC:
+                xid6.setOstDisc(b);
+                break;
+            case LOOP_TIMES:
+                xid6.setLoop(b);
+                break;
+            default:
+                throw new IllegalArgumentException("no mapping found for: " + tag);
+        }
+    }
 
     private final Map<Type, BiConsumer<Id, byte[]>> mappedBehaviourDataStoredInHeader = Map.of(
             Type.OST, ost,
@@ -124,12 +131,12 @@ public class Xid6Reader {
             printLine(Xid6Tag.PUBLISHER, xid6.getPublisher());
             printLine(Xid6Tag.COPYRIGHT_YEAR, xid6.getYear() != null ? xid6.getYear().toString() : null);
             printLine(Xid6Tag.INTRO, xid6.getIntrolength() != null ? Double.toString(xid6.getIntrolength()) : null);
-         //   printLine(Xid6Tag.LOOP, xid6.getLoopLength()
-            // end length
-            // fade length
-            // muted voices
-            // number of times to loop
-            // mixing preamp level
+            printLine(Xid6Tag.LOOP_LENGTH, xid6.getLoopLength() != null ? Integer.toString(xid6.getLoopLength()) : null);
+            printLine(Xid6Tag.END, xid6.getEndLength() != null ? Integer.toString(xid6.getEndLength()) : null);
+            printLine(Xid6Tag.FADE, xid6.getFadeLength() != null ? Integer.toString(xid6.getFadeLength()) : null);
+            xid6.printMutedVoices(); // FIXME
+            printLine(Xid6Tag.LOOP_TIMES, xid6.getLoops() != null ? Integer.toString(xid6.getLoops()) : null);
+            printLine(Xid6Tag.MIXING, xid6.getMixingLevel() != null ? Integer.toString(xid6.getMixingLevel()) : null);
         }
     }
 
@@ -139,16 +146,14 @@ public class Xid6Reader {
         }
     }
 
-
     private void parseXid6(Path spc) throws IOException {
-        xid6 = new Xid6();
-
         final long fileSize = Files.size(spc);
         final long xid6Size = fileSize - XID6_OFFSET;
         final long xid6SizeMinusHeader = xid6Size - 8; // size of header
         if (fileSize <= XID6_OFFSET) {
             throw new IllegalArgumentException("File too small. Does not contain xid6");
         }
+        xid6 = new Xid6();
 
         var fileChannel = FileChannel.open(spc, StandardOpenOption.READ);
         fileChannel.position(XID6_OFFSET);
@@ -226,19 +231,16 @@ public class Xid6Reader {
                         byte buf[] = new byte[bufsize];
                         subChunks.get(buf);
                         String text = new String(buf, StandardCharsets.UTF_8).trim();
-                        xid6.setText(mappatId.tag, text);
-                        //System.out.println(mappatId.tag + ": " + text);
+                        setText(mappatId.tag, text);
                         break;
                     case INTRO:
                         if (type.size() == Integer.BYTES) {
                             xid6.setIntro(subChunks.getInt());
-                           // System.out.println("Intro length (seconds): " + xid6.getIntrolength());
                         }
                         break;
                     case NUMBER:
                         if (type.size() == Integer.BYTES) {
-                            xid6.setNumber(mappatId.tag, subChunks.getInt());
-                            //System.out.println(mappatId.tag + " : " +num);
+                            setNumber(mappatId.tag, subChunks.getInt());
                         }
                         break;
                     default:
@@ -247,6 +249,59 @@ public class Xid6Reader {
             }
         }
         fileChannel.close();
+    }
+
+    private void setNumber(Xid6Tag tag, int num) {
+        switch (tag) {
+            case DATE:
+                xid6.setDate(num);
+                break;
+            case LOOP_LENGTH:
+                xid6.setLoop((byte) num);
+                break;
+            case END:
+                xid6.setEndLength(num);
+                break;
+            case FADE:
+                xid6.setFadeLength(num);
+                break;
+            case MUTED:
+                xid6.setMutedVoices( (byte) num);
+                break;
+            case MIXING:
+                xid6.setMixingLevel( (byte) num);
+                break;
+            default:
+                throw new IllegalArgumentException("no mapping found for: " + tag);
+        }
+    }
+
+    private void setText(Xid6Tag tag, String text) {
+        switch (tag) {
+            case SONG:
+                xid6.setSong(text);
+                break;
+            case GAME:
+                xid6.setGame(text);
+                break;
+            case ARTIST:
+                xid6.setArtist(text);
+                break;
+            case DUMPER:
+                xid6.setDumper(text);
+                break;
+            case COMMENTS:
+                xid6.setComments(text);
+                break;
+            case OST_TITLE:
+                xid6.setOstTitle(text);
+                break;
+            case PUBLISHER:
+                xid6.setPublisher(text);
+                break;
+            default:
+                throw new IllegalArgumentException("no mapping found for: " + tag);
+        }
     }
 
     private static class ChunkHeader {
