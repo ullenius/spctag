@@ -5,10 +5,12 @@ import org.junit.Test;
 import se.anosh.spctag.dao.SpcDao;
 import se.anosh.spctag.dao.SpcFile;
 import se.anosh.spctag.domain.Xid6;
+import se.anosh.spctag.emulator.factory.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Year;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -21,17 +23,106 @@ public class Xid6Test {
 
     @Before
     public void setup() throws IOException {
-        System.out.println("hello");
         spc = Paths.get("spc/xid6.spc");
         dao = new SpcFile(spc.toString());
         uut = dao.readXid6();
     }
 
     @Test
-    public void songName() {
-       assertNull(uut.getSong());
+    public void dateDumpedNotSet() {
+        assertEquals(0, uut.getDate());
     }
 
-    
+    @Test
+    public void emulatorUsedNotSet() {
+        EmulatorFactory factory = new ModernEmulatorFactory();
+        Emulator emulator = factory.orderEmulator(uut.getEmulator());
+        assertEquals(Name.Snes9x, emulator.getName());
+    }
+
+    @Test
+    public void gameName() {
+        assertEquals("Kyouraku Sanyou Toyomaru Okumura Daiichi Maruhon Parlor Parlor! 4 CR", uut.getGame());
+    }
+    @Test
+    public void commentsWorks() {
+        assertEquals("\"Auld Lang Syne\", scottish folk song. Taken down in musical notation by Robert Burns.",
+                uut.getComments());
+    }
+
+    @Test
+    public void publishersNameWorks() {
+        assertEquals("Nihon Telenet", uut.getPublisher());
+    }
+
+    @Test
+    public void copyrightYearWorks() {
+        assertEquals(Year.of(1995), uut.getYear());
+    }
+
+    @Test
+    public void introLength() {
+        assertEquals(Double.valueOf(12.6), uut.getIntrolength());
+    }
+
+    @Test
+    public void fadeLength() {
+        assertEquals(Integer.valueOf(448000), uut.getFadeLength());
+    }
+
+    // ------------ NULL CHECKS -------------------------------------
+    @Test
+    public void mutedVoices() {
+        assertNull(uut.getMutedVoices());
+    }
+
+    @Test
+    public void songNameNotSet() {
+        assertNull(uut.getSong());
+    }
+
+    @Test
+    public void dumpersNameNotSet() {
+        assertNull(uut.getDumper());
+    }
+
+    @Test
+    public void artistNotSet() {
+        assertNull(uut.getArtist());
+    }
+
+
+    @Test
+    public void ostTitleNotSet() {
+        assertNull(uut.getOstTitle());
+    }
+
+    @Test
+    public void ostDiscNotSet() {
+        assertNull(uut.getOstDisc());
+    }
+
+    @Test
+    public void ostTrackNotSet() {
+        assertNull(uut.getOstTrack());
+    }
+
+    @Test
+    public void numberOfLoopsNotSet() {
+        assertNull(uut.getLoops());
+    }
+
+    @Test
+    public void endLengthNotSet() {
+        assertNull(uut.getEndLength());
+    }
+
+    @Test
+    public void mixingPreampLevelNotSet() {
+        assertNull(uut.getMixingLevel());
+    }
+
+
+
 
 }
