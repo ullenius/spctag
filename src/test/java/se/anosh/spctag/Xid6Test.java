@@ -10,6 +10,8 @@ import se.anosh.spctag.emulator.factory.*;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.Month;
 import java.time.Year;
 
 import static org.junit.Assert.*;
@@ -68,6 +70,17 @@ public class Xid6Test {
     public void fadeLength() {
         assertEquals(Integer.valueOf(448000), uut.getFadeLength());
     }
+
+    @Test
+    public void dateConversionWorks() {
+        final int dumpedDate = 20201224;
+        final LocalDate expected = LocalDate.of(2020, Month.DECEMBER, 24);
+        final Xid6 uut2 = new Xid6();
+        uut2.setDate(dumpedDate);
+        assertEquals(expected, uut2.getDate());
+    }
+
+
 
     // ------------ NULL CHECKS -------------------------------------
     @Test

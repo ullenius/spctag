@@ -39,8 +39,7 @@ public class Xid6Demo {
             printLine(Xid6Tag.GAME, xid6.getGame());
             printLine(Xid6Tag.ARTIST, xid6.getArtist());
             printLine(Xid6Tag.DUMPER, xid6.getDumper());
-            printLine(Xid6Tag.DATE, xid6.getDate() != 0 ? Integer.toString(xid6.getDate()) : null);
-            printLine(Xid6Tag.DATE, xid6.getDate() != 0 ? Integer.toString(xid6.getDate()) : null);
+            printLine(Xid6Tag.DATE, xid6.getDate() != null ? xid6.getDate().toString() : null);
             printLine(Xid6Tag.EMULATOR, xid6.getEmulator() != null ? Byte.toString(xid6.getEmulator()) : null);
             printLine(Xid6Tag.COMMENTS, xid6.getComments());
             printLine(Xid6Tag.OST_TITLE, xid6.getOstTitle());

@@ -1,7 +1,11 @@
 package se.anosh.spctag.domain;
 
-import java.text.SimpleDateFormat;
+import org.tinylog.Logger;
+
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 
 public class Xid6 {
 
@@ -11,7 +15,7 @@ public class Xid6 {
     private String game;
     private String artist;
     private String dumper;
-    private int dumped; // date song was dumped, yyyy-mm-dd FIXME
+    private LocalDate dumped;
     private Year year;
     private Byte emulator; // fixme unsigned
     private String comments;
@@ -28,15 +32,22 @@ public class Xid6 {
     private Byte mixingLevel; // fixme
     private Integer introLength;
 
+    private static final DateTimeFormatter dumpedDateFromatter = DateTimeFormatter.BASIC_ISO_DATE;
+
     public String getOstTitle() {
         return ostTitle;
     }
 
     public void setDate(int date) {
-        dumped = date;
+        try {
+            dumped = LocalDate.parse(Integer.toString(date), dumpedDateFromatter);
+        } catch (DateTimeException ex) {
+            Logger.error("Invalid date format (date song was dumped): ", ex);
+            dumped = null;
+        }
     }
 
-    public int getDate() {
+    public LocalDate getDate() {
         return dumped;
     }
 
