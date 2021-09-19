@@ -17,7 +17,7 @@ public class Xid6 {
     private String comments;
     private String ostTitle;
     private Byte ostDisc;
-    private final char[] ostTrack = new char[2];
+    private OstTrack ostTrack;
     private String publisher;
 
     private Integer loopLength;
@@ -111,7 +111,7 @@ public class Xid6 {
         this.ostDisc = ostDisc;
     }
 
-    public char[] getOstTrack() {
+    public OstTrack getOstTrack() {
         return ostTrack;
     }
 
@@ -188,5 +188,26 @@ public class Xid6 {
     public Year getYear() {
         return year;
     }
+
+    public void setOstTrack(OstTrack ostTrack) {
+        this.ostTrack = ostTrack;
+    }
+
+   public static final class OstTrack {
+       final byte track;
+       final char ch;
+        public OstTrack(byte track) {
+            this.track = track;
+            this.ch = 0;
+        }
+        public OstTrack(byte track, char ch) {
+            this.track = track;
+            this.ch = ch;
+        }
+       public String toString() {
+           return ch != 0 ? track + " " + ch : Byte.toString(track);
+       }
+    }
+
 
 }

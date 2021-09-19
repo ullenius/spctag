@@ -57,13 +57,13 @@ public class Xid6Reader {
         boolean hasHiByte = hibyte != (byte) 0;
         Logger.debug("Has hi byte: {}", hasHiByte);
 
-        System.out.println("Upper byte (char): " + ((hasHiByte && isAscii(hibyte))
-                ? (char) hibyte
-                : "0"));
-        System.out.println("Lower byte (number): " + lobyte);
         if (lobyte < 0 || lobyte > 99) {
             throw new IllegalStateException("track no is invalid: " + lobyte);
         }
+        Xid6.OstTrack ostTrack = (hasHiByte && isAscii(hibyte))
+                ? new Xid6.OstTrack(lobyte, (char) hibyte)
+                : new Xid6.OstTrack(lobyte);
+        xid6.setOstTrack(ostTrack);
     };
 
     private static boolean isAscii(int ch) {
@@ -127,7 +127,7 @@ public class Xid6Reader {
             printLine(Xid6Tag.COMMENTS, xid6.getComments());
             printLine(Xid6Tag.OST_TITLE, xid6.getOstTitle());
             printLine(Xid6Tag.OST_DISC, xid6.getOstDisc() != null ? Byte.toString(xid6.getOstDisc()) : null);
-            //printLine(Xid6Tag.OST_TRACK, xid6.getOstTrack() != null ? new String(xid6.getOstTrack()) : null);
+            printLine(Xid6Tag.OST_TRACK, xid6.getOstTrack() != null ? xid6.getOstTrack().toString() : null);
             printLine(Xid6Tag.PUBLISHER, xid6.getPublisher());
             printLine(Xid6Tag.COPYRIGHT_YEAR, xid6.getYear() != null ? xid6.getYear().toString() : null);
             printLine(Xid6Tag.INTRO, xid6.getIntrolength() != null ? Double.toString(xid6.getIntrolength()) : null);
