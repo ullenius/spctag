@@ -24,7 +24,6 @@ public class Xid6Reader {
 
     private static final Map<Byte, Id> mappningar = new HashMap<>();
     private static final long XID6_OFFSET = 0x10200L;
-
     static {
         mappningar.put((byte) 0x1, new Id(Xid6Tag.SONG, Type.TEXT));
         mappningar.put((byte) 0x2, new Id(Xid6Tag.GAME, Type.TEXT));
@@ -47,6 +46,7 @@ public class Xid6Reader {
         mappningar.put((byte) 0x36, new Id(Xid6Tag.MIXING, Type.NUMBER));
     }
 
+    private final Path filename;
     private Xid6 xid6 = null;
 
     final BiConsumer<Id, byte[]> year = (id, data) -> xid6.setYear(toShort(data));
@@ -67,7 +67,7 @@ public class Xid6Reader {
     };
 
     private static boolean isAscii(int ch) {
-        return ch >= (int)'a' && ch <= (int)'z'
+        return ch >= (int) 'a' && ch <= (int) 'z'
                 || ch >= (int) 'A' && ch <= (int) 'Z';
     }
 
@@ -96,54 +96,13 @@ public class Xid6Reader {
             Type.DATA, oneByteData
     );
 
-    public static void main(String[] args) throws IOException {
-        Xid6Reader demo = new Xid6Reader();
-        demo.mappedVersion();
+    Xid6Reader(String filename) throws IOException {
+        this.filename = Paths.get(filename);
+        parseXid6(this.filename);
     }
 
-    public List<Path> listFilesUsingFilesList(String dir) throws IOException {
-        try (Stream<Path> stream = Files.list(Paths.get(dir))) {
-            return stream
-                    .filter(file -> !Files.isDirectory(file))
-                    .filter(file -> file.getFileName().toString().toLowerCase().endsWith(".spc"))
-                    .collect(Collectors.toList());
-        }
-    }
-
-    private void mappedVersion() throws IOException {
-        var files = listFilesUsingFilesList("");
-        Logger.debug("Size of set: {}", files.size());
-        for (Path spc : files) {
-            System.out.println("-----------");
-            System.out.println("Filename: " + spc.getFileName());
-            parseXid6(spc);
-            printLine(Xid6Tag.SONG, xid6.getSong());
-            printLine(Xid6Tag.GAME, xid6.getGame());
-            printLine(Xid6Tag.ARTIST, xid6.getArtist());
-            printLine(Xid6Tag.DUMPER, xid6.getDumper());
-            printLine(Xid6Tag.DATE, xid6.getDate() != 0 ? Integer.toString(xid6.getDate()) : null);
-            printLine(Xid6Tag.DATE, xid6.getDate() != 0 ? Integer.toString(xid6.getDate()) : null);
-            printLine(Xid6Tag.EMULATOR, xid6.getEmulator() != null ? Byte.toString(xid6.getEmulator()) : null);
-            printLine(Xid6Tag.COMMENTS, xid6.getComments());
-            printLine(Xid6Tag.OST_TITLE, xid6.getOstTitle());
-            printLine(Xid6Tag.OST_DISC, xid6.getOstDisc() != null ? Byte.toString(xid6.getOstDisc()) : null);
-            printLine(Xid6Tag.OST_TRACK, xid6.getOstTrack() != null ? xid6.getOstTrack().toString() : null);
-            printLine(Xid6Tag.PUBLISHER, xid6.getPublisher());
-            printLine(Xid6Tag.COPYRIGHT_YEAR, xid6.getYear() != null ? xid6.getYear().toString() : null);
-            printLine(Xid6Tag.INTRO, xid6.getIntrolength() != null ? Double.toString(xid6.getIntrolength()) : null);
-            printLine(Xid6Tag.LOOP_LENGTH, xid6.getLoopLength() != null ? Integer.toString(xid6.getLoopLength()) : null);
-            printLine(Xid6Tag.END, xid6.getEndLength() != null ? Integer.toString(xid6.getEndLength()) : null);
-            printLine(Xid6Tag.FADE, xid6.getFadeLength() != null ? Integer.toString(xid6.getFadeLength()) : null);
-            xid6.printMutedVoices(); // FIXME
-            printLine(Xid6Tag.LOOP_TIMES, xid6.getLoops() != null ? Integer.toString(xid6.getLoops()) : null);
-            printLine(Xid6Tag.MIXING, xid6.getMixingLevel() != null ? Integer.toString(xid6.getMixingLevel()) : null);
-        }
-    }
-
-    private void printLine(Xid6Tag field, String text) {
-        if (text != null) {
-            System.out.println(field + ": " + text);
-        }
+    Xid6Reader() {
+        this.filename = null;
     }
 
     private void parseXid6(Path spc) throws IOException {
@@ -200,7 +159,7 @@ public class Xid6Reader {
                     : subChunks.getShort(); // changes current offset
             Logger.debug("Size: {}", size);
 
-            if (dataStoredInHeader) { // max 2 bytes
+            if (dataStoredInHeader) {
                 if (size > 2) {
                     throw new IllegalStateException("Data stored in header. Yet size is larger than 2 bytes");
                 }
@@ -304,6 +263,16 @@ public class Xid6Reader {
         }
     }
 
+    private short toShort(byte buf[]) { // little endian
+        return (short) (
+                (((buf[1] & 0xFF) << 8) | (buf[0]) & 0xFF));
+    }
+
+    Xid6 getXid6() {
+        Objects.requireNonNull(xid6, "xid6 cannot be null!");
+        return this.xid6;
+    }
+
     private static class ChunkHeader {
         private static final String MAGIC_NUMBER = "xid6";
         private final int chunkSize;
@@ -316,10 +285,6 @@ public class Xid6Reader {
         }
     }
 
-    private short toShort(byte buf[]) { // little endian
-        return (short) (
-                (((buf[1] & 0xFF) << 8) | (buf[0]) & 0xFF));
-    }
 
     private static final class Id {
         Id(Xid6Tag tag, Type type) {

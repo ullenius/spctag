@@ -7,11 +7,12 @@ import java.io.*;
 
 public class SpcFileImplementation implements SpcDao {
 
-	private SpcFileReader spcFile;
-	private Xid6Reader xid6Reader;
+	private final SpcFileReader spcFile;
+	private final Xid6Reader xid6Reader;
 
 	public SpcFileImplementation(String filename) throws IOException {
 		spcFile = new SpcFileReader(filename);
+		xid6Reader = new Xid6Reader(filename);
 	}
 
 	@Override
@@ -21,7 +22,7 @@ public class SpcFileImplementation implements SpcDao {
 
 	@Override
 	public Xid6 readXid6() throws IOException {
-		return null;
+		return xid6Reader.getXid6();
 	}
 
 }
