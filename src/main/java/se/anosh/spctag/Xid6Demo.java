@@ -23,8 +23,9 @@ public class Xid6Demo {
 
     private void mappedVersion() throws IOException {
         Path spcDir = Paths.get("/tmp/spcdir");
+        //var files = listFilesUsingFilesList(spcDir);
+        var files = List.of(Paths.get("spc/xid6.spc"));
 
-        var files = listFilesUsingFilesList(spcDir);
         Logger.debug("Size of set: {}", files.size());
         for (Path spc : files) {
 

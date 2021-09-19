@@ -59,3 +59,5 @@ pom.xml.tag
 *.odt
 .~lock.*
 /nbproject/
+
+src/main/java/se/anosh/spctag/Foobar.java

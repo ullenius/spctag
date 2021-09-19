@@ -95,10 +95,8 @@ public final class Id666 implements Comparable <Id666> {
 	
 	 @Override
 	    public int compareTo(Id666 o) {
-	        
 	        return id666Comparator.compare(this, o);
 	    }
-	
 
 	@Override
 	public String toString() {
@@ -185,8 +183,5 @@ public final class Id666 implements Comparable <Id666> {
 		return true;
 	}
 	 
-	
-	
-	
-	
+
 }
