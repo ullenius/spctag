@@ -7,25 +7,14 @@ import static se.anosh.spctag.emulator.factory.TestJapaneseDumpEmulator.*;
 import org.junit.*;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 
-/**
- * Testing the LegacyEmulator class
- * 
- *
- * @author Anosh D. Ullenius <anosh@anosh.se>
- */
 public class TestLegacyDumpEmulator {
     
     private Emulator result;
     private EmulatorFactory factory;
     
-    public TestLegacyDumpEmulator() {
-    }
-    
     @Before
     public void setup() {
-    	
     	factory = new ModernEmulatorFactory();
-        
     }
     
     /**

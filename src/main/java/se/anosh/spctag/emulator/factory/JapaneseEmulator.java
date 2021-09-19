@@ -7,8 +7,6 @@ import java.util.*;
  * The constants are made package private to make them
  * accessible from the JUnit-tests
  * 
- *
- * @author Anosh D. Ullenius <anosh@anosh.se>
  */
 public class JapaneseEmulator extends Emulator {
     

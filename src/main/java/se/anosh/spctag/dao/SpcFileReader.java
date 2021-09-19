@@ -5,10 +5,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.Objects;
 
+import se.anosh.spctag.domain.Id666;
 import se.anosh.spctag.emulator.factory.*;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 
-public class SpcFileReader {
+final class SpcFileReader {
 	
 	//ID666 tag offsets used in SPC-files (Sony SPC-700 sound chip)
     public static final int HEADER_CONTAINS_ID666_TAG_OFFSET = 0x23; // 1 byte
@@ -49,15 +50,12 @@ public class SpcFileReader {
 	
 	private static final String READ_ONLY = "r";
 
-
 	public Id666 getId666() {
 		Objects.requireNonNull(id666, "id666 cannot be null!");
 		return this.id666;
 	}
 
-	// Constructor
-	public SpcFileReader(String filename) throws FileNotFoundException, IOException {
-
+	public SpcFileReader(String filename) throws IOException {
 		file = Paths.get(filename);
 		raf = new RandomAccessFile(file.toString(), READ_ONLY);
 		id666 = new Id666();
@@ -158,8 +156,6 @@ public class SpcFileReader {
 	private void setEmulatorUsedToCreateDump(final int offset) throws IOException {
 
 		byte result = readByte(offset); // result is the code
-		
-		// creating factory
 		EmulatorFactory factory = new ModernEmulatorFactory();
 		
 		// create using factory

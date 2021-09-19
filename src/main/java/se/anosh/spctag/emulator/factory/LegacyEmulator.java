@@ -10,8 +10,6 @@ import java.util.*;
  * Some of the values don't overlap in the Japanese spec. That's why
  * I created 2 different implementations.
  * 
- * 
- * @author Anosh D. Ullenius <anosh@anosh.se>
  */
 public class LegacyEmulator extends Emulator {
     
@@ -40,7 +38,6 @@ public class LegacyEmulator extends Emulator {
      * @param magicNumber 
      */
     public LegacyEmulator(Integer magicNumber) {
-        
         super(emulatorMap.get(magicNumber), magicNumber);
     }
     

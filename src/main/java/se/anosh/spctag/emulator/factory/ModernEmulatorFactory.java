@@ -1,10 +1,5 @@
 package se.anosh.spctag.emulator.factory;
 
-
-/**
- *
- * @author Anosh D. Ullenius <anosh@anosh.se>
- */
 public class ModernEmulatorFactory extends EmulatorFactory {
     
     /**
@@ -19,16 +14,15 @@ public class ModernEmulatorFactory extends EmulatorFactory {
      */
     @Override
     protected Emulator createEmulator(final int magicNumber,Type style) {
-        
-        if (style == Type.JAPANESE)
+        if (style == Type.JAPANESE) {
             return new JapaneseEmulator(magicNumber);
-        
-        else if (style == Type.LEGACY)
+        }
+        else if (style == Type.LEGACY) {
             return new LegacyEmulator(magicNumber);
-        
-        else
+        }
+        else {
             throw new IllegalArgumentException("this should never happen. Unless you modified the enum");
-        
+        }
     }
 
     
