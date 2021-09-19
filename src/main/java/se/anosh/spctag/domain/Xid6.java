@@ -1,10 +1,6 @@
 package se.anosh.spctag.domain;
 
-import se.anosh.spctag.dao.Xid6Reader;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.Year;
 
 public class Xid6 {
@@ -15,11 +11,12 @@ public class Xid6 {
     private String game;
     private String artist;
     private String dumper;
-    private LocalDate dumped; // date song was dumped
+    private int dumped; // date song was dumped, yyyy-mm-dd FIXME
     private Year year;
-    private byte emulator; // fixme unsigned
+    private Byte emulator; // fixme unsigned
     private String comments;
-    private byte ostDisc;
+    private String ostTitle;
+    private Byte ostDisc;
     private final char[] ostTrack = new char[2];
     private String publisher;
 
@@ -29,25 +26,101 @@ public class Xid6 {
     private byte mutedVoices; // fixme unsigned
     private byte loop; // fixme
     private byte mixingLevel; // fixme
-    private int introLength;
+    private Integer introLength;
 
     private static final SimpleDateFormat dumpedDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    public void setDate(int date) throws ParseException {
-        dumpedDateFormat.parse(Integer.toString(date));
+    public String getOstTitle() {
+        return ostTitle;
     }
 
-    public void setNumber(Object foo, int num) {
-
+    public void setDate(int date) {
+        dumped = date;
     }
 
+    public int getDate() {
+        return dumped;
+    }
+
+    public void setData(Xid6Tag tag, byte b) {
+        switch (tag) {
+            case EMULATOR:
+                setEmulator(b);
+                break;
+            case OST_DISC:
+                setOstDisc(b);
+                break;
+            case LOOP:
+                setLoop(b);
+                break;
+            default:
+                throw new IllegalArgumentException("no mapping found for: " + tag);
+        }
+    }
+
+    public void setNumber(Xid6Tag tag, int num) {
+        switch (tag) {
+            case DATE:
+                setDate(num);
+                break;
+            case LOOP:
+                setLoop((byte) num);
+                break;
+            case END:
+                setEndLength(num);
+                break;
+            case FADE:
+                setFadeLength(num);
+                break;
+            case MUTED:
+                setMutedVoices( (byte) num);
+                break;
+            case MIXING:
+                setMixingLevel( (byte) num);
+                break;
+            default:
+                throw new IllegalArgumentException("no mapping found for: " + tag);
+        }
+    }
+
+    public void setText(Xid6Tag tag, String text) {
+        switch (tag) {
+            case SONG:
+                setSong(text);
+                break;
+            case GAME:
+                setGame(text);
+                break;
+            case ARTIST:
+                setArtist(text);
+                break;
+            case DUMPER:
+                setDumper(text);
+                break;
+            case COMMENTS:
+                setComments(text);
+                break;
+            case OST_TITLE:
+                setOstTitle(text);
+                break;
+            case PUBLISHER:
+                setPublisher(text);
+                break;
+            default:
+                throw new IllegalArgumentException("no mapping found for: " + tag);
+        }
+    }
+
+    public void setOstTitle(String title) {
+        ostTitle = title;
+    }
 
     public void setIntro(int length) {
         this.introLength = length;
     }
 
-    public double getIntrolength() {
-        return introLength / INTRO_LENGTH_DIVISOR;
+    public Double getIntrolength() {
+        return (introLength != null) ? introLength / INTRO_LENGTH_DIVISOR : null;
     }
 
     public String getSong() {
@@ -83,7 +156,7 @@ public class Xid6 {
     }
 
 
-    public byte getEmulator() {
+    public Byte getEmulator() {
         return emulator;
     }
 
@@ -99,7 +172,7 @@ public class Xid6 {
         this.comments = comments;
     }
 
-    public byte getOstDisc() {
+    public Byte getOstDisc() {
         return ostDisc;
     }
 
@@ -145,6 +218,13 @@ public class Xid6 {
 
     public byte getMutedVoices() {
         return mutedVoices;
+    }
+
+    public void printMutedVoices() {
+        for (int i = 0; i < 8; i++) {
+            System.out.print(((1 << i) & mutedVoices) != 0 ? 0 : 1);
+        }
+        System.out.println();
     }
 
     public void setMutedVoices(byte mutedVoices) {

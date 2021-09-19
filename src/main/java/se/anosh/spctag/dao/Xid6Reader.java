@@ -24,7 +24,6 @@ import static java.lang.Integer.toHexString;
 public class Xid6Reader {
 
     private static final Map<Byte, Id> mappningar = new HashMap<>();
-    private static final double INTRO_LENGTH_DIVISOR = 64_0000.0;
     private static final long XID6_OFFSET = 0x10200L;
 
     static {
@@ -32,40 +31,31 @@ public class Xid6Reader {
         mappningar.put((byte) 0x2, new Id(Xid6Tag.GAME, Type.TEXT));
         mappningar.put((byte) 0x3, new Id(Xid6Tag.ARTIST, Type.TEXT));
         mappningar.put((byte) 0x4, new Id(Xid6Tag.DUMPER, Type.TEXT));
-
-
-        mappningar.put((byte) 0x5, new Id("Date song was dumped", Type.NUMBER));
-        mappningar.put((byte) 0x6, new Id("Emulator used", Type.DATA));
-        mappningar.put((byte) 0x7, new Id("Comments", Type.TEXT));
-        mappningar.put((byte) 0x10, new Id("Official Soundtrack Title", Type.TEXT));
-        mappningar.put((byte) 0x11, new Id("OST disc", Type.DATA));
-        mappningar.put((byte) 0x12, new Id("OST track", Type.OST));
-        mappningar.put((byte) 0x13, new Id("Publisher's name", Type.TEXT));
-        mappningar.put((byte) 0x14, new Id("Copyright year", Type.YEAR));
+        mappningar.put((byte) 0x6, new Id(Xid6Tag.EMULATOR, Type.DATA));
+        mappningar.put((byte) 0x7, new Id(Xid6Tag.COMMENTS, Type.TEXT));
+        mappningar.put((byte) 0x10, new Id(Xid6Tag.OST_TITLE, Type.TEXT));
+        mappningar.put((byte) 0x11, new Id(Xid6Tag.OST_DISC, Type.DATA));
+        mappningar.put((byte) 0x12, new Id(Xid6Tag.OST_TRACK, Type.OST));
+        mappningar.put((byte) 0x13, new Id(Xid6Tag.PUBLISHER, Type.TEXT));
+        mappningar.put((byte) 0x14, new Id(Xid6Tag.COPYRIGHT_YEAR, Type.YEAR));
         // song info stuff
-        mappningar.put((byte) 0x30, new Id("Introduction length", Type.INTRO));
-        mappningar.put((byte) 0x31, new Id("Loop length", Type.NUMBER));
-        mappningar.put((byte) 0x32, new Id("End length", Type.NUMBER));
-        mappningar.put((byte) 0x33, new Id("Fade length", Type.NUMBER));
-        mappningar.put((byte) 0x34, new Id("Muted voices (1 bit for each muted voice)", Type.MUTED));
-        mappningar.put((byte) 0x35, new Id("Number of times to loop", Type.DATA));
-        mappningar.put((byte) 0x36, new Id("Mixing (preamp) level", Type.NUMBER));
+        mappningar.put((byte) 0x30, new Id(Xid6Tag.INTRO, Type.INTRO));
+        mappningar.put((byte) 0x31, new Id(Xid6Tag.LOOP, Type.NUMBER));
+        mappningar.put((byte) 0x32, new Id(Xid6Tag.END, Type.NUMBER));
+        mappningar.put((byte) 0x33, new Id(Xid6Tag.FADE, Type.NUMBER));
+        mappningar.put((byte) 0x34, new Id(Xid6Tag.MUTED, Type.MUTED));
+        mappningar.put((byte) 0x35, new Id(Xid6Tag.LOOP, Type.DATA));
+        mappningar.put((byte) 0x36, new Id(Xid6Tag.MIXING, Type.NUMBER));
     }
 
     private Xid6 xid6 = null;
 
     final BiConsumer<Id, byte[]> year = (id, data) -> {
         xid6.setYear(toShort(data));
-        System.out.println("Year: " + xid6.getYear());
+        //System.out.println("Year: " + xid6.getYear());
     };
     final BiConsumer<Id, byte[]> muted = (id, data) -> {
         xid6.setMutedVoices(data[0]);
-        System.out.print(id.name + ": ");
-        final byte muted = data[0];
-        for (int i = 0; i < 8; i++) {
-            System.out.print(((1 << i) & muted) != 0 ? 0 : 1);
-        }
-        System.out.println();
     };
     final BiConsumer<Id, byte[]> ost = (id, data) -> {
         byte hibyte = data[0];
@@ -87,7 +77,10 @@ public class Xid6Reader {
                 || ch >= (int) 'A' && ch <= (int) 'Z';
     }
 
-    final BiConsumer<Id, byte[]> oneByteData = (id, data) -> System.out.println(id.name + ": " + data[0]);
+    final BiConsumer<Id, byte[]> oneByteData = (id, data) -> {
+        xid6.setData(id.tag, data[0]);
+        //System.out.println(id.tag + ": " + data[0]);
+    };
 
     private final Map<Type, BiConsumer<Id, byte[]>> mappedBehaviourDataStoredInHeader = Map.of(
             Type.OST, ost,
@@ -117,8 +110,35 @@ public class Xid6Reader {
             System.out.println("-----------");
             System.out.println("Filename: " + spc.getFileName());
             parseXid6(spc);
+            printLine(Xid6Tag.SONG, xid6.getSong());
+            printLine(Xid6Tag.GAME, xid6.getGame());
+            printLine(Xid6Tag.ARTIST, xid6.getArtist());
+            printLine(Xid6Tag.DUMPER, xid6.getDumper());
+            printLine(Xid6Tag.DATE, xid6.getDate() != 0 ? Integer.toString(xid6.getDate()) : null);
+            printLine(Xid6Tag.DATE, xid6.getDate() != 0 ? Integer.toString(xid6.getDate()) : null);
+            printLine(Xid6Tag.EMULATOR, xid6.getEmulator() != null ? Byte.toString(xid6.getEmulator()) : null);
+            printLine(Xid6Tag.COMMENTS, xid6.getComments());
+            printLine(Xid6Tag.OST_TITLE, xid6.getOstTitle());
+            printLine(Xid6Tag.OST_DISC, xid6.getOstDisc() != null ? Byte.toString(xid6.getOstDisc()) : null);
+            //printLine(Xid6Tag.OST_TRACK, xid6.getOstTrack() != null ? new String(xid6.getOstTrack()) : null);
+            printLine(Xid6Tag.PUBLISHER, xid6.getPublisher());
+            printLine(Xid6Tag.COPYRIGHT_YEAR, xid6.getYear() != null ? xid6.getYear().toString() : null);
+            printLine(Xid6Tag.INTRO, xid6.getIntrolength() != null ? Double.toString(xid6.getIntrolength()) : null);
+         //   printLine(Xid6Tag.LOOP, xid6.getLoopLength()
+            // end length
+            // fade length
+            // muted voices
+            // number of times to loop
+            // mixing preamp level
         }
     }
+
+    private void printLine(Xid6Tag field, String text) {
+        if (text != null) {
+            System.out.println(field + ": " + text);
+        }
+    }
+
 
     private void parseXid6(Path spc) throws IOException {
         xid6 = new Xid6();
@@ -206,19 +226,19 @@ public class Xid6Reader {
                         byte buf[] = new byte[bufsize];
                         subChunks.get(buf);
                         String text = new String(buf, StandardCharsets.UTF_8).trim();
-                        System.out.println(mappatId.name + ": " + text);
+                        xid6.setText(mappatId.tag, text);
+                        //System.out.println(mappatId.tag + ": " + text);
                         break;
                     case INTRO:
                         if (type.size() == Integer.BYTES) {
                             xid6.setIntro(subChunks.getInt());
-                            System.out.println("Intro length (seconds): " + xid6.getIntrolength());
+                           // System.out.println("Intro length (seconds): " + xid6.getIntrolength());
                         }
                         break;
                     case NUMBER:
                         if (type.size() == Integer.BYTES) {
-                            xid6.setNumber(mappatId, subChunks.getInt());
-                            int num = subChunks.getInt();
-                            System.out.println(mappatId.name + " : " +num);
+                            xid6.setNumber(mappatId.tag, subChunks.getInt());
+                            //System.out.println(mappatId.tag + " : " +num);
                         }
                         break;
                     default:
@@ -240,7 +260,6 @@ public class Xid6Reader {
             this.chunkSize = size;
         }
     }
-
 
     private short toShort(byte buf[]) { // little endian
         return (short) (
