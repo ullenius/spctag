@@ -2,17 +2,10 @@ package se.anosh.spctag.emulator.factory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-// contains constants, package private
 import static se.anosh.spctag.emulator.factory.JapaneseEmulator.*;
 import org.junit.*;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 
-/**
- * Testing the JapaneseEmulator class
- * 
- *
- * @author Anosh D. Ullenius <anosh@anosh.se>
- */
 public class TestJapaneseDumpEmulator {
     
     private Emulator result;

@@ -23,8 +23,8 @@ public class Xid6Demo {
 
     private void mappedVersion() throws IOException {
         Path spcDir = Paths.get("/tmp/spcdir");
-        //var files = listFilesUsingFilesList(spcDir);
-        var files = List.of(Paths.get("/tmp/foobar.spc"));
+        var files = listFilesUsingFilesList(spcDir);
+        //var files = List.of(Paths.get("/tmp/foobar.spc"));
 
         Logger.debug("Size of set: {}", files.size());
         for (Path spc : files) {
@@ -52,7 +52,10 @@ public class Xid6Demo {
             printLine(Xid6Tag.LOOP_LENGTH, xid6.getLoopLength() != null ? Integer.toString(xid6.getLoopLength()) : null);
             printLine(Xid6Tag.END, xid6.getEndLength() != null ? Integer.toString(xid6.getEndLength()) : null);
             printLine(Xid6Tag.FADE, xid6.getFadeLength() != null ? Integer.toString(xid6.getFadeLength()) : null);
-            xid6.printMutedVoices(); // FIXME
+            if (xid6.hasMutedVoices()) {
+                System.out.print("Muted voices: ");
+                xid6.printMutedVoices();
+            }
             printLine(Xid6Tag.LOOP_TIMES, xid6.getLoops() != null ? Integer.toString(xid6.getLoops()) : null);
             printLine(Xid6Tag.MIXING, xid6.getMixingLevel() != null ? Integer.toString(xid6.getMixingLevel()) : null);
         }

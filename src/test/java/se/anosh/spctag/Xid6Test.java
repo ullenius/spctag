@@ -12,8 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Year;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class Xid6Test {
 
@@ -73,7 +72,7 @@ public class Xid6Test {
     // ------------ NULL CHECKS -------------------------------------
     @Test
     public void mutedVoices() {
-        assertNull(uut.getMutedVoices());
+        assertFalse(uut.hasMutedVoices());
     }
 
     @Test

@@ -7,10 +7,6 @@ import org.junit.*;
 import se.anosh.spctag.dao.*;
 import se.anosh.spctag.domain.Id666;
 
-/**
- *
- * @author Anosh D. Ullenius <anosh@anosh.se>
- */
 public class TestSPCWithTextFormatTags {
     
     private SpcFile spcFile;
@@ -18,10 +14,8 @@ public class TestSPCWithTextFormatTags {
     
     @Before
     public void setup() throws IOException {
-        
         spcFile = new SpcFile("spc/text.spc");
         id666 = spcFile.read();
-        
     }
     
     @Test

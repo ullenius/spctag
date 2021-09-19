@@ -145,8 +145,8 @@ public class Xid6 {
         this.fadeLength = fadeLength;
     }
 
-    public byte getMutedVoices() {
-        return mutedVoices;
+    public boolean hasMutedVoices() {
+        return mutedVoices != 0;
     }
 
     public void printMutedVoices() {
