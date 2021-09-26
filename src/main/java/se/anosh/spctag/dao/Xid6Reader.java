@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.IntConsumer;
 
 import static java.lang.Integer.toHexString;
 
@@ -194,7 +195,11 @@ final class Xid6Reader {
                         break;
                     case NUMBER:
                         if (type.size() == Integer.BYTES) {
-                            setNumber(mappatId.tag, subChunks.getInt());
+                            if (!mappedNumberBehaviours.containsKey(mappatId.tag)) {
+                                throw new IllegalArgumentException("no mapping found for: " + mappatId.tag);
+                            }
+                            var func = mappedNumberBehaviours.get(mappatId.tag);
+                            func.accept(subChunks.getInt());
                         }
                         break;
                     default:
@@ -205,30 +210,21 @@ final class Xid6Reader {
         fileChannel.close();
     }
 
-    private void setNumber(Xid6Tag tag, int num) {
-        switch (tag) {
-            case DATE:
-                xid6.setDate(num);
-                break;
-            case LOOP_LENGTH:
-                xid6.setLoopLength(num);
-                break;
-            case END:
-                xid6.setEndLength(num);
-                break;
-            case FADE:
-                xid6.setFadeLength(num);
-                break;
-            case MUTED:
-                xid6.setMutedChannels((short) num);
-                break;
-            case MIXING:
-                xid6.setMixingLevel( (byte) num);
-                break;
-            default:
-                throw new IllegalArgumentException("no mapping found for: " + tag);
-        }
-    }
+    private final IntConsumer setDate = (num) -> xid6.setDate(num);
+    private final IntConsumer setLoopLength = (num) -> xid6.setLoopLength(num);
+    private final IntConsumer setEnd = (num) -> xid6.setEndLength(num);
+    private final IntConsumer setFade = (num) -> xid6.setFadeLength(num);
+    private final IntConsumer setMuted = (num) -> xid6.setMutedChannels( (short) num);
+    private final IntConsumer setMixing = (num) -> xid6.setMixingLevel( (byte) num);
+
+    private final Map<Xid6Tag, IntConsumer> mappedNumberBehaviours = Map.of(
+            Xid6Tag.DATE, setDate,
+            Xid6Tag.LOOP_LENGTH, setLoopLength,
+            Xid6Tag.END, setEnd,
+            Xid6Tag.FADE, setFade,
+            Xid6Tag.MUTED, setMuted,
+            Xid6Tag.MIXING, setMixing
+    );
 
     private void setText(Xid6Tag tag, String text) {
         switch (tag) {
