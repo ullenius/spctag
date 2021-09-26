@@ -2,6 +2,7 @@
 # Project specific excludes
 #
 src/main/java/se/anosh/spctag/Foobar.java
+spctag-bin.zip
 
 #
 # Default excludes
