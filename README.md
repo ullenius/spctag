@@ -13,6 +13,7 @@ SPC-files are sound files containing ripped chiptune music from Super Nintendo a
 usage: spctag <filename>
  -v,--verbose   verbose output
  -V,--version   print version
+ -x,--xid6      print xid6 tags
 ```
 
 For example:
