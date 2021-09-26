@@ -96,6 +96,16 @@ public class Xid6Test {
         assertEquals(bitpattern, uut2.getMutedChannels());
     }
 
+    @Test
+    public void parseMutedChannelsFromFileAllBitsSet() throws IOException {
+        Path spc2 = Paths.get("spc/muted.spc");
+        SpcDao dao2 = new SpcFile(spc2.toString());
+        Xid6 uut2 = dao2.readXid6();
+        final String bitpattern = "11111111";
+        assertEquals(bitpattern, uut2.getMutedChannels());
+    }
+
+
     // ------------ NULL CHECKS -------------------------------------
     @Test
     public void mutedVoices() {
