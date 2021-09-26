@@ -105,7 +105,7 @@ final class Xid6Reader {
         final long xid6Size = fileSize - XID6_OFFSET;
         final long xid6SizeMinusHeader = xid6Size - 8; // size of header
         if (fileSize <= XID6_OFFSET) {
-            throw new IllegalArgumentException("File too small. Does not contain xid6");
+            throw new IOException("File too small. Does not contain xid6");
         }
         xid6 = new Xid6();
 
