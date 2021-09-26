@@ -23,12 +23,12 @@ final class Xid6Reader {
     private static final Map<Byte, Id> mappningar = new HashMap<>();
     private static final long XID6_OFFSET = 0x10200L;
     static {
-        mappningar.put((byte) 0x1, new Id(Xid6Tag.SONG, Type.TEXT));
-        mappningar.put((byte) 0x2, new Id(Xid6Tag.GAME, Type.TEXT));
-        mappningar.put((byte) 0x3, new Id(Xid6Tag.ARTIST, Type.TEXT));
-        mappningar.put((byte) 0x4, new Id(Xid6Tag.DUMPER, Type.TEXT));
-        mappningar.put((byte) 0x6, new Id(Xid6Tag.EMULATOR, Type.DATA));
-        mappningar.put((byte) 0x7, new Id(Xid6Tag.COMMENTS, Type.TEXT));
+        mappningar.put((byte) 0x01, new Id(Xid6Tag.SONG, Type.TEXT));
+        mappningar.put((byte) 0x02, new Id(Xid6Tag.GAME, Type.TEXT));
+        mappningar.put((byte) 0x03, new Id(Xid6Tag.ARTIST, Type.TEXT));
+        mappningar.put((byte) 0x04, new Id(Xid6Tag.DUMPER, Type.TEXT));
+        mappningar.put((byte) 0x06, new Id(Xid6Tag.EMULATOR, Type.DATA));
+        mappningar.put((byte) 0x07, new Id(Xid6Tag.COMMENTS, Type.TEXT));
         mappningar.put((byte) 0x10, new Id(Xid6Tag.OST_TITLE, Type.TEXT));
         mappningar.put((byte) 0x11, new Id(Xid6Tag.OST_DISC, Type.DATA));
         mappningar.put((byte) 0x12, new Id(Xid6Tag.OST_TRACK, Type.OST));
@@ -211,7 +211,7 @@ final class Xid6Reader {
                 xid6.setDate(num);
                 break;
             case LOOP_LENGTH:
-                xid6.setLoop((byte) num);
+                xid6.setLoopLength(num);
                 break;
             case END:
                 xid6.setEndLength(num);

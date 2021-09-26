@@ -148,6 +148,11 @@ public class Xid6Test {
         assertNull(uut.getMixingLevel());
     }
 
+    @Test
+    public void toStringDoesNotCrash() {
+        Xid6 empty = new Xid6();
+        System.out.println(empty);
+    }
 
 
 

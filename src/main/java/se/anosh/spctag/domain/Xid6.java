@@ -245,4 +245,29 @@ public class Xid6 {
         return Objects.hash(song, game, artist, dumper, dumped, year, emulator, comments, ostTitle, ostDisc, ostTrack,
                 publisher, loopLength, endLength, fadeLength, mutedChannels, loops, mixingLevel, introLength);
     }
+
+    @Override
+    public String toString() {
+        return "Xid6{" +
+                "song='" + song + '\'' +
+                ", game='" + game + '\'' +
+                ", artist='" + artist + '\'' +
+                ", dumper='" + dumper + '\'' +
+                ", dumped=" + dumped +
+                ", year=" + year +
+                ", emulator=" + emulator +
+                ", comments='" + comments + '\'' +
+                ", ostTitle='" + ostTitle + '\'' +
+                ", ostDisc=" + ostDisc +
+                ", ostTrack=" + ostTrack +
+                ", publisher='" + publisher + '\'' +
+                ", loopLength=" + loopLength +
+                ", endLength=" + endLength +
+                ", fadeLength=" + fadeLength +
+                ", mutedChannels=" + mutedChannels +
+                ", loops=" + loops +
+                ", mixingLevel=" + mixingLevel +
+                ", introLength=" + introLength +
+                '}';
+    }
 }
