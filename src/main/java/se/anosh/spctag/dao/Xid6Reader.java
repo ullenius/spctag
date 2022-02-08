@@ -183,7 +183,7 @@ final class Xid6Reader {
                             bufsize++;
                             Logger.debug("Increasing bufsize: {}", bufsize);
                         }
-                        byte buf[] = new byte[bufsize];
+                        byte[] buf = new byte[bufsize];
                         subChunks.get(buf);
                         String text = new String(buf, StandardCharsets.UTF_8).trim();
                         setText(mappatId.tag, text);
@@ -254,9 +254,8 @@ final class Xid6Reader {
         }
     }
 
-    private short toShort(byte buf[]) { // little endian
-        return (short) (
-                (((buf[1] & 0xFF) << 8) | (buf[0]) & 0xFF));
+    private short toShort(final byte[] buf) {
+        return ByteBuffer.wrap(buf).order(ByteOrder.LITTLE_ENDIAN).getShort();
     }
 
     Xid6 getXid6() {

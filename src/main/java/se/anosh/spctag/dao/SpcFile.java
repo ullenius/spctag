@@ -5,7 +5,7 @@ import se.anosh.spctag.domain.Xid6;
 
 import java.io.*;
 
-public class SpcFile implements SpcDao {
+public final class SpcFile implements SpcDao {
 
 	private final SpcFileReader spcFile;
 	private Xid6Reader xid6Reader;

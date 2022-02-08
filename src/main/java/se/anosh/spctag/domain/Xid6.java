@@ -11,7 +11,7 @@ import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class Xid6 {
+public final class Xid6 {
 
     private static final double INTRO_LENGTH_DIVISOR = 64_0000.0;
 

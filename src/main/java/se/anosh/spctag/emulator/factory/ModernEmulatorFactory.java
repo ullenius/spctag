@@ -1,6 +1,6 @@
 package se.anosh.spctag.emulator.factory;
 
-public class ModernEmulatorFactory extends EmulatorFactory {
+public final class ModernEmulatorFactory extends EmulatorFactory {
     
     /**
      * 

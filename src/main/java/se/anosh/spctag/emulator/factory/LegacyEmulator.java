@@ -11,7 +11,7 @@ import java.util.*;
  * I created 2 different implementations.
  * 
  */
-public class LegacyEmulator extends Emulator {
+public final class LegacyEmulator extends Emulator {
     
     // binary and text tags share the same value
     // in this spec
