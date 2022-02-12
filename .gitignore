@@ -1,8 +1,9 @@
 #
 # Project specific excludes
 #
-src/main/java/se/anosh/spctag/Foobar.java
+release/
 spctag-bin.zip
+create-release.sh
 
 #
 # Default excludes
