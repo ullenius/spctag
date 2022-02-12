@@ -14,8 +14,8 @@ public class TestJapaneseDumpEmulator {
     // Magic number constants. Used by test-classes in this package
     // They don't match any emulator code. Used for testing
     // sad path
-    static int INVALID_POSITIVE_NUMBER = 1337;
-    static int INVALID_NEGATIVE_NUMBER = -15;
+    static final int INVALID_POSITIVE_NUMBER = 1337;
+    static final int INVALID_NEGATIVE_NUMBER = -15;
     
     @Before
     public void setup() {

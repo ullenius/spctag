@@ -55,7 +55,7 @@ final class SpcFileReader {
 		return this.id666;
 	}
 
-	public SpcFileReader(String filename) throws IOException {
+	public SpcFileReader(final String filename) throws IOException {
 		file = Paths.get(filename);
 		raf = new RandomAccessFile(file.toString(), READ_ONLY);
 		id666 = new Id666();
@@ -78,10 +78,9 @@ final class SpcFileReader {
 	 * SPC-file needs to be open for this to work.
 	 * 
 	 * 
-	 * @throws FileNotFoundException
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	private void readAndSetAllFields() throws FileNotFoundException, IOException {
+	private void readAndSetAllFields() throws IOException {
 
 		readHeader();
 		readSongTitle();
@@ -169,7 +168,7 @@ final class SpcFileReader {
 		final String fileHeader = readStuff(HEADER_OFFSET, HEADER_LENGTH)
 				.trim()
 				.substring(0, CORRECT_HEADER.length());
-		return (CORRECT_HEADER.equalsIgnoreCase(fileHeader));
+		return CORRECT_HEADER.equalsIgnoreCase(fileHeader);
 	}
 
 	/**
@@ -216,17 +215,16 @@ final class SpcFileReader {
 		}
 	}
 
-	private String readStuff(int offset, int length) throws IOException {
+	private String readStuff(final int offset, final int length) throws IOException {
 		raf.seek(offset);
 		byte[] bytes = new byte[length];
 		raf.read(bytes);
 		return new String(bytes, StandardCharsets.UTF_8);
 	}
 
-	private byte readByte(int offset) throws IOException {
+	private byte readByte(final int offset) throws IOException {
 		raf.seek(offset);
-		byte result = raf.readByte();
-		return result;
+		return raf.readByte();
 	}
 
 

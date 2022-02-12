@@ -14,16 +14,15 @@ public abstract class EmulatorFactory {
         LEGACY
     }
     
-    public Emulator orderEmulator(int magicNumber,Type style) {
+    public Emulator orderEmulator(int magicNumber, Type style) {
         Objects.requireNonNull(style);
-        Emulator emulator = createEmulator(magicNumber,style);
-        return emulator;
+        return createEmulator(magicNumber, style);
     }
     
     // Method overloading
     // uses Japanese-type unless specified
     public Emulator orderEmulator(int magicNumber) {
-        return orderEmulator(magicNumber,Type.JAPANESE);
+        return orderEmulator(magicNumber, Type.JAPANESE);
     }
     
     

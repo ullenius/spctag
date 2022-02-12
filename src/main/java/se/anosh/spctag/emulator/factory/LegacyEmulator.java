@@ -21,15 +21,12 @@ public final class LegacyEmulator extends Emulator {
     static final int ZSNES = 1;
     static final int SNES9x = 2;
     
-    private static final Map<Integer,Name> emulatorMap;
-    
-    static {
-        emulatorMap = new HashMap<>();
-        emulatorMap.put(UNKNOWN,Name.Unknown);
-        emulatorMap.put(ZSNES,Name.ZSNES);
-        emulatorMap.put(SNES9x,Name.Snes9x);
-    }
-    
+    private static final Map<Integer, Name> emulatorMap = Map.of(
+        UNKNOWN, Name.Unknown,
+        ZSNES, Name.ZSNES,
+        SNES9x,Name.Snes9x
+    );
+
     /**
      * 
      * This constructor uses an internal HashMap to Map the codes (keys) to 
@@ -37,7 +34,7 @@ public final class LegacyEmulator extends Emulator {
      * 
      * @param magicNumber 
      */
-    public LegacyEmulator(Integer magicNumber) {
+    public LegacyEmulator(int magicNumber) {
         super(emulatorMap.get(magicNumber), magicNumber);
     }
     

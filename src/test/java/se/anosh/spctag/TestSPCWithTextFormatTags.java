@@ -3,8 +3,10 @@ package se.anosh.spctag;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import org.junit.*;
-import se.anosh.spctag.dao.*;
+
+import org.junit.Before;
+import org.junit.Test;
+import se.anosh.spctag.dao.SpcFile;
 import se.anosh.spctag.domain.Id666;
 
 public class TestSPCWithTextFormatTags {
@@ -20,16 +22,15 @@ public class TestSPCWithTextFormatTags {
     
     @Test
     public void testFileWithValidHeader() {
-        
         // first 27 of string should equal "SNES-SPC700 Sound File Data"
-        String headerWithoutVersionNumber = id666.getHeader().substring(0,27);
-        assertEquals("SNES-SPC700 Sound File Data",headerWithoutVersionNumber); // case sensitive
+        String headerWithoutVersionNumber = id666.getHeader().substring(0, 27);
+        assertEquals("SNES-SPC700 Sound File Data", headerWithoutVersionNumber); // case sensitive
     }
     
     @Test(expected=IOException.class)
     public void testFileWithInvalidHeader() throws IOException {
         // tests a file that is not SPC
-        spcFile = new SpcFile("spc/randomBytes.spc"); // will throw exception
+        spcFile = new SpcFile("spc/randomBytes.spc");
     }
     
     

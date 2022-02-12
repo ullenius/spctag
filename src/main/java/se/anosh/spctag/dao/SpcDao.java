@@ -3,7 +3,8 @@ package se.anosh.spctag.dao;
 import se.anosh.spctag.domain.Id666;
 import se.anosh.spctag.domain.Xid6;
 
-import java.io.*;
+import java.io.IOException;
+
 
 public interface SpcDao {
 	

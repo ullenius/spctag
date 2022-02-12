@@ -13,7 +13,7 @@ public final class ModernEmulatorFactory extends EmulatorFactory {
      * @return 
      */
     @Override
-    protected Emulator createEmulator(final int magicNumber,Type style) {
+    protected Emulator createEmulator(final int magicNumber, Type style) {
         if (style == Type.JAPANESE) {
             return new JapaneseEmulator(magicNumber);
         }

@@ -22,10 +22,10 @@ public class TestModelWithData {
 	
 
     @Test
-    /**
+    /*
      * SPC-files have a byte set to 26 or 27 if tags are present or not
      */
-    public void testIfHeaderContainsTags() throws IOException {
+    public void testIfHeaderContainsTags() {
         assertTrue(id666.hasId666Tags());
     }
     
@@ -38,12 +38,12 @@ public class TestModelWithData {
     }
     
     @Test
-    public void testValidTextTagFormattedTags() throws IOException {
+    public void testValidTextTagFormattedTags() {
         assertTrue(id666.isTextTagFormat());
     }
     
     @Test
-    public void testIfTextTagsAreDetectedAsBinary() throws IOException {
+    public void testIfTextTagsAreDetectedAsBinary() {
         assertFalse(id666.isBinaryTagFormat());
         
     }
@@ -75,17 +75,16 @@ public class TestModelWithData {
         Id666 clone = cloneFile.read();
         
         assertNotSame(clone,id666); // no cheating
-        assertEquals(clone.hashCode(),id666.hashCode()); // equal objects *MUST* have equals hashcodes
-        assertEquals(clone,id666);
+        assertEquals(clone.hashCode(), id666.hashCode()); // equal objects *MUST* have equals hashcodes
+        assertEquals(clone, id666);
     }
     
     @Test
     public void testNonEqualObjects() throws IOException {
-        
          SpcFile cloneFile = new SpcFile("spc/binary.spc");
          Id666 clone = cloneFile.read();
          
-         assertNotEquals(clone,spcFile);
+         assertNotEquals(clone, spcFile);
     }
     
     @Test

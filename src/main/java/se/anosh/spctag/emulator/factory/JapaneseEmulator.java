@@ -76,7 +76,7 @@ public class JapaneseEmulator extends Emulator {
      * @param code
      * @return 
      */
-    JapaneseEmulator(Integer code) {
+    JapaneseEmulator(int code) {
         super(emulatorMap.get(code), code);
     }
     
