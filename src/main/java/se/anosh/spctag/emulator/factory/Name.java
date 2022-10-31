@@ -9,6 +9,6 @@ public enum Name {
     SNEShout,
     ZSNES_W,
     Snes9xpp,
-    SNESGT;
+    SNESGT
     
 }

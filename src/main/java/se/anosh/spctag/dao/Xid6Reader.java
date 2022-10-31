@@ -117,8 +117,8 @@ final class Xid6Reader {
                 FileChannel.MapMode.READ_ONLY, XID6_OFFSET, xid6Size
         );
         buffer.order(ByteOrder.LITTLE_ENDIAN);
-        Logger.debug("Position: {]", buffer.position());
-        Logger.debug("Limit: {]", buffer.limit());
+        Logger.debug("Position: {}", buffer.position());
+        Logger.debug("Limit: {}", buffer.limit());
 
         byte[] magic = new byte[4];
         buffer.get(magic);

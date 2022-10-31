@@ -147,7 +147,7 @@ final class SpcFileReader {
 			setEmulatorUsedToCreateDump(EMULATOR_TEXT_FORMAT_OFFSET);
 		}
 		else {
-			throw new IOException("Something unthinkable occured!");
+			throw new IOException("Something unthinkable occurred!");
 		}
 		id666.setArtist(artist); // sets it using local variable
 	}

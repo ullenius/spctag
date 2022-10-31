@@ -1,5 +1,7 @@
 package se.anosh.spctag.emulator.factory;
 
+import java.util.Objects;
+
 public final class ModernEmulatorFactory extends EmulatorFactory {
     
     /**
@@ -10,19 +12,14 @@ public final class ModernEmulatorFactory extends EmulatorFactory {
      * 
      * @param magicNumber
      * @param style
-     * @return 
+     * @return Emulator
      */
     @Override
     protected Emulator createEmulator(final int magicNumber, Type style) {
-        if (style == Type.JAPANESE) {
-            return new JapaneseEmulator(magicNumber);
-        }
-        else if (style == Type.LEGACY) {
-            return new LegacyEmulator(magicNumber);
-        }
-        else {
-            throw new IllegalArgumentException("this should never happen. Unless you modified the enum");
-        }
+        Objects.requireNonNull(style, "Style cannot be null");
+        return style == Type.JAPANESE
+                ? new JapaneseEmulator(magicNumber)
+                : new LegacyEmulator(magicNumber);
     }
 
     
