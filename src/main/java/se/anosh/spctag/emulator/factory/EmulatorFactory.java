@@ -1,6 +1,5 @@
 package se.anosh.spctag.emulator.factory;
 
-import java.util.Objects;
 
 /**
  * 
@@ -15,7 +14,6 @@ public abstract class EmulatorFactory {
     }
     
     public Emulator orderEmulator(int magicNumber, Type style) {
-        Objects.requireNonNull(style);
         return createEmulator(magicNumber, style);
     }
     

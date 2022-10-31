@@ -201,7 +201,7 @@ final class SpcFileReader {
 	 * is the single byte that determines the emulator used for creating
 	 * the dump. And who cares? It's not even properly set in most SPC-files.
 	 * 
-	 * @return 
+	 * @return true if spc has binary tag format
 	 */
 	private boolean hasBinaryTagFormat() throws IOException {
 

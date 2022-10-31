@@ -84,7 +84,7 @@ public class TestModelWithData {
          SpcFile cloneFile = new SpcFile("spc/binary.spc");
          Id666 clone = cloneFile.read();
          
-         assertNotEquals(clone, spcFile);
+         assertNotEquals(clone, spcFile.read());
     }
     
     @Test

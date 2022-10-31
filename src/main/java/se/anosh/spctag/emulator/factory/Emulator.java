@@ -5,9 +5,8 @@ import java.util.Objects;
 public abstract class Emulator {
     
     protected Emulator(Name name, Integer code) {
-        
-    	this.name = (name == null) ? Name.Unknown : name;// Map returns NULL if value is not in Map
-        
+        this.name = Objects.requireNonNullElse(name, Name.Unknown);
+
         // the model object knows whether its tag format is binary or text,
         // so it knows where to put this value. But this object (Emulator)
         // does not need to know what it is
@@ -26,10 +25,6 @@ public abstract class Emulator {
         return "Emulator{" + "name=" + name + ", offset= 0x" + Integer.toHexString(code) + '}';
     }
 
-    /**
-	 * Objects will differ is code is different
-	 * even if Name is equals
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -39,11 +34,6 @@ public abstract class Emulator {
 		return result;
 	}
 
-	/**
-	 * 
-	 * Objects will differ if code is different
-	 * even if Name is equals
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -60,5 +50,4 @@ public abstract class Emulator {
 		return true;
 	}
 
-    
 }
