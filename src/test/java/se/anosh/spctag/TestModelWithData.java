@@ -19,7 +19,6 @@ public class TestModelWithData {
         spcFile = new SpcFile("spc/text.spc");
         id666 = spcFile.read();
     }
-	
 
     @Test
     /*
@@ -31,7 +30,6 @@ public class TestModelWithData {
     
     @Test
     public void testIfHeaderDoesNotContainsTags() throws IOException {
-        
         spcFile = new SpcFile("spc/containsNoTagSetToTrue.spc");
         id666 = spcFile.read();
         assertFalse(id666.hasId666Tags());
@@ -45,7 +43,6 @@ public class TestModelWithData {
     @Test
     public void testIfTextTagsAreDetectedAsBinary() {
         assertFalse(id666.isBinaryTagFormat());
-        
     }
     
     @Test
@@ -59,7 +56,6 @@ public class TestModelWithData {
     
     @Test
     public void testNotIdenticalHashCodes() throws IOException {
-        
         SpcFile different = new SpcFile("spc/binary.spc");
         Id666 differentId666 = different.read();
         
@@ -70,7 +66,6 @@ public class TestModelWithData {
     
     @Test
     public void testEqualObjects() throws IOException {
-        
         SpcFile cloneFile = new SpcFile("spc/text.spc");
         Id666 clone = cloneFile.read();
         
@@ -89,11 +84,10 @@ public class TestModelWithData {
     
     @Test
     public void testComparableSorting() throws IOException {
+        final SpcFile otherFile = new SpcFile("spc/binary.spc");
+        final Id666 other = otherFile.read();
         
-        SpcFile otherFile = new SpcFile("spc/binary.spc");
-        Id666 other = otherFile.read();
-        
-        List<Id666> myList = new ArrayList<>();
+        List<Id666> myList = new LinkedList<>();
         myList.add(other);
         myList.add(id666);
         myList.add(other);
@@ -110,7 +104,6 @@ public class TestModelWithData {
     
     @Test
     public void testComparableWithNullValues() throws IOException {
-        
         SpcDao otherFile = new SpcFile("spc/binary.spc"); //accessing using the interface this time
         Id666 other = otherFile.read();
         
@@ -120,7 +113,7 @@ public class TestModelWithData {
         
         id666.setGameTitle(null);
         
-        List<Id666> myList = new ArrayList<>();
+        List<Id666> myList = new LinkedList<>();
         myList.add(id666);
         myList.add(other);
         
@@ -133,7 +126,5 @@ public class TestModelWithData {
         assertNotNull(myList.get(1).getArtist());
         assertNotNull(myList.get(1).getSongTitle());
     }
-    
-	
 
 }

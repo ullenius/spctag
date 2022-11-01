@@ -24,7 +24,6 @@ public class TestLegacyDumpEmulator {
      */
     @Test
     public void testValidLegacyEmulatorCodes() {
-    	
     	 result = factory.orderEmulator(UNKNOWN, Type.LEGACY);
          assertEquals(Name.Unknown,result.getName());
          
@@ -37,7 +36,6 @@ public class TestLegacyDumpEmulator {
     
     @Test
     public void testInvalidLegacyEmulatorCodes() {
-        
         result = factory.orderEmulator(JapaneseEmulator.SNES9X_TEXT, Type.LEGACY); // testing a valid value from the jp-spec
         assertNotEquals(Name.ZSNES,result.getName());
         

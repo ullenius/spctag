@@ -29,7 +29,6 @@ public class TestJapaneseDumpEmulator {
      */
     @Test
     public void testValidJapaneseEmulatorCodes() {
-        
         result = factory.orderEmulator(ZSNES_TEXT, Type.JAPANESE);
         assertEquals(Name.ZSNES,result.getName());
         result = factory.orderEmulator(ZSNES_BINARY, Type.JAPANESE);
@@ -79,7 +78,6 @@ public class TestJapaneseDumpEmulator {
     
     @Test
     public void testInvalidJapaneseEmulatorCodes() {
-        
         result = factory.orderEmulator(SNES9X_TEXT, Type.JAPANESE);
         assertNotEquals(Name.ZSNES,result.getName());
         

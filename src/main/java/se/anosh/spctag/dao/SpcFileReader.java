@@ -19,7 +19,7 @@ final class SpcFileReader {
 	private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data";
 	private static final byte CONTAINS_ID666_TAG = 26;
 	private static final byte MISSING_ID666_TAG = 27;
-	
+
 	private static final String READ_ONLY = "r";
 
 	public Id666 getId666() {
@@ -68,27 +68,27 @@ final class SpcFileReader {
 	}
 
 	private void readHeader() throws IOException {
-		id666.setHeader(readStuff(Field.HEADER).trim()); // removes NULL character
+		id666.setHeader(parse(Field.HEADER).trim()); // removes NULL character
 	}
 
 	private void readSongTitle() throws IOException {
-		id666.setSongTitle(readStuff(Field.SONG_TITLE).trim());
+		id666.setSongTitle(parse(Field.SONG_TITLE).trim());
 	}
 	
 	private void readGameTitle() throws IOException {
-		id666.setGameTitle(readStuff(Field.GAME_TITLE).trim());
+		id666.setGameTitle(parse(Field.GAME_TITLE).trim());
 	}
 	
 	private void readNameOfDumper() throws IOException {
-		id666.setNameOfDumper(readStuff(Field.NAME_OF_DUMPER).trim());
+		id666.setNameOfDumper(parse(Field.NAME_OF_DUMPER).trim());
 	}
 	
 	private void readComments() throws IOException {
-		id666.setComments(readStuff(Field.COMMENTS).trim());
+		id666.setComments(parse(Field.COMMENTS).trim());
 	}
 	
 	private void readDateDumpWasCreated() throws IOException {
-		id666.setDateDumpWasCreated(readStuff(Field.DUMP_DATE).trim());
+		id666.setDateDumpWasCreated(parse(Field.DUMP_DATE).trim());
 	}
 	
 	private void readHasId666Tags() throws IOException {
@@ -111,11 +111,11 @@ final class SpcFileReader {
 		String artist = null;
 
 		if (hasBinaryTagFormat()) {
-			artist = readStuff(Field.ARTIST_OF_SONG_BINARY_FORMAT).trim();
+			artist = parse(Field.ARTIST_OF_SONG_BINARY_FORMAT).trim();
 			setEmulatorUsedToCreateDump(Field.EMULATOR_BINARY_FORMAT);
 		}
 		else if (id666.isTextTagFormat()) {
-			artist = readStuff(Field.ARTIST_OF_SONG_TEXT_FORMAT).trim();
+			artist = parse(Field.ARTIST_OF_SONG_TEXT_FORMAT).trim();
 			setEmulatorUsedToCreateDump(Field.EMULATOR_TEXT_FORMAT);
 		}
 		else {
@@ -137,7 +137,7 @@ final class SpcFileReader {
 	}
 
 	private boolean isValidSPCFile() throws IOException {
-		final String fileHeader = readStuff(Field.HEADER)
+		final String fileHeader = parse(Field.HEADER)
 				.trim()
 				.substring(0, CORRECT_HEADER.length());
 		return CORRECT_HEADER.equalsIgnoreCase(fileHeader);
@@ -180,18 +180,13 @@ final class SpcFileReader {
 	 * @return true if spc has binary tag format
 	 */
 	private boolean hasBinaryTagFormat() throws IOException {
-
-		String s = readStuff(Field.ARTIST_OF_SONG_BINARY_FORMAT);
+		final char first = parse(Field.ARTIST_OF_SONG_BINARY_FORMAT).charAt(0);
 		// If 0xB0 is *NOT* a valid char or *IS* a digit then don't allow it.
 		// Sometimes we have valid digits in this offset (if the tag-format is text)
-		if (!Character.isLetter(s.charAt(0)) || Character.isDigit(s.charAt(0))) {
-			return false;
-		} else {
-			return true;
-		}
+		return Character.isLetter(first) && !Character.isDigit(first);
 	}
 
-	private String readStuff(Field field) throws IOException {
+	private String parse(Field field) throws IOException {
 		Objects.requireNonNull(field);
 		raf.seek(field.getOffset());
 		byte[] bytes = new byte[field.getLength()];
