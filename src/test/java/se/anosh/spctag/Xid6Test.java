@@ -161,7 +161,7 @@ public class Xid6Test {
     @Test
     public void toStringDoesNotCrash() {
         Xid6 empty = new Xid6();
-        System.out.println(empty);
+        assertNotNull(empty.toString());
     }
 
 

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.*;
 import org.junit.*;
 
+import org.tinylog.Logger;
 import se.anosh.spctag.dao.*;
 import se.anosh.spctag.domain.Id666;
 
@@ -94,12 +95,11 @@ public class TestModelWithData {
         myList.add(id666);
         
         myList.sort(null);
-        myList.forEach(System.out::println);
+        myList.forEach(Logger::debug);
         assertEquals(id666,myList.get(0));
         assertEquals(id666,myList.get(1));
         assertEquals(other,myList.get(2));
         assertEquals(other,myList.get(3));
-        
     }
     
     @Test
