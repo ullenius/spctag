@@ -10,34 +10,6 @@ import se.anosh.spctag.emulator.factory.*;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 
 final class SpcFileReader {
-	
-	//ID666 tag offsets used in SPC-files (Sony SPC-700 sound chip)
-    public static final int HEADER_CONTAINS_ID666_TAG_OFFSET = 0x23; // 1 byte
-    public static final int HEADER_OFFSET = 0;
-    public static final int HEADER_LENGTH = 33;
-
-    public static final int SONG_TITLE_OFFSET = 0x2E;
-    public static final int SONG_TITLE_LENGTH = 32;
-    
-    public static final int GAME_TITLE_OFFSET = 0x4E;
-    public static final int GAME_TITLE_LENGTH = 32;
-    
-    public static final int NAME_OF_DUMPER_OFFSET = 0x6E;
-    public static final int NAME_OF_DUMPER_LENGTH = 16;
-    
-    public static final int COMMENTS_OFFSET = 0x7E;
-    public static final int COMMENTS_LENGTH = 32;
-    
-    public static final int DUMP_DATE_OFFSET = 0x9E;
-    public static final int DUMP_DATE_LENGTH = 11;
-    
-    public static final int ARTIST_OF_SONG_TEXT_FORMAT_OFFSET = 0xB1; // text format
-    public static final int ARTIST_OF_SONG_BINARY_FORMAT_OFFSET = 0xB0;
-    public static final int ARTIST_OF_SONG_LENGTH = 32;
-    
-    public static final int EMULATOR_TEXT_FORMAT_OFFSET = 0xD2;
-    public static final int EMULATOR_BINARY_FORMAT_OFFSET = 0xD1;
-    public static final int EMULATOR_LENGTH = 1;
 
 	private final Id666 id666;
 	private final Path file;
@@ -96,27 +68,27 @@ final class SpcFileReader {
 	}
 
 	private void readHeader() throws IOException {
-		id666.setHeader(readStuff(HEADER_OFFSET, HEADER_LENGTH).trim()); // removes NULL character
+		id666.setHeader(readStuff(Field.HEADER).trim()); // removes NULL character
 	}
 
 	private void readSongTitle() throws IOException {
-		id666.setSongTitle(readStuff(SONG_TITLE_OFFSET, SONG_TITLE_LENGTH).trim());
+		id666.setSongTitle(readStuff(Field.SONG_TITLE).trim());
 	}
 	
 	private void readGameTitle() throws IOException {
-		id666.setGameTitle(readStuff(GAME_TITLE_OFFSET, GAME_TITLE_LENGTH).trim());
+		id666.setGameTitle(readStuff(Field.GAME_TITLE).trim());
 	}
 	
 	private void readNameOfDumper() throws IOException {
-		id666.setNameOfDumper(readStuff(NAME_OF_DUMPER_OFFSET, NAME_OF_DUMPER_LENGTH).trim());
+		id666.setNameOfDumper(readStuff(Field.NAME_OF_DUMPER).trim());
 	}
 	
 	private void readComments() throws IOException {
-		id666.setComments(readStuff(COMMENTS_OFFSET, COMMENTS_LENGTH).trim());
+		id666.setComments(readStuff(Field.COMMENTS).trim());
 	}
 	
 	private void readDateDumpWasCreated() throws IOException {
-		id666.setDateDumpWasCreated(readStuff(DUMP_DATE_OFFSET, DUMP_DATE_LENGTH).trim());
+		id666.setDateDumpWasCreated(readStuff(Field.DUMP_DATE).trim());
 	}
 	
 	private void readHasId666Tags() throws IOException {
@@ -139,12 +111,12 @@ final class SpcFileReader {
 		String artist = null;
 
 		if (hasBinaryTagFormat()) {
-			artist = readStuff(ARTIST_OF_SONG_BINARY_FORMAT_OFFSET, ARTIST_OF_SONG_LENGTH).trim();
-			setEmulatorUsedToCreateDump(EMULATOR_BINARY_FORMAT_OFFSET);
+			artist = readStuff(Field.ARTIST_OF_SONG_BINARY_FORMAT).trim();
+			setEmulatorUsedToCreateDump(Field.EMULATOR_BINARY_FORMAT);
 		}
 		else if (id666.isTextTagFormat()) {
-			artist = readStuff(ARTIST_OF_SONG_TEXT_FORMAT_OFFSET, ARTIST_OF_SONG_LENGTH).trim();
-			setEmulatorUsedToCreateDump(EMULATOR_TEXT_FORMAT_OFFSET);
+			artist = readStuff(Field.ARTIST_OF_SONG_TEXT_FORMAT).trim();
+			setEmulatorUsedToCreateDump(Field.EMULATOR_TEXT_FORMAT);
 		}
 		else {
 			throw new IOException("Something unthinkable occurred!");
@@ -152,9 +124,9 @@ final class SpcFileReader {
 		id666.setArtist(artist); // sets it using local variable
 	}
 	
-	private void setEmulatorUsedToCreateDump(final int offset) throws IOException {
-
-		byte result = readByte(offset); // result is the code
+	private void setEmulatorUsedToCreateDump(final Field field) throws IOException {
+		Objects.requireNonNull(field);
+		final byte result = readByte(field); // result is the code
 		EmulatorFactory factory = new ModernEmulatorFactory();
 		
 		// create using factory
@@ -165,7 +137,7 @@ final class SpcFileReader {
 	}
 
 	private boolean isValidSPCFile() throws IOException {
-		final String fileHeader = readStuff(HEADER_OFFSET, HEADER_LENGTH)
+		final String fileHeader = readStuff(Field.HEADER)
 				.trim()
 				.substring(0, CORRECT_HEADER.length());
 		return CORRECT_HEADER.equalsIgnoreCase(fileHeader);
@@ -177,14 +149,18 @@ final class SpcFileReader {
 	 * @throws IOException if offset has invalid value SPC-file.
 	 */
 	private boolean containsID666Tags() throws IOException{
-
-		byte tag = readByte(HEADER_CONTAINS_ID666_TAG_OFFSET);
-		if (tag == CONTAINS_ID666_TAG)
+		final byte tag = readByte(Field.HEADER_CONTAINS_ID666_TAG);
+		if (tag == CONTAINS_ID666_TAG) {
 			return true;
-		else if (tag == MISSING_ID666_TAG)
+		}
+		else if (tag == MISSING_ID666_TAG) {
 			return false;
-		else
-			throw new IOException(HEADER_CONTAINS_ID666_TAG_OFFSET + " offset does not contain valid value. Is this a SPC file?");
+		}
+		else {
+			throw new IOException(
+					String.format("%s does not contain valid value at offset: 0x%xd. Is this a SPC file?",
+							Field.HEADER_CONTAINS_ID666_TAG, Field.HEADER_CONTAINS_ID666_TAG.offset));
+		}
 	}
 
 	/**
@@ -205,7 +181,7 @@ final class SpcFileReader {
 	 */
 	private boolean hasBinaryTagFormat() throws IOException {
 
-		String s = readStuff(ARTIST_OF_SONG_BINARY_FORMAT_OFFSET,1);
+		String s = readStuff(Field.ARTIST_OF_SONG_BINARY_FORMAT);
 		// If 0xB0 is *NOT* a valid char or *IS* a digit then don't allow it.
 		// Sometimes we have valid digits in this offset (if the tag-format is text)
 		if (!Character.isLetter(s.charAt(0)) || Character.isDigit(s.charAt(0))) {
@@ -215,16 +191,55 @@ final class SpcFileReader {
 		}
 	}
 
-	private String readStuff(final int offset, final int length) throws IOException {
-		raf.seek(offset);
-		byte[] bytes = new byte[length];
+	private String readStuff(Field field) throws IOException {
+		Objects.requireNonNull(field);
+		raf.seek(field.getOffset());
+		byte[] bytes = new byte[field.getLength()];
 		raf.read(bytes);
 		return new String(bytes, StandardCharsets.UTF_8);
 	}
 
-	private byte readByte(final int offset) throws IOException {
-		raf.seek(offset);
+	private byte readByte(Field field) throws IOException {
+		assertTrue(field.getLength() == 1, "Field length must be 1 byte");
+		raf.seek(field.getOffset());
 		return raf.readByte();
+	}
+
+	private static void assertTrue(boolean expression, final String message) {
+		if (!expression) {
+			throw new IllegalArgumentException(message);
+		}
+	}
+
+	private enum Field {
+		HEADER(0x00, 33),
+		SONG_TITLE(0x2E, 32),
+		GAME_TITLE(0x4E, 32),
+		NAME_OF_DUMPER(0x6E, 16),
+		COMMENTS(0x7E, 32),
+		DUMP_DATE(0x9E, 11),
+		ARTIST_OF_SONG_TEXT_FORMAT(0xB1, 32),
+		ARTIST_OF_SONG_BINARY_FORMAT(0xB0, 32),
+		EMULATOR_TEXT_FORMAT(0xD2, 1),
+		EMULATOR_BINARY_FORMAT(0xD1, 1),
+
+		HEADER_CONTAINS_ID666_TAG(0x23, 1);
+
+		private final int length;
+		private final int offset;
+
+		Field(int offset, int length) {
+			this.offset = offset;
+			this.length = length;
+		}
+
+		int getLength() {
+			return length;
+		}
+
+		int getOffset() {
+			return offset;
+		}
 	}
 
 
