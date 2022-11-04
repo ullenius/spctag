@@ -119,13 +119,11 @@ final class SpcFileReader {
 	
 	private void setEmulatorUsedToCreateDump(final Field field) throws IOException {
 		Objects.requireNonNull(field);
-		final byte result = readByte(field); // result is the code
+		final byte emulatorCode = readByte(field);
 		EmulatorFactory factory = new ModernEmulatorFactory();
 		
-		// create using factory
-		// Emulator's constructor has access modifier "protected"
 		// use values from the Japanese spec
-		Emulator emulator = factory.orderEmulator(result, Type.JAPANESE);
+		Emulator emulator = factory.orderEmulator(emulatorCode, Type.JAPANESE);
 		id666.setEmulatorUsedToCreateDump(emulator);
 	}
 
@@ -227,10 +225,4 @@ final class SpcFileReader {
 		}
 	}
 
-
-
 }
-
-
-
-
