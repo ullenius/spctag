@@ -79,6 +79,14 @@ public class Xid6Test {
     }
 
     @Test
+    public void dateConversionReturnsNullOnParsingError() {
+        final int erroneousDumpedDate = 991224; // 1999-12-24
+        final Xid6 xid6 = new Xid6();
+        xid6.setDate(erroneousDumpedDate);
+        assertNull(xid6.getDate());
+    }
+
+    @Test
     public void mutedChannelHasEightBits() {
         short mutedChannels = 0xFF;
         final Xid6 uut2 = new Xid6();

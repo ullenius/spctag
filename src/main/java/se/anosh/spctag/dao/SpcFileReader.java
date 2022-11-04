@@ -31,17 +31,12 @@ final class SpcFileReader {
 		file = Path.of(filename);
 		raf = new RandomAccessFile(file.toString(), READ_ONLY);
 		id666 = new Id666();
-
 		if (!isValidSPCFile())
 			throw new IOException("File is missing correct SPC-header");
 		readAndSetAllFields();
 		raf.close();
 	}
 
-	public String getFilename() {
-		return file.toString();
-	}
-	
 	/**
 	 * 
 	 * Calls all read methods and
@@ -60,6 +55,7 @@ final class SpcFileReader {
 		
 		readHasId666Tags();
 		readTagFormat();
+
 		// these two depend on the tag-format being binary or text
 		readArtist();
 		readEmulatorUsedToCreateDump();
@@ -186,6 +182,10 @@ final class SpcFileReader {
 		assertTrue(field == Field.ARTIST_OF_SONG_BINARY_FORMAT || field.getLength() == 1, "Field length must be 1 byte");
 		raf.seek(field.getOffset());
 		return raf.readByte();
+	}
+
+	public String getFilename() {
+		return file.toString();
 	}
 
 	private static void assertTrue(boolean expression, final String message) {

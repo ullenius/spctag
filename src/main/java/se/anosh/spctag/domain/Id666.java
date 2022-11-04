@@ -119,7 +119,6 @@ public final class Id666 implements Comparable <Id666> {
 		result = prime * result + ((songTitle == null) ? 0 : songTitle.hashCode());
 		return result;
 	}
-	
 
 	/**
 	 * Using all fields to compare except hasId666Tags.

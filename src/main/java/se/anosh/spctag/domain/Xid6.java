@@ -36,7 +36,7 @@ public final class Xid6 {
     private Byte mixingLevel;
     private Integer introLength;
 
-    private static final DateTimeFormatter dumpedDateFromatter = DateTimeFormatter.BASIC_ISO_DATE;
+    private static final DateTimeFormatter DUMPED_DATE_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
 
     public String getOstTitle() {
         return ostTitle;
@@ -44,7 +44,7 @@ public final class Xid6 {
 
     public void setDate(int date) {
         try {
-            dumped = LocalDate.parse(Integer.toString(date), dumpedDateFromatter);
+            dumped = LocalDate.parse(Integer.toString(date), DUMPED_DATE_FORMATTER);
         } catch (DateTimeException ex) {
             Logger.error("Invalid date format (date song was dumped): ", ex);
             dumped = null;
