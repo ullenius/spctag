@@ -46,11 +46,8 @@ final class SpcFileReader {
 	 * 
 	 * Calls all read methods and
 	 * sets all the fields in the id666-object
-	 * 
 	 * SPC-file needs to be open for this to work.
-	 * 
-	 * 
-	 * @throws IOException
+	 *
 	 */
 	private void readAndSetAllFields() throws IOException {
 		readHeader();
@@ -63,7 +60,9 @@ final class SpcFileReader {
 		
 		readHasId666Tags();
 		readTagFormat();
-		readArtistAndEmulatorUsedToCreateDump(); // this one depends on the tag-format being binary or text
+		// these two depends on the tag-format being binary or text
+		readArtist();
+		readEmulatorUsedToCreateDump();
 	}
 
 	private void readHeader() throws IOException {
@@ -98,29 +97,24 @@ final class SpcFileReader {
 		id666.setBinaryTagFormat(hasBinaryTagFormat());
 	}
 	
-	/**
-	 * This method reads the Artist & Emulator- (Used to Create Dump) fields.
-	 * The offsets differ depending on the tag format being used (binary or text).
-	 * 
-	 * @throws IOException
-	 */
-	private void readArtistAndEmulatorUsedToCreateDump() throws IOException {
-		
-		// emulator offset to use...
-		String artist = null;
+	private void readArtist() throws IOException {
+		id666.setArtist(parseArtist());
+	}
 
-		if (hasBinaryTagFormat()) {
-			artist = parse(Field.ARTIST_OF_SONG_BINARY_FORMAT).trim();
-			setEmulatorUsedToCreateDump(Field.EMULATOR_BINARY_FORMAT);
-		}
-		else if (id666.isTextTagFormat()) {
-			artist = parse(Field.ARTIST_OF_SONG_TEXT_FORMAT).trim();
-			setEmulatorUsedToCreateDump(Field.EMULATOR_TEXT_FORMAT);
-		}
-		else {
-			throw new IOException("Something unthinkable occurred!");
-		}
-		id666.setArtist(artist); // sets it using local variable
+	private String parseArtist() throws IOException {
+		return id666.isBinaryTagFormat()
+				? parse(Field.ARTIST_OF_SONG_BINARY_FORMAT).trim()
+				: parse(Field.ARTIST_OF_SONG_TEXT_FORMAT).trim();
+	}
+
+	private void readEmulatorUsedToCreateDump() throws IOException {
+		setEmulatorUsedToCreateDump(detectOffsetEmulatorUsedToCreateDump());
+	}
+
+	private Field detectOffsetEmulatorUsedToCreateDump() { // emulator offset to use...
+		return id666.isBinaryTagFormat()
+				? Field.EMULATOR_BINARY_FORMAT
+				: Field.EMULATOR_TEXT_FORMAT;
 	}
 	
 	private void setEmulatorUsedToCreateDump(final Field field) throws IOException {
