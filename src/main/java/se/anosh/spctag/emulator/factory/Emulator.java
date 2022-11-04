@@ -3,19 +3,15 @@ package se.anosh.spctag.emulator.factory;
 import java.util.Objects;
 
 public abstract class Emulator {
-    
+	private final Name name;
+	final int code;
     protected Emulator(Name name, Integer code) {
         this.name = Objects.requireNonNullElse(name, Name.Unknown);
-
         // the model object knows whether its tag format is binary or text,
         // so it knows where to put this value. But this object (Emulator)
         // does not need to know what it is
         this.code = Objects.requireNonNull(code); //auto-unboxing
     }
-    
-    private final Name name;
-    final int code;
-
     public Name getName() {
         return name;
     }

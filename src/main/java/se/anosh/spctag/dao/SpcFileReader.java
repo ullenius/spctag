@@ -28,7 +28,7 @@ final class SpcFileReader {
 	}
 
 	public SpcFileReader(final String filename) throws IOException {
-		file = Paths.get(filename);
+		file = Path.of(filename);
 		raf = new RandomAccessFile(file.toString(), READ_ONLY);
 		id666 = new Id666();
 
@@ -53,7 +53,6 @@ final class SpcFileReader {
 	 * @throws IOException
 	 */
 	private void readAndSetAllFields() throws IOException {
-
 		readHeader();
 		readSongTitle();
 		readGameTitle();
@@ -155,11 +154,9 @@ final class SpcFileReader {
 		}
 		else if (tag == MISSING_ID666_TAG) {
 			return false;
-		}
-		else {
-			throw new IOException(
-					String.format("%s does not contain valid value at offset: 0x%xd. Is this a SPC file?",
-							Field.HEADER_CONTAINS_ID666_TAG, Field.HEADER_CONTAINS_ID666_TAG.offset));
+		} else {
+			throw new IOException(String.format("%s does not contain valid value at offset: 0x%xd. Is this a SPC file?",
+					Field.HEADER_CONTAINS_ID666_TAG, Field.HEADER_CONTAINS_ID666_TAG.offset));
 		}
 	}
 

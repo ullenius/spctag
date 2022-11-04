@@ -15,7 +15,7 @@ public final class SpcFile implements SpcDao {
 	}
 
 	@Override
-	public Id666 read() throws IOException {
+	public Id666 read() {
 		return spcFile.getId666();
 	}
 
