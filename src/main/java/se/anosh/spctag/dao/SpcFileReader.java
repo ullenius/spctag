@@ -60,33 +60,33 @@ final class SpcFileReader {
 		
 		readHasId666Tags();
 		readTagFormat();
-		// these two depends on the tag-format being binary or text
+		// these two depend on the tag-format being binary or text
 		readArtist();
 		readEmulatorUsedToCreateDump();
 	}
 
 	private void readHeader() throws IOException {
-		id666.setHeader(parse(Field.HEADER).trim()); // removes NULL character
+		id666.setHeader(parse(Field.HEADER)); // removes NULL character
 	}
 
 	private void readSongTitle() throws IOException {
-		id666.setSongTitle(parse(Field.SONG_TITLE).trim());
+		id666.setSongTitle(parse(Field.SONG_TITLE));
 	}
 	
 	private void readGameTitle() throws IOException {
-		id666.setGameTitle(parse(Field.GAME_TITLE).trim());
+		id666.setGameTitle(parse(Field.GAME_TITLE));
 	}
 	
 	private void readNameOfDumper() throws IOException {
-		id666.setNameOfDumper(parse(Field.NAME_OF_DUMPER).trim());
+		id666.setNameOfDumper(parse(Field.NAME_OF_DUMPER));
 	}
 	
 	private void readComments() throws IOException {
-		id666.setComments(parse(Field.COMMENTS).trim());
+		id666.setComments(parse(Field.COMMENTS));
 	}
 	
 	private void readDateDumpWasCreated() throws IOException {
-		id666.setDateDumpWasCreated(parse(Field.DUMP_DATE).trim());
+		id666.setDateDumpWasCreated(parse(Field.DUMP_DATE));
 	}
 	
 	private void readHasId666Tags() throws IOException {
@@ -103,8 +103,8 @@ final class SpcFileReader {
 
 	private String parseArtist() throws IOException {
 		return id666.isBinaryTagFormat()
-				? parse(Field.ARTIST_OF_SONG_BINARY_FORMAT).trim()
-				: parse(Field.ARTIST_OF_SONG_TEXT_FORMAT).trim();
+				? parse(Field.ARTIST_OF_SONG_BINARY_FORMAT)
+				: parse(Field.ARTIST_OF_SONG_TEXT_FORMAT);
 	}
 
 	private void readEmulatorUsedToCreateDump() throws IOException {
@@ -131,7 +131,6 @@ final class SpcFileReader {
 
 	private boolean isValidSPCFile() throws IOException {
 		final String fileHeader = parse(Field.HEADER)
-				.trim()
 				.substring(0, CORRECT_HEADER.length());
 		return CORRECT_HEADER.equalsIgnoreCase(fileHeader);
 	}
@@ -171,7 +170,7 @@ final class SpcFileReader {
 	 * @return true if spc has binary tag format
 	 */
 	private boolean hasBinaryTagFormat() throws IOException {
-		final char first = parse(Field.ARTIST_OF_SONG_BINARY_FORMAT).charAt(0);
+		final byte first = readByte(Field.ARTIST_OF_SONG_BINARY_FORMAT);
 		// If 0xB0 is *NOT* a valid char or *IS* a digit then don't allow it.
 		// Sometimes we have valid digits in this offset (if the tag-format is text)
 		return Character.isLetter(first) && !Character.isDigit(first);
@@ -182,11 +181,11 @@ final class SpcFileReader {
 		raf.seek(field.getOffset());
 		byte[] bytes = new byte[field.getLength()];
 		raf.read(bytes);
-		return new String(bytes, StandardCharsets.UTF_8);
+		return new String(bytes, StandardCharsets.UTF_8).trim(); // remove NULL characters
 	}
 
 	private byte readByte(Field field) throws IOException {
-		assertTrue(field.getLength() == 1, "Field length must be 1 byte");
+		assertTrue(field == Field.ARTIST_OF_SONG_BINARY_FORMAT || field.getLength() == 1, "Field length must be 1 byte");
 		raf.seek(field.getOffset());
 		return raf.readByte();
 	}
