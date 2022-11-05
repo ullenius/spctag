@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.6
+* Fix broken API. Lenient dump date parsing:
+Set date to blank string instead of crashing
+
 ## v0.3.5
 * Fix bug in dumped date output
 
