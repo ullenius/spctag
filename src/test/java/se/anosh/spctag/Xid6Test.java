@@ -113,6 +113,20 @@ public class Xid6Test {
         assertEquals(bitpattern, uut2.getMutedChannels());
     }
 
+    @Test
+    public void ostTrackConstructorWorks() {
+        final byte trackNumber = 42;
+        final Xid6.OstTrack ostTrack = new Xid6.OstTrack(trackNumber);
+        assertEquals(Integer.toString(trackNumber), ostTrack.toString());
+    }
+
+    @Test
+    public void ostTrackWithTrackCharacter() {
+        // OST track (upper byte is the number 0-99, lower byte is an optional ASCII character
+        final byte trackNumber = 99;
+        final Xid6.OstTrack ostTrack = new Xid6.OstTrack(trackNumber, 'A');
+        assertEquals("99 A", ostTrack.toString());
+    }
 
     // ------------ NULL CHECKS -------------------------------------
     @Test
@@ -171,7 +185,6 @@ public class Xid6Test {
         Xid6 empty = new Xid6();
         assertNotNull(empty.toString());
     }
-
 
 
 }
