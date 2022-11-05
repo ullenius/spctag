@@ -9,7 +9,7 @@ import org.junit.Test;
 import se.anosh.spctag.dao.SpcFile;
 import se.anosh.spctag.domain.Id666;
 
-public class TestSPCWithTextFormatTags {
+public class TextFormatTagsTest {
     
     private SpcFile spcFile;
     private Id666 id666;
