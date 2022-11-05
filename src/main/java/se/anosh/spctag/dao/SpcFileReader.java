@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.Objects;
+import java.util.function.Function;
 
 import se.anosh.spctag.domain.Id666;
 import se.anosh.spctag.emulator.factory.*;
@@ -164,18 +165,25 @@ final class SpcFileReader {
 	 * @return true if spc has binary tag format
 	 */
 	private boolean hasBinaryTagFormat() throws IOException {
-		final char first = parse(Field.ARTIST_OF_SONG_BINARY_FORMAT).charAt(0);
+		final char first = parse(Field.ARTIST_OF_SONG_BINARY_FORMAT,
+				(bytes) -> new String(bytes, StandardCharsets.UTF_8)) // don't cleanup result
+				.charAt(0);
 		// If 0xB0 is *NOT* a valid char or *IS* a digit then don't allow it.
 		// Sometimes we have valid digits in this offset (if the tag-format is text)
 		return Character.isLetter(first) && !Character.isDigit(first);
 	}
 
 	private String parse(Field field) throws IOException {
+		Function<byte[], String> func = (bytes) -> new String(bytes, StandardCharsets.UTF_8).trim(); // remove NULL characters;
+		return parse(field, func);
+	}
+
+	private String parse(Field field, Function<byte[], String> func) throws IOException {
 		Objects.requireNonNull(field);
 		raf.seek(field.getOffset());
 		byte[] bytes = new byte[field.getLength()];
 		raf.read(bytes);
-		return new String(bytes, StandardCharsets.UTF_8).trim(); // remove NULL characters
+		return func.apply(bytes);
 	}
 
 	private byte readByte(Field field) throws IOException {
