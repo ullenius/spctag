@@ -1,6 +1,8 @@
 package se.anosh.spctag.dao;
 
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.Objects;
@@ -83,9 +85,20 @@ final class SpcFileReader {
 	}
 	
 	private void readDateDumpWasCreated() throws IOException {
-		id666.setDateDumpWasCreated(parse(Field.DUMP_DATE_TEXT_FORMAT));
+		id666.setDateDumpWasCreated(parseDumpDate());
 	}
-	
+
+	private String parseDumpDate() throws IOException {
+		final Function<byte[], String> parseBinaryDumpDate = (bytes) -> {
+			var buffer = ByteBuffer.wrap(bytes)
+					.order(ByteOrder.LITTLE_ENDIAN);
+			return Integer.toString(buffer.getInt());
+		};
+		return id666.isBinaryTagFormat()
+				? parse(Field.DUMP_DATE_BINARY_FORMAT, parseBinaryDumpDate)
+				: parse(Field.DUMP_DATE_TEXT_FORMAT);
+	}
+
 	private void readHasId666Tags() throws IOException {
 		id666.setHasId666Tags(containsID666Tags());
 	}
@@ -208,7 +221,7 @@ final class SpcFileReader {
 		GAME_TITLE(0x4E, 32),
 		NAME_OF_DUMPER(0x6E, 16),
 		COMMENTS(0x7E, 32),
-		DUMP_DATE_TEXT_FORMAT(0x9E, 11), // FIXME implement binary format
+		DUMP_DATE_TEXT_FORMAT(0x9E, 11),
 		DUMP_DATE_BINARY_FORMAT(0x9E, 4),
 		ARTIST_OF_SONG_TEXT_FORMAT(0xB1, 32),
 		ARTIST_OF_SONG_BINARY_FORMAT(0xB0, 32),

@@ -1,5 +1,7 @@
 package se.anosh.spctag.domain;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 
 import se.anosh.spctag.emulator.factory.Emulator;
@@ -12,6 +14,8 @@ public final class Id666 implements Comparable <Id666> {
             .comparing(Id666::getGameTitle, nullSafeStringComparator)
             .thenComparing(Id666::getArtist, nullSafeStringComparator)
             .thenComparing(Id666::getSongTitle, nullSafeStringComparator);
+
+	private static final DateTimeFormatter BINARY_DUMP_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
 
 	private String header;
 	private String artist;
@@ -80,9 +84,17 @@ public final class Id666 implements Comparable <Id666> {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
+	public void setDateDumpWasCreated(final int dumpDate) {
+		final LocalDate date = LocalDate
+				.parse(Integer.toString(dumpDate), BINARY_DUMP_DATE_FORMAT); // date validation
+		setDateDumpWasCreated(date.toString()
+				.replaceAll("\\D", ""));
+	}
+
 	public void setDateDumpWasCreated(String dateDumpWasCreated) {
 		this.dateDumpWasCreated = dateDumpWasCreated;
 	}
+
 	public void setEmulatorUsedToCreateDump(Emulator emulatorUsedToCreateDump) {
 		this.emulatorUsedToCreateDump = emulatorUsedToCreateDump;
 	}
