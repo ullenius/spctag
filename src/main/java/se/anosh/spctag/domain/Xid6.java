@@ -46,7 +46,7 @@ public final class Xid6 {
         try {
             dumped = LocalDate.parse(Integer.toString(date), DUMPED_DATE_FORMATTER);
         } catch (DateTimeException ex) {
-            Logger.error("Invalid date format (date song was dumped): ", ex);
+            Logger.error("Invalid date format (date song was dumped): {}", ex);
             dumped = null;
         }
     }

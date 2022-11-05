@@ -3,6 +3,8 @@ package se.anosh.spctag;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.*;
 import org.junit.*;
 
@@ -50,7 +52,16 @@ public class TestModelWithData {
     public void testIfTextTagsAreDetectedAsBinary() {
         assertFalse(id666.isBinaryTagFormat());
     }
-    
+
+    @Test
+    public void dumpedDateParsing() throws IOException {
+        final Id666 id666 = new SpcFile(BINARY_SPC).read();
+        final String EXPECTED = LocalDate.of(1999, Month.DECEMBER, 24)
+                .toString()
+                .replaceAll("\\D", "");
+        assertEquals(EXPECTED, id666.getDateDumpWasCreated());
+    }
+
     @Test
     public void testIdenticalHashCodes() throws IOException {
         SpcFile cloneFile = new SpcFile(TEXT_SPC);
