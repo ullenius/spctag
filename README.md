@@ -119,14 +119,6 @@ EmulatorFactory myFactory = new ModernEmulatorFactory(); // First we create the 
 Emulator emulatorUsed = myFacftory.orderEmulator(0x31, Type.JAPANESE) // Type.LEGACY is also available
 ```
 
-## Changelog
-* 0.3.5 - fix id666 dumped date output
-* 0.3.4 - fix bug that crashed if dumped date was missing. Fix log warning
-* 0.3.3 - fix id666 dumped date parsing (binary format)
-* 0.3 - add xid6 support (extended tags). Update to Java 11. September 2021
-* 0.2 - utf8 support. November 2019
-* 0.1 - first release! February 2019
-
 ## :scroll::Licence
 GPL 3 only. See COPYING
 
