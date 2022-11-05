@@ -7,6 +7,7 @@ import se.anosh.spctag.dao.SpcFile;
 import se.anosh.spctag.domain.Xid6;
 import se.anosh.spctag.emulator.factory.*;
 
+import javax.transaction.xa.Xid;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -90,6 +91,28 @@ public class Xid6Test {
         final Xid6 xid6 = new Xid6();
         xid6.setDate(erroneousDumpedDate);
         assertNull(xid6.getDate());
+    }
+
+    @Test
+    public void dateFormatterUsesYear() {
+        final int date = 20040404;
+        final Xid6 xid6 = new Xid6();
+        xid6.setDate(date);
+        assertEquals(LocalDate.of(2004, Month.APRIL, 4), xid6.getDate());
+    }
+
+    @Test
+    public void dateRequiresTwoDigitsForMonthAndDay() {
+        final int monthOneDigit = 2000110;
+        final int dayOneDigit = 2003121;
+        final Xid6 month = new Xid6();
+        final Xid6 day = new Xid6();
+
+        month.setDate(monthOneDigit);
+        day.setDate(dayOneDigit);
+
+        assertNull(month.getDate());
+        assertNull(day.getDate());
     }
 
     @Test

@@ -18,9 +18,7 @@ public final class Id666 implements Comparable <Id666> {
             .thenComparing(Id666::getArtist, nullSafeStringComparator)
             .thenComparing(Id666::getSongTitle, nullSafeStringComparator);
 
-	private static final DateTimeFormatter BINARY_DUMP_DATE_FORMAT = DateTimeFormatter
-			.ofPattern("uuuuMMdd")
-			.withResolverStyle(ResolverStyle.STRICT);
+	private static final DateTimeFormatter BINARY_DUMP_DATE_FORMAT = DateUtil.id666DumpedDateFormatter();
 
 	private String header;
 	private String artist;

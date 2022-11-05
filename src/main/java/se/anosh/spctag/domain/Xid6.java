@@ -9,6 +9,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 import java.util.Objects;
 
 public final class Xid6 {
@@ -36,7 +37,7 @@ public final class Xid6 {
     private Byte mixingLevel;
     private Integer introLength;
 
-    private static final DateTimeFormatter DUMPED_DATE_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE; // FIXME broken
+    private static final DateTimeFormatter DUMPED_DATE_FORMATTER = DateUtil.xid6DumpedDateFormatter();
 
     public String getOstTitle() {
         return ostTitle;
@@ -46,7 +47,7 @@ public final class Xid6 {
         try {
             dumped = LocalDate.parse(Integer.toString(date), DUMPED_DATE_FORMATTER);
         } catch (DateTimeException ex) {
-            Logger.error("Invalid date format (date song was dumped): {}", ex);
+            Logger.warn("Invalid date format (date song was dumped): {}", ex);
             dumped = null;
         }
     }
