@@ -68,6 +68,14 @@ public class TestModelWithData {
     }
 
     @Test
+    public void binarySpcMissingDumpDate() throws IOException {
+        final Id666 id666 = new SpcFile(BINARY_SPC_WITHOUT_DUMPED_DATE).read();
+        assertEquals(Boolean.TRUE, id666.isBinaryTagFormat());
+        assertNull(id666.getDateDumpWasCreated());
+    }
+
+
+    @Test
     public void testIdenticalHashCodes() throws IOException {
         SpcFile cloneFile = new SpcFile(TEXT_SPC);
         Id666 clone = cloneFile.read();
