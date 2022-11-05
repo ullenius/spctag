@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.7
+* Fix bug in xid6 dumped date-validation
+
+Dates such as `20040404` failed to set the xid6 "dumped date" tag and resulted in 
+a log warning. Xid6 dump dates are extremely rare so this never happened in practice
+
 ## v0.3.6
 * Fix broken API. Lenient dump date parsing:
 Set date to blank string instead of crashing
