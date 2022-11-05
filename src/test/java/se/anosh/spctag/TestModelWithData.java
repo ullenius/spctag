@@ -15,6 +15,9 @@ import se.anosh.spctag.domain.Id666;
 public class TestModelWithData {
 	
     static final String BINARY_SPC = "src/test/resources/spc/binary.spc";
+
+    private static final String BINARY_SPC_WITHOUT_DUMPED_DATE = "src/test/resources/spc/binary-nodate.spc";
+
     static final String TEXT_SPC = "src/test/resources/spc/text.spc";
 
     private static final String SPC_WITH_NO_ID666_TAGS = "src/test/resources/spc/containsNoTagSetToTrue.spc";
