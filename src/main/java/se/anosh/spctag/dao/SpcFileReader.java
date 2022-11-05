@@ -164,7 +164,7 @@ final class SpcFileReader {
 	 * @return true if spc has binary tag format
 	 */
 	private boolean hasBinaryTagFormat() throws IOException {
-		final byte first = readByte(Field.ARTIST_OF_SONG_BINARY_FORMAT);
+		final char first = parse(Field.ARTIST_OF_SONG_BINARY_FORMAT).charAt(0);
 		// If 0xB0 is *NOT* a valid char or *IS* a digit then don't allow it.
 		// Sometimes we have valid digits in this offset (if the tag-format is text)
 		return Character.isLetter(first) && !Character.isDigit(first);
@@ -179,7 +179,7 @@ final class SpcFileReader {
 	}
 
 	private byte readByte(Field field) throws IOException {
-		assertTrue(field == Field.ARTIST_OF_SONG_BINARY_FORMAT || field.getLength() == 1, "Field length must be 1 byte");
+		assertTrue(field.getLength() == 1, "Field length must be 1 byte");
 		raf.seek(field.getOffset());
 		return raf.readByte();
 	}

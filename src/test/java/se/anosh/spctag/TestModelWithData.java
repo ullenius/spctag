@@ -54,8 +54,10 @@ public class TestModelWithData {
     }
 
     @Test
-    public void dumpedDateParsing() throws IOException {
+    public void dumpedDateBinaryParsing() throws IOException {
         final Id666 id666 = new SpcFile(BINARY_SPC).read();
+        assertEquals(Boolean.TRUE, id666.isBinaryTagFormat()); // sanity check
+
         final String EXPECTED = LocalDate.of(1999, Month.DECEMBER, 24)
                 .toString()
                 .replaceAll("\\D", "");
