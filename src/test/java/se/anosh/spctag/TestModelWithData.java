@@ -71,7 +71,7 @@ public class TestModelWithData {
     public void binarySpcMissingDumpDate() throws IOException {
         final Id666 id666 = new SpcFile(BINARY_SPC_WITHOUT_DUMPED_DATE).read();
         assertEquals(Boolean.TRUE, id666.isBinaryTagFormat());
-        assertNull(id666.getDateDumpWasCreated());
+        assertEquals("", id666.getDateDumpWasCreated());
     }
 
     @Test

@@ -6,8 +6,6 @@ import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.OptionalInt;
 import java.util.function.Function;
 
 import se.anosh.spctag.domain.Id666;
@@ -92,6 +90,9 @@ final class SpcFileReader {
 		}
 		else if (id666.isTextTagFormat()) {
 			id666.setDateDumpWasCreated(parse(Id666.Field.DUMP_DATE_TEXT_FORMAT));
+		}
+		else {
+			id666.setDateDumpWasCreated("");
 		}
 	}
 

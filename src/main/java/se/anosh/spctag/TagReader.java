@@ -19,7 +19,7 @@ import se.anosh.spctag.domain.Xid6;
  */
 public final class TagReader {
     
-    private static final String VERSION ="spctag version 0.3.4";
+    private static final String VERSION ="spctag version 0.3.5";
     private static final String ABOUT = "code by A. Ullenius 2019";
     private static final String LICENCE = "Licence: Gnu General Public License - version 3.0 only";
     private static final String TRIBUTE = "spctag is dedicated to my favourite OC remixer: Avien (1986-2004). RIP";
@@ -80,7 +80,7 @@ public final class TagReader {
                 System.out.println("Name of dumper: " + myFile.getNameOfDumper());
                 System.out.println("Comments: " + myFile.getComments());
 
-                System.out.println("Date SPC was dumped:" + myFile.getDateDumpWasCreated());
+                System.out.println("Date SPC was dumped: " + myFile.getDateDumpWasCreated());
                 System.out.println("Emulator used to dump SPC: " + myFile.getEmulatorUsedToCreateDump().getName());
 
                 if (cmd.hasOption(VERBOSE) || cmd.hasOption(XID6)) {
