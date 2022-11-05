@@ -2,8 +2,10 @@ package se.anosh.spctag.domain;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 import java.util.Comparator;
 
+import org.tinylog.Logger;
 import se.anosh.spctag.emulator.factory.Emulator;
 
 public final class Id666 implements Comparable <Id666> {
@@ -15,7 +17,9 @@ public final class Id666 implements Comparable <Id666> {
             .thenComparing(Id666::getArtist, nullSafeStringComparator)
             .thenComparing(Id666::getSongTitle, nullSafeStringComparator);
 
-	private static final DateTimeFormatter BINARY_DUMP_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
+	private static final DateTimeFormatter BINARY_DUMP_DATE_FORMAT = DateTimeFormatter
+			.ofPattern("uuuuMMdd")
+			.withResolverStyle(ResolverStyle.STRICT);
 
 	private String header;
 	private String artist;
@@ -92,6 +96,9 @@ public final class Id666 implements Comparable <Id666> {
 	}
 
 	public void setDateDumpWasCreated(String dateDumpWasCreated) {
+		if (dateDumpWasCreated.length() > Field.DUMP_DATE_BINARY_FORMAT.getLength()) {
+			Logger.warn("Dump date is longer than allowed");
+		}
 		this.dateDumpWasCreated = dateDumpWasCreated;
 	}
 
@@ -193,6 +200,37 @@ public final class Id666 implements Comparable <Id666> {
 			return false;
 		return true;
 	}
-	 
+
+	public enum Field {
+		HEADER(0x00, 33),
+		SONG_TITLE(0x2E, 32),
+		GAME_TITLE(0x4E, 32),
+		NAME_OF_DUMPER(0x6E, 16),
+		COMMENTS(0x7E, 32),
+		DUMP_DATE_TEXT_FORMAT(0x9E, 11),
+		DUMP_DATE_BINARY_FORMAT(0x9E, 4),
+		ARTIST_OF_SONG_TEXT_FORMAT(0xB1, 32),
+		ARTIST_OF_SONG_BINARY_FORMAT(0xB0, 32),
+		EMULATOR_TEXT_FORMAT(0xD2, 1),
+		EMULATOR_BINARY_FORMAT(0xD1, 1),
+
+		HEADER_CONTAINS_ID666_TAG(0x23, 1);
+
+		private final int length;
+		private final int offset;
+
+		Field(int offset, int length) {
+			this.offset = offset;
+			this.length = length;
+		}
+
+		public int getLength() {
+			return length;
+		}
+
+		public int getOffset() {
+			return offset;
+		}
+	}
 
 }
