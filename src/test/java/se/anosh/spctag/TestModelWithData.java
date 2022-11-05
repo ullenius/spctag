@@ -12,12 +12,17 @@ import se.anosh.spctag.domain.Id666;
 
 public class TestModelWithData {
 	
+    static final String BINARY_SPC = "src/test/resources/spc/binary.spc";
+    static final String TEXT_SPC = "src/test/resources/spc/text.spc";
+
+    private static final String SPC_WITH_NO_ID666_TAGS = "src/test/resources/spc/containsNoTagSetToTrue.spc";
+    
 	private SpcFile spcFile;
     private Id666 id666;
     
     @Before
     public void setup() throws IOException {
-        spcFile = new SpcFile("spc/text.spc");
+        spcFile = new SpcFile(TEXT_SPC);
         id666 = spcFile.read();
     }
 
@@ -31,7 +36,7 @@ public class TestModelWithData {
     
     @Test
     public void testIfHeaderDoesNotContainsTags() throws IOException {
-        spcFile = new SpcFile("spc/containsNoTagSetToTrue.spc");
+        spcFile = new SpcFile(SPC_WITH_NO_ID666_TAGS);
         id666 = spcFile.read();
         assertFalse(id666.hasId666Tags());
     }
@@ -48,7 +53,7 @@ public class TestModelWithData {
     
     @Test
     public void testIdenticalHashCodes() throws IOException {
-        SpcFile cloneFile = new SpcFile("spc/text.spc");
+        SpcFile cloneFile = new SpcFile(TEXT_SPC);
         Id666 clone = cloneFile.read();
         
         assertNotSame(clone,id666); // don't cheat
@@ -57,7 +62,7 @@ public class TestModelWithData {
     
     @Test
     public void testNotIdenticalHashCodes() throws IOException {
-        SpcFile different = new SpcFile("spc/binary.spc");
+        SpcFile different = new SpcFile(BINARY_SPC);
         Id666 differentId666 = different.read();
         
         assertNotSame(differentId666,id666); // object references
@@ -67,7 +72,7 @@ public class TestModelWithData {
     
     @Test
     public void testEqualObjects() throws IOException {
-        SpcFile cloneFile = new SpcFile("spc/text.spc");
+        SpcFile cloneFile = new SpcFile(TEXT_SPC);
         Id666 clone = cloneFile.read();
         
         assertNotSame(clone,id666); // no cheating
@@ -77,7 +82,7 @@ public class TestModelWithData {
     
     @Test
     public void testNonEqualObjects() throws IOException {
-         SpcFile cloneFile = new SpcFile("spc/binary.spc");
+         SpcFile cloneFile = new SpcFile(BINARY_SPC);
          Id666 clone = cloneFile.read();
          
          assertNotEquals(clone, spcFile.read());
@@ -85,7 +90,7 @@ public class TestModelWithData {
     
     @Test
     public void testComparableSorting() throws IOException {
-        final SpcFile otherFile = new SpcFile("spc/binary.spc");
+        final SpcFile otherFile = new SpcFile(BINARY_SPC);
         final Id666 other = otherFile.read();
         
         List<Id666> myList = new LinkedList<>();
@@ -104,7 +109,7 @@ public class TestModelWithData {
     
     @Test
     public void testComparableWithNullValues() throws IOException {
-        SpcDao otherFile = new SpcFile("spc/binary.spc"); //accessing using the interface this time
+        SpcDao otherFile = new SpcFile(BINARY_SPC); //accessing using the interface this time
         Id666 other = otherFile.read();
         
         other.setGameTitle(null);

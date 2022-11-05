@@ -22,9 +22,15 @@ public class Xid6Test {
     private SpcDao dao;
     private Xid6 uut;
 
+    private static final String SPC_XID6 = "src/test/resources/spc/xid6.spc";
+
+    private static final String SPC_MUTED_CHANNELS_ALL_BITS_TOGGLED = "src/test/resources/spc/muted.spc";
+
+    private static final String SPC_MUTED_CHANNELS_0x43 = "src/test/resources/spc/bar.spc";
+
     @Before
     public void setup() throws IOException {
-        spc = Paths.get("spc/xid6.spc");
+        spc = Paths.get(SPC_XID6);
         dao = new SpcFile(spc.toString());
         uut = dao.readXid6();
     }
@@ -97,7 +103,7 @@ public class Xid6Test {
 
     @Test
     public void parseMutedChannelsFromFile() throws IOException {
-        Path spc2 = Paths.get("spc/bar.spc");
+        Path spc2 = Paths.get(SPC_MUTED_CHANNELS_0x43);
         SpcDao dao2 = new SpcFile(spc2.toString());
         Xid6 uut2 = dao2.readXid6();
         final String bitpattern = "01000011";
@@ -106,7 +112,7 @@ public class Xid6Test {
 
     @Test
     public void parseMutedChannelsFromFileAllBitsSet() throws IOException {
-        Path spc2 = Paths.get("spc/muted.spc");
+        Path spc2 = Paths.get(SPC_MUTED_CHANNELS_ALL_BITS_TOGGLED);
         SpcDao dao2 = new SpcFile(spc2.toString());
         Xid6 uut2 = dao2.readXid6();
         final String bitpattern = "11111111";

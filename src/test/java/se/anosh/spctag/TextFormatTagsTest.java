@@ -1,6 +1,7 @@
 package se.anosh.spctag;
 
 import static org.junit.Assert.assertEquals;
+import static se.anosh.spctag.TestModelWithData.TEXT_SPC;
 
 import java.io.IOException;
 
@@ -13,10 +14,13 @@ public class TextFormatTagsTest {
     
     private SpcFile spcFile;
     private Id666 id666;
-    
+
+    private static final String SPC_RANDOM_BYTES = "src/test/resources/spc/randomBytes.spc";
+
+
     @Before
     public void setup() throws IOException {
-        spcFile = new SpcFile("spc/text.spc");
+        spcFile = new SpcFile(TEXT_SPC);
         id666 = spcFile.read();
     }
     
@@ -30,7 +34,7 @@ public class TextFormatTagsTest {
     @Test(expected=IOException.class)
     public void testFileWithInvalidHeader() throws IOException {
         // tests a file that is not SPC
-        spcFile = new SpcFile("spc/randomBytes.spc");
+        spcFile = new SpcFile(SPC_RANDOM_BYTES);
     }
     
     
