@@ -51,14 +51,14 @@ final class SpcFileReader {
 		
 		readNameOfDumper();
 		readComments();
-		readDateDumpWasCreated();
-		
+
 		readHasId666Tags();
 		readTagFormat();
 
-		// these two depend on the tag-format being binary or text
+		// these depend on the tag-format being binary or text
 		readArtist();
 		readEmulatorUsedToCreateDump();
+		readDateDumpWasCreated();
 	}
 
 	private void readHeader() throws IOException {
@@ -82,7 +82,7 @@ final class SpcFileReader {
 	}
 	
 	private void readDateDumpWasCreated() throws IOException {
-		id666.setDateDumpWasCreated(parse(Field.DUMP_DATE));
+		id666.setDateDumpWasCreated(parse(Field.DUMP_DATE_TEXT_FORMAT));
 	}
 	
 	private void readHasId666Tags() throws IOException {
@@ -200,7 +200,8 @@ final class SpcFileReader {
 		GAME_TITLE(0x4E, 32),
 		NAME_OF_DUMPER(0x6E, 16),
 		COMMENTS(0x7E, 32),
-		DUMP_DATE(0x9E, 11),
+		DUMP_DATE_TEXT_FORMAT(0x9E, 11), // FIXME implement binary format
+		DUMP_DATE_BINARY_FORMAT(0x9E, 4),
 		ARTIST_OF_SONG_TEXT_FORMAT(0xB1, 32),
 		ARTIST_OF_SONG_BINARY_FORMAT(0xB0, 32),
 		EMULATOR_TEXT_FORMAT(0xD2, 1),
