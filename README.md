@@ -120,7 +120,7 @@ Emulator emulatorUsed = myFacftory.orderEmulator(0x31, Type.JAPANESE) // Type.LE
 ```
 
 ## Changelog
-* 0.3.4 - fix bug that crashed if dumped date was missing
+* 0.3.4 - fix bug that crashed if dumped date was missing. Fix log warning
 * 0.3.3 - fix id666 dumped date parsing (binary format)
 * 0.3 - add xid6 support (extended tags). Update to Java 11. September 2021
 * 0.2 - utf8 support. November 2019

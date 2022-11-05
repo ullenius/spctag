@@ -96,7 +96,7 @@ public final class Id666 implements Comparable <Id666> {
 	}
 
 	public void setDateDumpWasCreated(String dateDumpWasCreated) {
-		if (dateDumpWasCreated.length() > Field.DUMP_DATE_BINARY_FORMAT.getLength()) {
+		if (dateDumpWasCreated.length() > Field.DUMP_DATE_TEXT_FORMAT.getLength()) {
 			Logger.warn("Dump date is longer than allowed");
 		}
 		this.dateDumpWasCreated = dateDumpWasCreated;
