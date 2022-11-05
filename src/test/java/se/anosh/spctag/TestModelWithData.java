@@ -74,7 +74,6 @@ public class TestModelWithData {
         assertNull(id666.getDateDumpWasCreated());
     }
 
-
     @Test
     public void testIdenticalHashCodes() throws IOException {
         SpcFile cloneFile = new SpcFile(TEXT_SPC);

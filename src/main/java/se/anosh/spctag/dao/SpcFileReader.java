@@ -6,6 +6,8 @@ import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.function.Function;
 
 import se.anosh.spctag.domain.Id666;
@@ -85,12 +87,16 @@ final class SpcFileReader {
 	}
 	
 	private void readDateDumpWasCreated() throws IOException {
-		if (id666.isBinaryTagFormat()) {
+		if (id666.isBinaryTagFormat() && hasBinaryDumpDate()) {
 			id666.setDateDumpWasCreated(parseBinaryDumpDate());
 		}
-		else {
+		else if (id666.isTextTagFormat()) {
 			id666.setDateDumpWasCreated(parse(Id666.Field.DUMP_DATE_TEXT_FORMAT));
 		}
+	}
+
+	private boolean hasBinaryDumpDate() throws IOException {
+		return parseBinaryDumpDate() != 0;
 	}
 
 	private Integer parseBinaryDumpDate() throws IOException {
