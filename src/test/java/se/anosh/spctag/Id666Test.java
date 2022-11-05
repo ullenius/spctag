@@ -15,12 +15,14 @@ public class Id666Test {
         uut = new Id666();
     }
 
+    @Test
     public void dumpedDateStrictResolverStyle() {
         final int illegalDateFormat = 19990229;
         uut.setDateDumpWasCreated(illegalDateFormat);
         assertEquals("", uut.getDateDumpWasCreated());
     }
 
+    @Test
     public void dumpedDateFailsOnShortDates() {
         final int shortDate = 991105;
         uut.setDateDumpWasCreated(shortDate);
@@ -28,16 +30,10 @@ public class Id666Test {
     }
 
     @Test
-    public void dumpedDate_yyMMdd() {
+    public void dumpedDate_yyyyMMdd() {
         final int date = 20000401;
         uut.setDateDumpWasCreated(date);
         assertEquals(Integer.toString(date), uut.getDateDumpWasCreated());
-    }
-
-    @Test
-    public void dumpedDateStringIsLenient() {
-
-
     }
 
 }
