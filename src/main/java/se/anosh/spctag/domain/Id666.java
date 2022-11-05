@@ -2,6 +2,7 @@ package se.anosh.spctag.domain;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.Comparator;
 
@@ -89,10 +90,16 @@ public final class Id666 implements Comparable <Id666> {
 		this.comments = comments;
 	}
 	public void setDateDumpWasCreated(final int dumpDate) {
-		final LocalDate date = LocalDate
-				.parse(Integer.toString(dumpDate), BINARY_DUMP_DATE_FORMAT); // date validation
-		setDateDumpWasCreated(date.toString()
-				.replaceAll("\\D", ""));
+		try {
+			final LocalDate date = LocalDate
+					.parse(Integer.toString(dumpDate), BINARY_DUMP_DATE_FORMAT); // date validation
+			setDateDumpWasCreated(date.toString()
+					.replaceAll("\\D", ""));
+		} catch (DateTimeParseException ex) {
+			Logger.warn("Invalid date format: {}", ex);
+			Logger.warn("Setting dump date to empty as fallback");
+			setDateDumpWasCreated("");
+		}
 	}
 
 	public void setDateDumpWasCreated(String dateDumpWasCreated) {
