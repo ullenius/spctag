@@ -9,7 +9,7 @@ import se.anosh.spctag.domain.Xid6;
 
 /**
  *
- * SPC tag 0.3
+ * SPC tag
  * 
  * Java command-line tool for reading the ID666 tag from a SNES SPC file.
  * 
@@ -19,7 +19,7 @@ import se.anosh.spctag.domain.Xid6;
  */
 public final class TagReader {
     
-    private static final String VERSION ="spctag version 0.3.3";
+    private static final String VERSION ="spctag version 0.3.4";
     private static final String ABOUT = "code by A. Ullenius 2019";
     private static final String LICENCE = "Licence: Gnu General Public License - version 3.0 only";
     private static final String TRIBUTE = "spctag is dedicated to my favourite OC remixer: Avien (1986-2004). RIP";
