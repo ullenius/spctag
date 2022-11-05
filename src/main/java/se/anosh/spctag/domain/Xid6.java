@@ -36,7 +36,7 @@ public final class Xid6 {
     private Byte mixingLevel;
     private Integer introLength;
 
-    private static final DateTimeFormatter DUMPED_DATE_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE;
+    private static final DateTimeFormatter DUMPED_DATE_FORMATTER = DateTimeFormatter.BASIC_ISO_DATE; // FIXME broken
 
     public String getOstTitle() {
         return ostTitle;
