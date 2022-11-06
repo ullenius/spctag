@@ -1,12 +1,16 @@
 Addendum:
 ¯¯¯¯¯¯¯¯¯
+
+---A.U 2019
  * fixed the number of reserved bytes at offset 0002Ch
  * changed the version number to v0.31
  * Detecting the format of the SPC file (binary or text) can be a bit tricky, since fields
    might contain ambiguous values and there's no format indicator. Some fields have
    different offsets depending of the format, which might help with the detection. The
    current Win32 version of ZSNES saves binary SPC files; SNES9x saves in text format.
- * Original file content follows.
+
+* Fixed binary dumped date. 2022
+----
 
  - creaothceann, 2006-02-27 21:48
 
@@ -54,7 +58,13 @@ ID666 Tag (binary format):
 0004Eh    32 Game title
 0006Eh    16 Name of dumper
 0007Eh    32 Comments
-0009Eh     4 Date SPC was dumped (YYYYMMDD)
+
+----
+0009Eh     1 Date SPC was dumped. Day part. (1 - 31
+0009Fh     1 Date SPC was dumped. Month part. (1 - 12)
+000A0h     2 Date SPC was dumped. Year part (1 - 9999)
+--- A.U 2022, fixed dumped date
+
 000A2h     7 unused
 000A9h     3 Number of seconds to play song before fading out
 000ACh     4 Length of fade in milliseconds
