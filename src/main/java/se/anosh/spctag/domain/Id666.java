@@ -67,7 +67,7 @@ public final class Id666 implements Comparable <Id666> {
 	public boolean isBinaryTagFormat() {
 		return binaryTagFormat;
 	}
-	public boolean isTextTagFormat() { // the opposite boolean result of isBinaryTagFormat
+	public boolean isTextTagFormat() {
 		return !isBinaryTagFormat();
 	}
 	

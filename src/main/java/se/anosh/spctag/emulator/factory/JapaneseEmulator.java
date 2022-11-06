@@ -74,7 +74,6 @@ public class JapaneseEmulator extends Emulator {
      * using an internal HashMap
      * 
      * @param code
-     * @return 
      */
     JapaneseEmulator(int code) {
         super(emulatorMap.get(code), code);

@@ -3,13 +3,15 @@ package se.anosh.spctag;
 import static org.junit.Assert.assertEquals;
 import static se.anosh.spctag.TestModelWithData.TEXT_SPC;
 
-import java.awt.*;
 import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
 import se.anosh.spctag.dao.SpcFile;
 import se.anosh.spctag.domain.Id666;
+import se.anosh.spctag.emulator.factory.Emulator;
+import se.anosh.spctag.emulator.factory.LegacyEmulator;
+import se.anosh.spctag.emulator.factory.Name;
 
 public class SpcTextFormatTest {
     
@@ -23,6 +25,11 @@ public class SpcTextFormatTest {
     public void setup() throws IOException {
         spcFile = new SpcFile(TEXT_SPC);
         id666 = spcFile.read();
+    }
+
+    @Test
+    public void textualHeaderFormat() {
+        assertEquals(Boolean.TRUE, id666.isTextTagFormat());
     }
     
     @Test
@@ -67,7 +74,16 @@ public class SpcTextFormatTest {
         assertEquals(expected, id666.getComments());
     }
 
+    @Test
+    public void textualDumpDate() {
+        final String expected = "1999/12/24";
+        assertEquals(expected, id666.getDateDumpWasCreated());
+    }
 
-    
-    
+    @Test
+    public void emulatorUsedToCreateDump() {
+        final Name emulator = Name.Unknown;
+        assertEquals(emulator, id666.getEmulatorUsedToCreateDump().getName());
+    }
+
 }
