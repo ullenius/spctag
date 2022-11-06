@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.3.9
+* Fix bug in SPC spec (binary dump date)
+* Log warning if "dumped date"-field pre-dates birth of SPC-format (from `SPCTool`). Only implemented for binary tags.
+* Fix typo in assertion message
+* Code refactoring
+* Add more unit tests for parsing of textual SPC-tags
+
+
 ## v0.3.8
 * Fix broken binary dump-date parsing.
 
