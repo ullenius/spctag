@@ -19,7 +19,7 @@ import se.anosh.spctag.domain.Xid6;
  */
 public final class TagReader {
     
-    private static final String VERSION ="spctag version 0.3.7";
+    private static final String VERSION ="spctag version 0.3.8";
     private static final String ABOUT = "code by A. Ullenius 2019-2022";
     private static final String LICENCE = "Licence: Gnu General Public License - version 3.0 only";
     private static final String TRIBUTE = "spctag is dedicated to my favourite OC remixer: Avien (1986-2004). RIP";

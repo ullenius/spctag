@@ -1,5 +1,43 @@
 # Changelog
 
+## v0.3.8
+* Fix broken binary dump-date parsing.
+
+Binary dump dates are stored as: `byte, byte, short { day, month, year }`
+in little-endian format. Previously they were incorrectly parsed as a 4-byte `int` and 
+thus failed to parse as a valid ISO-8601 date.
+
+### Buggy behaviour
+```java
+09:25:57.125 WARN: Invalid date format: java.time.format.DateTimeParseException: Text '131402265' could not be parsed at index 0
+09:25:57.129 WARN: Setting dump date to empty as fallback
+```
+
+### After fix
+
+```bash
+$ java -jar spctag.jar -v "17 - Ending.spc"
+```
+```
+File header: SNES-SPC700 Sound File Data v0.30
+Tag format: Binary
+Artist: Stefan Kramer, Jesper "Jo" Olsen
+Song title: Ending
+Game title: Rendering Ranger R2
+Name of dumper: Knurek
+Comments: 
+Date SPC was dumped: 20051025
+Emulator used to dump SPC: ZSNES
+-----------
+XID6 tags:
+-----------
+OST track: 0
+Publisher's name: Rainbow Arts
+Copyright year: 1995
+Introduction length: 3.0
+Fade length: 448000
+```
+
 ## v0.3.7
 * Fix bug in xid6 dumped date-validation
 
