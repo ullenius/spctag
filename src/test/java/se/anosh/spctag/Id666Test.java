@@ -28,41 +28,4 @@ public class Id666Test {
         assertEquals(expected, uut.getDateDumpWasCreated());
     }
 
-    @Test
-    public void dumpedDateStrictResolverStyle() {
-        final int date = createBinaryDumpDate((short) 1999, (byte) 2, (byte) 29);
-     //   uut.setDateDumpWasCreated(date);
-        assertEquals("", uut.getDateDumpWasCreated());
-    }
-
-    @Test
-    public void dumpedDateFailsOnShortDates() {
-        final int shortDate = 991105;
-   //     uut.setDateDumpWasCreated(shortDate);
-        assertEquals("", uut.getDateDumpWasCreated());
-    }
-
-    @Test
-    public void dumpedDate_yyyyMMdd() {
-        final int date = 20000401;
-      //  uut.setDateDumpWasCreated(date);
-        assertEquals(Integer.toString(date), uut.getDateDumpWasCreated());
-    }
-
-    private int createBinaryDumpDate(LocalDate date) {
-        final short year = (short) date.getYear();
-        final byte month = (byte) date.getMonthValue();
-        final byte day = (byte) date.getDayOfMonth();
-        return createBinaryDumpDate(year, month, day);
-    }
-
-    private int createBinaryDumpDate(short year, byte month, byte day) {
-        var buffer = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN);
-        buffer.put(day);
-        buffer.put(month);
-        buffer.putShort(year);
-        buffer.rewind();
-        return buffer.getInt();
-    }
-
 }

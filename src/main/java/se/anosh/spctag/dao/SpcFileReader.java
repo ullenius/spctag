@@ -212,7 +212,7 @@ final class SpcFileReader {
 	}
 
 	private byte readByte(Id666.Field field) throws IOException {
-		assertTrue(field.getLength() == 1, "Id666.Field length must be 1 byte");
+		assertTrue(field == Id666.Field.DUMP_DATE_BINARY_FORMAT || field.getLength() == 1, "Id666.Field length must be 1 byte");
 		raf.seek(field.getOffset());
 		return raf.readByte();
 	}
