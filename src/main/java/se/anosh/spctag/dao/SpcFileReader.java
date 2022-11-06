@@ -21,8 +21,8 @@ final class SpcFileReader {
 
 	// version may vary, most recent is 0.31 (?) from 2006
 	private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data";
-	private static final byte CONTAINS_ID666_TAG = 26;
-	private static final byte MISSING_ID666_TAG = 27;
+	private static final byte CONTAINS_ID666_TAG = 0x1A;
+	private static final byte MISSING_ID666_TAG = 0x1B;
 
 	private static final String READ_ONLY = "r";
 
@@ -66,7 +66,7 @@ final class SpcFileReader {
 	}
 
 	private void readHeader() throws IOException {
-		id666.setHeader(parse(Id666.Field.HEADER)); // removes NULL character
+		id666.setHeader(parse(Id666.Field.HEADER));
 	}
 
 	private void readSongTitle() throws IOException {
@@ -134,7 +134,7 @@ final class SpcFileReader {
 		setEmulatorUsedToCreateDump(detectOffsetEmulatorUsedToCreateDump());
 	}
 
-	private Id666.Field detectOffsetEmulatorUsedToCreateDump() { // emulator offset to use...
+	private Id666.Field detectOffsetEmulatorUsedToCreateDump() {
 		return id666.isBinaryTagFormat()
 				? Id666.Field.EMULATOR_BINARY_FORMAT
 				: Id666.Field.EMULATOR_TEXT_FORMAT;
@@ -158,7 +158,6 @@ final class SpcFileReader {
 
 	/**
 	 * 
-	 * @return
 	 * @throws IOException if offset has invalid value SPC-file.
 	 */
 	private boolean containsID666Tags() throws IOException{
@@ -212,7 +211,7 @@ final class SpcFileReader {
 	}
 
 	private byte readByte(Id666.Field field) throws IOException {
-		assertTrue(field == Id666.Field.DUMP_DATE_BINARY_FORMAT || field.getLength() == 1, "Id666.Field length must be 1 byte");
+		assertTrue(field == Id666.Field.DUMP_DATE_BINARY_FORMAT || field.getLength() == 1, "Field length must be 1 byte");
 		raf.seek(field.getOffset());
 		return raf.readByte();
 	}
