@@ -126,6 +126,8 @@ GPL 3 only. See COPYING
 * Apache Commons CLI-library - [Apache Licence version 2](https://www.apache.org/licenses/LICENSE-2.0)
 * tinylog - [Apache Licence version 2](https://www.apache.org/licenses/LICENSE-2.0)
 * [S-SMP chip for SFC](https://commons.wikimedia.org/wiki/File:S-SMP_01.jpg) - made by [Yaca2671](https://commons.wikimedia.org/wiki/User_talk:Yaca2671) (2007). [Creative Commons Attribution-Share-Alike](https://creativecommons.org/licenses/by-sa/3.0/) 3.0 Unported licence.
+* SPC dumped-date check (logs warning if tag pre-dates the birth of the SPC-format; 1998-04-15) used is from `SPCTool` 
+(GPL2 or later) by Anti Resonance. [Source](https://github.com/ullenius/spctool/blob/7a680c84c02bf8bacfb6233e466a43c0b5588ba9/SNES/ID666.cpp#L918)
 
 ## Dedication
 SPCtag is dedicated to my favourite OC remixer [Avien](https://ocremix.org/artist/4402/avien) (1986-2004). RIP :notes: :saxophone:

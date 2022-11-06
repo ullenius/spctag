@@ -1,9 +1,8 @@
 package se.anosh.spctag.domain;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -21,6 +20,9 @@ public final class Id666 implements Comparable <Id666> {
 
 	private static final DateTimeFormatter BINARY_DUMP_DATE_FORMAT = DateUtil.id666DumpedDateFormatter();
 
+	//SPC's didn't exist before 15 Apr 1998
+	private static final LocalDate SPC_FORMAT_BIRTHDAY = LocalDate.of(1998, Month.APRIL, 15);
+
 	private String header;
 	private String artist;
 	private String songTitle;
@@ -31,8 +33,7 @@ public final class Id666 implements Comparable <Id666> {
 	private Emulator emulatorUsedToCreateDump;
 
 	// primitive type wrappers so that they will cause
-	// nullpointerexception instead of default value
-	// if setMethod is never called
+	// NPE instead of default value if setMethod is never called
 	private Boolean hasId666Tags;
 	private Boolean binaryTagFormat;
 	
@@ -90,12 +91,15 @@ public final class Id666 implements Comparable <Id666> {
 	}
 	public void setDateDumpWasCreated(final LocalDate dumpdate) {
 		Objects.requireNonNull(dumpdate);
+		if (dumpdate.isBefore(SPC_FORMAT_BIRTHDAY)) {
+			Logger.warn("SPC dumped date pre-dates the SPC-format ({}): {}", SPC_FORMAT_BIRTHDAY, dumpdate);
+		}
 		setDateDumpWasCreated(dumpdate
 				.format(BINARY_DUMP_DATE_FORMAT)
 				.replaceAll("\\D", ""));
 	}
 
-	public void setDateDumpWasCreated(String dateDumpWasCreated) {
+	public void setDateDumpWasCreated(String dateDumpWasCreated) { // FIXME add validation
 		if (dateDumpWasCreated.length() > Field.DUMP_DATE_TEXT_FORMAT.getLength()) {
 			Logger.warn("Dump date is longer than allowed");
 		}

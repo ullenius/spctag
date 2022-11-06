@@ -4,8 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import se.anosh.spctag.domain.Id666;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -27,5 +25,14 @@ public class Id666Test {
         uut.setDateDumpWasCreated(date);
         assertEquals(expected, uut.getDateDumpWasCreated());
     }
+
+    @Test
+    public void preSpcFormatDumpedDatesWork() {
+        final String expected = "19970508";
+        var earlyDate = LocalDate.of(1997, Month.MAY, 8);
+        uut.setDateDumpWasCreated(earlyDate);
+        assertEquals(expected, uut.getDateDumpWasCreated());
+    }
+
 
 }
