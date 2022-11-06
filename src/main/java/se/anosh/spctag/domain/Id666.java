@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.Comparator;
+import java.util.Objects;
 
 import org.tinylog.Logger;
 import se.anosh.spctag.emulator.factory.Emulator;
@@ -87,17 +88,11 @@ public final class Id666 implements Comparable <Id666> {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-	public void setDateDumpWasCreated(final int dumpDate) {
-		try {
-			final LocalDate date = LocalDate
-					.parse(Integer.toString(dumpDate), BINARY_DUMP_DATE_FORMAT); // date validation
-			setDateDumpWasCreated(date.toString()
-					.replaceAll("\\D", ""));
-		} catch (DateTimeParseException ex) {
-			Logger.warn("Invalid date format: {}", ex);
-			Logger.warn("Setting dump date to empty as fallback");
-			setDateDumpWasCreated("");
-		}
+	public void setDateDumpWasCreated(final LocalDate dumpdate) {
+		Objects.requireNonNull(dumpdate);
+		setDateDumpWasCreated(dumpdate
+				.format(BINARY_DUMP_DATE_FORMAT)
+				.replaceAll("\\D", ""));
 	}
 
 	public void setDateDumpWasCreated(String dateDumpWasCreated) {

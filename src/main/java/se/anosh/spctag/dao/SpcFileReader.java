@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -97,14 +98,17 @@ final class SpcFileReader {
 	}
 
 	private boolean hasBinaryDumpDate() throws IOException {
-		return parseBinaryDumpDate() != 0;
+		return readByte(Id666.Field.DUMP_DATE_BINARY_FORMAT) != 0;
 	}
 
-	private Integer parseBinaryDumpDate() throws IOException {
+	private LocalDate parseBinaryDumpDate() throws IOException {
 		return parse(Id666.Field.DUMP_DATE_BINARY_FORMAT, (bytes) -> {
 			var buffer = ByteBuffer.wrap(bytes)
 					.order(ByteOrder.LITTLE_ENDIAN);
-			return buffer.getInt();
+			final byte day = buffer.get();
+			final byte month = buffer.get();
+			final short year = buffer.getShort();
+			return LocalDate.of(year, month, day);
 		});
 	}
 
