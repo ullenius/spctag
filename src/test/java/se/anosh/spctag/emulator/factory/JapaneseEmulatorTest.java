@@ -6,7 +6,7 @@ import static se.anosh.spctag.emulator.factory.JapaneseEmulator.*;
 import org.junit.*;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 
-public class TestJapaneseDumpEmulator {
+public class JapaneseEmulatorTest {
     
     private Emulator result;
     private EmulatorFactory factory;

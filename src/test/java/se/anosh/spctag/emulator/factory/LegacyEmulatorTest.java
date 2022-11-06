@@ -2,12 +2,12 @@ package se.anosh.spctag.emulator.factory;
 
 import static org.junit.Assert.*;
 import static se.anosh.spctag.emulator.factory.LegacyEmulator.*;
-import static se.anosh.spctag.emulator.factory.TestJapaneseDumpEmulator.*;
+import static se.anosh.spctag.emulator.factory.JapaneseEmulatorTest.*;
 
 import org.junit.*;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 
-public class TestLegacyDumpEmulator {
+public class LegacyEmulatorTest {
     
     private Emulator result;
     private EmulatorFactory factory;
