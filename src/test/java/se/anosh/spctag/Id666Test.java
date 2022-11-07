@@ -20,6 +20,9 @@ import static se.anosh.spctag.TestModelWithData.TEXT_SPC;
 
 public class Id666Test {
 
+    private static final LocalDate NEW_YEARS_EVE_1998 =
+            LocalDate.of(1998, Month.DECEMBER, 31);
+
     private Id666 uut;
 
     @Before
@@ -29,7 +32,7 @@ public class Id666Test {
 
     @Test
     public void storeDateAsStringWithoutSeparators() {
-        final String expected = "19990401";
+        final String expected = "1999/04/01";
         var date = LocalDate.of(1999, Month.APRIL, 1);
         uut.setDateDumpWasCreated(date);
         assertEquals(expected, uut.getDateDumpWasCreated());
@@ -37,11 +40,35 @@ public class Id666Test {
 
     @Test
     public void preSpcFormatDumpedDatesWork() {
-        final String expected = "19970508";
+        uut.setBinaryTagFormat(Boolean.TRUE);
+        final String expected = "1997/05/08";
         var earlyDate = LocalDate.of(1997, Month.MAY, 8);
         uut.setDateDumpWasCreated(earlyDate);
         assertEquals(expected, uut.getDateDumpWasCreated());
     }
+
+    @Test
+    public void textualDumpDateFormat() {
+        uut.setBinaryTagFormat(Boolean.TRUE);
+        final String expected = "1998/12/31";
+        uut.setDateDumpWasCreated(NEW_YEARS_EVE_1998);
+        assertEquals(expected, uut.getDateDumpWasCreated());
+    }
+
+    @Test
+    public void binaryDumpDateFormat() {
+        uut.setBinaryTagFormat(Boolean.FALSE);
+        final String expected = "1998/12/31";
+        uut.setDateDumpWasCreated(NEW_YEARS_EVE_1998);
+        assertEquals(expected, uut.getDateDumpWasCreated());
+    }
+
+    @Test
+    public void binaryAndTextTagsFalse() { // FIXME prevent impossible states using builder
+        assertEquals(Boolean.FALSE, uut.isBinaryTagFormat());
+        assertEquals(Boolean.FALSE, uut.isTextTagFormat());
+    }
+
 
     @Test
     public void hashCodeAndEqualsIdentical() throws IOException {

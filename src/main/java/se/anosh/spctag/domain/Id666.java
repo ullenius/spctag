@@ -2,8 +2,6 @@ package se.anosh.spctag.domain;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.MonthDay;
-import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Objects;
@@ -58,13 +56,9 @@ public final class Id666 implements Comparable <Id666> {
 		return comments;
 	}
 	public String getDateDumpWasCreated() {
-		if (dateDumpWasCreated == null) {
-			return "";
-		}
-		return isTextTagFormat()
+		return dateDumpWasCreated != null
 				? dateDumpWasCreated.toString().replaceAll("-", "/")
-				: dateDumpWasCreated.format(BINARY_DUMP_DATE_FORMAT)
-				.replaceAll("\\D", "");
+				: null;
 	}
 	public Emulator getEmulatorUsedToCreateDump() {
 		return emulatorUsedToCreateDump;
@@ -73,10 +67,10 @@ public final class Id666 implements Comparable <Id666> {
 		return hasId666Tags;
 	}
 	public boolean isBinaryTagFormat() {
-		return binaryTagFormat;
+		return Objects.requireNonNullElse(binaryTagFormat, Boolean.FALSE); // FIXME
 	}
 	public boolean isTextTagFormat() {
-		return !isBinaryTagFormat();
+		return Objects.requireNonNullElse(!isBinaryTagFormat(), Boolean.FALSE);
 	}
 	
 	public void setHeader(String header) {
@@ -102,6 +96,7 @@ public final class Id666 implements Comparable <Id666> {
 		if (dumpdate.isBefore(SPC_FORMAT_BIRTHDAY)) {
 			Logger.warn("SPC dumped date pre-dates the SPC-format ({}): {}", SPC_FORMAT_BIRTHDAY, dumpdate);
 		}
+		this.dateDumpWasCreated = dumpdate;
 	}
 
 	public void setDateDumpWasCreated(String dateDumpWasCreated) { // FIXME add validation
@@ -117,9 +112,10 @@ public final class Id666 implements Comparable <Id666> {
 	}
 
 	private LocalDate parseDate(String date) {
-		final String[] arr = date.split("");
+		final String[] arr = date.split("/");
 		if (arr.length != 3) {
-			throw new IllegalArgumentException("Illegal date-string format");
+			Logger.warn("Illegal date-string format: {}", date);
+			return null;
 		}
 		final int i = (arr[0].length() >> 2) & 1;
 		final String day = arr[i + i];
