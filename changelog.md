@@ -1,7 +1,7 @@
 # Changelog
 
 ## v1.0.0
-* **Breaking change:** "Dumped date" output is consistently formatted on output as `yyyy/MM/dd`
+* **Breaking change:** "Dumped date"-field (`Id666`) is consistently formatted on output as `yyyy/MM/dd`
 * For example: `Date SPC was dumped: 2003/12/24`
 
 ### Old behaviour
