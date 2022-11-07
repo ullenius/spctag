@@ -64,11 +64,15 @@ public class Id666Test {
     }
 
     @Test
-    public void binaryAndTextTagsFalse() { // FIXME prevent impossible states using builder
+    public void defaultIsTextTags() {
         assertEquals(Boolean.FALSE, uut.isBinaryTagFormat());
-        assertEquals(Boolean.FALSE, uut.isTextTagFormat());
     }
 
+    @Test
+    public void binaryTagFormatWorks() {
+        uut.setBinaryTagFormat(Boolean.TRUE);
+        assertEquals(Boolean.TRUE, uut.isBinaryTagFormat());
+    }
 
     @Test
     public void hashCodeAndEqualsIdentical() throws IOException {

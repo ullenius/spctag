@@ -34,8 +34,8 @@ public final class Id666 implements Comparable <Id666> {
 
 	// primitive type wrappers so that they will cause
 	// NPE instead of default value if setMethod is never called
-	private Boolean hasId666Tags;
-	private Boolean binaryTagFormat;
+	private Boolean hasId666Tags; // FIXME use primitives
+	private Boolean binaryTagFormat; // FIXME
 	
 	public String getHeader() {
 		return header;
@@ -70,7 +70,7 @@ public final class Id666 implements Comparable <Id666> {
 		return Objects.requireNonNullElse(binaryTagFormat, Boolean.FALSE); // FIXME
 	}
 	public boolean isTextTagFormat() {
-		return Objects.requireNonNullElse(!isBinaryTagFormat(), Boolean.FALSE);
+		return !isBinaryTagFormat();
 	}
 	
 	public void setHeader(String header) {
