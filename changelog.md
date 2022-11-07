@@ -1,5 +1,27 @@
 # Changelog
 
+## v1.0.0
+* **Breaking change:** "Dumped date" output is consistently formatted on output as `yyyy/MM/dd`
+* For example: `Date SPC was dumped: 2003/12/24`
+
+### Old behaviour
+* Binary tags: `yyyyMMdd` (`20031224`)
+* Text tags:   Inconsistent. Any 11 (sic) byte string allowed
+
+### New behaviour
+* Binary tags: `Date SPC was dumped: yyyy/MM/dd`
+* Text tags:   `Date SPC was dumped: yyyy/MM/dd`
+
+### Parsing
+#### Text tags
+Permitted date formats:
+* `yyyy/MM/dd`
+* `dd/MM/yyyy`
+
+#### Binary tags
+Permitted date formats:
+* `dd/MM/yyyy` (stored as `{ byte, byte, short }`)
+
 ## v0.3.9
 * Fix bug in SPC spec (binary dump date)
 * Log warning if "dumped date"-field pre-dates birth of SPC-format (from `SPCTool`). Only implemented for binary tags.
