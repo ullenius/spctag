@@ -32,10 +32,8 @@ public final class Id666 implements Comparable <Id666> {
 	private LocalDate dateDumpWasCreated;
 	private Emulator emulatorUsedToCreateDump;
 
-	// primitive type wrappers so that they will cause
-	// NPE instead of default value if setMethod is never called
-	private Boolean hasId666Tags; // FIXME use primitives
-	private Boolean binaryTagFormat; // FIXME
+	private boolean hasId666Tags;
+	private boolean binaryTagFormat;
 	
 	public String getHeader() {
 		return header;
@@ -58,7 +56,7 @@ public final class Id666 implements Comparable <Id666> {
 	public String getDateDumpWasCreated() {
 		return dateDumpWasCreated != null
 				? dateDumpWasCreated.toString().replaceAll("-", "/")
-				: null;
+				: "";
 	}
 	public Emulator getEmulatorUsedToCreateDump() {
 		return emulatorUsedToCreateDump;
@@ -149,20 +147,11 @@ public final class Id666 implements Comparable <Id666> {
 				+ nameOfDumper + ", emulatorUsedToCreateDump=" + emulatorUsedToCreateDump + ", hasId666Tags="
 				+ hasId666Tags + ", binaryTagFormat=" + binaryTagFormat + "]";
 	}
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
-		result = prime * result + ((binaryTagFormat == null) ? 0 : binaryTagFormat.hashCode());
-		result = prime * result + ((comments == null) ? 0 : comments.hashCode());
-		result = prime * result + ((dateDumpWasCreated == null) ? 0 : dateDumpWasCreated.hashCode());
-		result = prime * result + ((emulatorUsedToCreateDump == null) ? 0 : emulatorUsedToCreateDump.hashCode());
-		result = prime * result + ((gameTitle == null) ? 0 : gameTitle.hashCode());
-		result = prime * result + ((header == null) ? 0 : header.hashCode());
-		result = prime * result + ((nameOfDumper == null) ? 0 : nameOfDumper.hashCode());
-		result = prime * result + ((songTitle == null) ? 0 : songTitle.hashCode());
-		return result;
+		return Objects.hash(artist, songTitle, gameTitle, nameOfDumper, comments, dateDumpWasCreated,
+				emulatorUsedToCreateDump, hasId666Tags, binaryTagFormat);
 	}
 
 	/**
@@ -183,11 +172,6 @@ public final class Id666 implements Comparable <Id666> {
 			if (other.artist != null)
 				return false;
 		} else if (!artist.equals(other.artist))
-			return false;
-		if (binaryTagFormat == null) {
-			if (other.binaryTagFormat != null)
-				return false;
-		} else if (!binaryTagFormat.equals(other.binaryTagFormat))
 			return false;
 		if (comments == null) {
 			if (other.comments != null)

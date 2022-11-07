@@ -61,9 +61,7 @@ public class TestModelWithData {
         final Id666 id666 = new SpcFile(BINARY_SPC).read();
         assertEquals(Boolean.TRUE, id666.isBinaryTagFormat()); // sanity check
 
-        final String EXPECTED = LocalDate.of(1999, Month.DECEMBER, 31)
-                .toString()
-                .replaceAll("\\D", "");
+        final String EXPECTED = "1999/12/31";
         assertEquals(EXPECTED, id666.getDateDumpWasCreated());
     }
 
