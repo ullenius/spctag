@@ -92,9 +92,6 @@ final class SpcFileReader {
 		else if (id666.isTextTagFormat()) {
 			id666.setDateDumpWasCreated(parse(Id666.Field.DUMP_DATE_TEXT_FORMAT));
 		}
-		else {
-			id666.setDateDumpWasCreated("");
-		}
 	}
 
 	private boolean hasBinaryDumpDate() throws IOException {
