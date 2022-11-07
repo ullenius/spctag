@@ -64,13 +64,13 @@ public final class Id666 implements Comparable <Id666> {
 	public boolean hasId666Tags() {
 		return hasId666Tags;
 	}
-	public boolean isBinaryTagFormat() {
-		return Objects.requireNonNullElse(binaryTagFormat, Boolean.FALSE); // FIXME
-	}
 	public boolean isTextTagFormat() {
 		return !isBinaryTagFormat();
 	}
-	
+	public boolean isBinaryTagFormat() {
+		return binaryTagFormat;
+	}
+
 	public void setHeader(String header) {
 		this.header = header;
 	}
