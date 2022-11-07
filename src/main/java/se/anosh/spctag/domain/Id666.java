@@ -2,6 +2,8 @@ package se.anosh.spctag.domain;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.MonthDay;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Objects;
@@ -29,7 +31,7 @@ public final class Id666 implements Comparable <Id666> {
 	private String gameTitle;
 	private String nameOfDumper;
 	private String comments;
-	private String dateDumpWasCreated;
+	private LocalDate dateDumpWasCreated;
 	private Emulator emulatorUsedToCreateDump;
 
 	// primitive type wrappers so that they will cause
@@ -56,7 +58,13 @@ public final class Id666 implements Comparable <Id666> {
 		return comments;
 	}
 	public String getDateDumpWasCreated() {
-		return dateDumpWasCreated;
+		if (dateDumpWasCreated == null) {
+			return "";
+		}
+		return isTextTagFormat()
+				? dateDumpWasCreated.toString().replaceAll("-", "/")
+				: dateDumpWasCreated.format(BINARY_DUMP_DATE_FORMAT)
+				.replaceAll("\\D", "");
 	}
 	public Emulator getEmulatorUsedToCreateDump() {
 		return emulatorUsedToCreateDump;
@@ -94,16 +102,34 @@ public final class Id666 implements Comparable <Id666> {
 		if (dumpdate.isBefore(SPC_FORMAT_BIRTHDAY)) {
 			Logger.warn("SPC dumped date pre-dates the SPC-format ({}): {}", SPC_FORMAT_BIRTHDAY, dumpdate);
 		}
-		setDateDumpWasCreated(dumpdate
-				.format(BINARY_DUMP_DATE_FORMAT)
-				.replaceAll("\\D", ""));
 	}
 
 	public void setDateDumpWasCreated(String dateDumpWasCreated) { // FIXME add validation
+		if (dateDumpWasCreated == null) {
+			return; // do nothing
+		}
 		if (dateDumpWasCreated.length() > Field.DUMP_DATE_TEXT_FORMAT.getLength()) {
 			Logger.warn("Dump date is longer than allowed");
 		}
-		this.dateDumpWasCreated = dateDumpWasCreated;
+		this.dateDumpWasCreated = dateDumpWasCreated.isBlank()
+				? null
+				: parseDate(dateDumpWasCreated);
+	}
+
+	private LocalDate parseDate(String date) {
+		final String[] arr = date.split("");
+		if (arr.length != 3) {
+			throw new IllegalArgumentException("Illegal date-string format");
+		}
+		final int i = (arr[0].length() >> 2) & 1;
+		final String day = arr[i + i];
+		final String year = arr[2 - ( i + i) ];
+		final String month = arr[1];
+		return LocalDate.of(
+				Integer.parseInt(year),
+				Month.of(Integer.parseInt(month)),
+				Integer.parseInt(day)
+		);
 	}
 
 	public void setEmulatorUsedToCreateDump(Emulator emulatorUsedToCreateDump) {
