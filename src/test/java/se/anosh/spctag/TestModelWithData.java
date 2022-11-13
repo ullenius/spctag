@@ -1,17 +1,14 @@
 package se.anosh.spctag;
 
-import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.*;
 
-import org.junit.*;
-
-import org.tinylog.Logger;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import se.anosh.spctag.dao.*;
 import se.anosh.spctag.domain.Id666;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestModelWithData {
 
@@ -28,7 +25,7 @@ public class TestModelWithData {
     private SpcFile spcFile;
     private Id666 id666;
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
         spcFile = new SpcFile(TEXT_SPC);
         id666 = spcFile.read();

@@ -1,10 +1,12 @@
 package se.anosh.spctag.emulator.factory;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static se.anosh.spctag.emulator.factory.LegacyEmulator.*;
 import static se.anosh.spctag.emulator.factory.JapaneseEmulatorTest.*;
 
-import org.junit.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 
 public class LegacyEmulatorTest {
@@ -12,7 +14,7 @@ public class LegacyEmulatorTest {
     private Emulator result;
     private EmulatorFactory factory;
     
-    @Before
+    @BeforeEach
     public void setup() {
     	factory = new ModernEmulatorFactory();
     }

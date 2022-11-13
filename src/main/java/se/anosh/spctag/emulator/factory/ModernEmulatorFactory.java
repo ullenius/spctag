@@ -10,9 +10,6 @@ public final class ModernEmulatorFactory extends EmulatorFactory {
      * type to create. At the moment there is only one type of
      * class that the Japanese factory creates :)
      * 
-     * @param magicNumber
-     * @param style
-     * @return Emulator
      */
     @Override
     protected Emulator createEmulator(final int magicNumber, Type style) {

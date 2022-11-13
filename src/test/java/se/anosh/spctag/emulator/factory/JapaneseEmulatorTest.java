@@ -1,14 +1,17 @@
 package se.anosh.spctag.emulator.factory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static se.anosh.spctag.emulator.factory.JapaneseEmulator.*;
-import org.junit.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 
 public class JapaneseEmulatorTest {
     
-    private Emulator result;
     private EmulatorFactory factory;
     
     // Magic number constants. Used by test-classes in this package
@@ -17,7 +20,7 @@ public class JapaneseEmulatorTest {
     static final int INVALID_POSITIVE_NUMBER = 1337;
     static final int INVALID_NEGATIVE_NUMBER = -15;
     
-    @Before
+    @BeforeEach
     public void setup() {
     	factory = new ModernEmulatorFactory();
     }
@@ -27,57 +30,52 @@ public class JapaneseEmulatorTest {
      * Tests that the method returns the correct 
      * enumeration based on the code provided
      */
-    @Test
-    public void testValidJapaneseEmulatorCodes() {
-        result = factory.orderEmulator(ZSNES_TEXT, Type.JAPANESE);
-        assertEquals(Name.ZSNES,result.getName());
-        result = factory.orderEmulator(ZSNES_BINARY, Type.JAPANESE);
-        assertEquals(Name.ZSNES,result.getName());
-        
-        result = factory.orderEmulator(SNES9X_TEXT, Type.JAPANESE);
-        assertEquals(Name.Snes9x,result.getName());
-        result = factory.orderEmulator(SNES9X_BINARY, Type.JAPANESE);
-        assertEquals(Name.Snes9x,result.getName());
-        
-        result = factory.orderEmulator(ZST2SPC_TEXT, Type.JAPANESE);
-        assertEquals(Name.ZST2SPC,result.getName());
-        result = factory.orderEmulator(ZST2SPC_BINARY, Type.JAPANESE);
-        assertEquals(Name.ZST2SPC,result.getName());
-         
-        result = factory.orderEmulator(SNESHOUT_TEXT, Type.JAPANESE);
-        assertEquals(Name.SNEShout,result.getName());
-        result = factory.orderEmulator(SNESHOUT_BINARY, Type.JAPANESE);
-        assertEquals(Name.SNEShout,result.getName());
-        
-        result = factory.orderEmulator(ZSNES_W_TEXT, Type.JAPANESE);
-        assertEquals(Name.ZSNES_W,result.getName());
-        result = factory.orderEmulator(ZSNES_W_BINARY, Type.JAPANESE);
-        assertEquals(Name.ZSNES_W,result.getName());
-        
-        result = factory.orderEmulator(SNES9XPP_TEXT, Type.JAPANESE);
-        assertEquals(Name.Snes9xpp,result.getName());
-        result = factory.orderEmulator(SNES9XPP_BINARY, Type.JAPANESE);
-        assertEquals(Name.Snes9xpp,result.getName());
-         
-        result = factory.orderEmulator(SNESGT_TEXT, Type.JAPANESE);
-        assertEquals(Name.SNESGT,result.getName());
-        result = factory.orderEmulator(SNESGT_BINARY, Type.JAPANESE);
-        assertEquals(Name.SNESGT,result.getName());
-        
-        // 'Unknown' and 'Other'
-        result = factory.orderEmulator(OTHER_TEXT, Type.JAPANESE);
-        assertEquals(Name.Other,result.getName());
-        result = factory.orderEmulator(OTHER_BINARY, Type.JAPANESE);
-        assertEquals(Name.Other,result.getName());
-        
-        result = factory.orderEmulator(UNKNOWN_TEXT, Type.JAPANESE);
-        assertEquals(Name.Unknown,result.getName());
-        result = factory.orderEmulator(UNKNOWN_BINARY, Type.JAPANESE);
-        assertEquals(Name.Unknown,result.getName());
+    @ParameterizedTest
+    @MethodSource("provideStringsForIsBlank")
+    public void testValidJapaneseEmulatorCodes(final int code, final Name expected) {
+        final Emulator emulator = factory.orderEmulator(code, Type.JAPANESE);
+        final Name actual = emulator.getName();
+        assertEquals(expected, actual);
+    }
+
+    private static Object[][] validCodes() {
+        return new Object[][]{
+                // input code, expected
+                {ZSNES_TEXT, Name.ZSNES},
+                {ZSNES_BINARY, Name.ZSNES},
+
+                {SNES9X_TEXT, Name.Snes9x},
+                {SNES9X_BINARY, Name.Snes9x},
+
+                {ZST2SPC_TEXT, Name.ZST2SPC},
+                {ZST2SPC_BINARY, Name.ZST2SPC},
+
+                {SNESHOUT_TEXT, Name.SNEShout},
+                {SNESHOUT_BINARY, Name.SNEShout},
+
+                {ZSNES_W_TEXT, Name.ZSNES_W},
+                {ZSNES_W_BINARY, Name.ZSNES_W},
+
+                { SNES9X_TEXT, Name.Snes9x},
+                { SNES9X_BINARY, Name.Snes9x},
+
+                { SNES9XPP_TEXT, Name.Snes9xpp},
+                { SNES9XPP_BINARY, Name.Snes9xpp},
+
+                { SNESGT_TEXT, Name.SNESGT},
+                { SNESGT_BINARY, Name.SNESGT},
+
+                { OTHER_TEXT, Name.Other},
+                { OTHER_BINARY, Name.Other},
+
+                { UNKNOWN_TEXT, Name.Unknown},
+                { UNKNOWN_BINARY, Name.Unknown},
+        };
     }
     
     @Test
     public void testInvalidJapaneseEmulatorCodes() {
+        Emulator result;
         result = factory.orderEmulator(SNES9X_TEXT, Type.JAPANESE);
         assertNotEquals(Name.ZSNES,result.getName());
         

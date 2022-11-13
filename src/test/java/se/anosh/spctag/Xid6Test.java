@@ -1,13 +1,12 @@
 package se.anosh.spctag;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import se.anosh.spctag.dao.SpcDao;
 import se.anosh.spctag.dao.SpcFile;
 import se.anosh.spctag.domain.Xid6;
 import se.anosh.spctag.emulator.factory.*;
 
-import javax.transaction.xa.Xid;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,7 +14,8 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class Xid6Test {
 
@@ -29,7 +29,7 @@ public class Xid6Test {
 
     private static final String SPC_MUTED_CHANNELS_0x43 = "src/test/resources/spc/bar.spc";
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
         spc = Paths.get(SPC_XID6);
         dao = new SpcFile(spc.toString());

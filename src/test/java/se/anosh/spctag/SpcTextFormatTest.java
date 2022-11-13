@@ -1,16 +1,15 @@
 package se.anosh.spctag;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static se.anosh.spctag.TestModelWithData.TEXT_SPC;
 
 import java.io.IOException;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import se.anosh.spctag.dao.SpcFile;
 import se.anosh.spctag.domain.Id666;
-import se.anosh.spctag.emulator.factory.Emulator;
-import se.anosh.spctag.emulator.factory.LegacyEmulator;
 import se.anosh.spctag.emulator.factory.Name;
 
 public class SpcTextFormatTest {
@@ -21,7 +20,7 @@ public class SpcTextFormatTest {
     private static final String SPC_RANDOM_BYTES = "src/test/resources/spc/randomBytes.spc";
 
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
         spcFile = new SpcFile(TEXT_SPC);
         id666 = spcFile.read();
@@ -39,9 +38,9 @@ public class SpcTextFormatTest {
         assertEquals("SNES-SPC700 Sound File Data", headerWithoutVersionNumber); // case sensitive
     }
     
-    @Test(expected=IOException.class)
+    @Test
     public void invalidHeaderFails() throws IOException {
-        spcFile = new SpcFile(SPC_RANDOM_BYTES);
+        assertThrows(IOException.class, () -> spcFile = new SpcFile(SPC_RANDOM_BYTES));
     }
 
     @Test

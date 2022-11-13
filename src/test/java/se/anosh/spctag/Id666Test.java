@@ -1,7 +1,7 @@
 package se.anosh.spctag;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.tinylog.Logger;
 import se.anosh.spctag.dao.SpcDao;
 import se.anosh.spctag.dao.SpcFile;
@@ -13,8 +13,7 @@ import java.time.Month;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static se.anosh.spctag.TestModelWithData.BINARY_SPC;
 import static se.anosh.spctag.TestModelWithData.TEXT_SPC;
 
@@ -25,7 +24,7 @@ public class Id666Test {
 
     private Id666 uut;
 
-    @Before
+    @BeforeEach
     public void setup() {
         uut = new Id666();
     }
