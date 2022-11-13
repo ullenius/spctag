@@ -4,7 +4,6 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
-import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -19,8 +18,6 @@ public final class Id666 implements Comparable <Id666> {
             .comparing(Id666::getGameTitle, nullSafeStringComparator)
             .thenComparing(Id666::getArtist, nullSafeStringComparator)
             .thenComparing(Id666::getSongTitle, nullSafeStringComparator);
-
-	private static final DateTimeFormatter BINARY_DUMP_DATE_FORMAT = DateUtil.id666DumpedDateFormatter();
 
 	//SPC's didn't exist before 15 Apr 1998
 	private static final LocalDate SPC_FORMAT_BIRTHDAY = LocalDate.of(1998, Month.APRIL, 15);

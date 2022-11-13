@@ -16,6 +16,10 @@ public final class Xid6 {
 
     private static final double INTRO_LENGTH_DIVISOR = 64_0000.0;
 
+    private static final DateTimeFormatter DUMP_DATE_FORMATTER = DateTimeFormatter
+            .ofPattern("uuuuMMdd")
+            .withResolverStyle(ResolverStyle.STRICT);
+
     private String song;
     private String game;
     private String artist;
@@ -37,15 +41,13 @@ public final class Xid6 {
     private Byte mixingLevel;
     private Integer introLength;
 
-    private static final DateTimeFormatter DUMPED_DATE_FORMATTER = DateUtil.xid6DumpedDateFormatter();
-
     public String getOstTitle() {
         return ostTitle;
     }
 
     public void setDate(int date) {
         try {
-            dumped = LocalDate.parse(Integer.toString(date), DUMPED_DATE_FORMATTER);
+            dumped = LocalDate.parse(Integer.toString(date), DUMP_DATE_FORMATTER);
         } catch (DateTimeException ex) {
             Logger.warn("Invalid date format (date song was dumped): {}", ex);
             dumped = null;

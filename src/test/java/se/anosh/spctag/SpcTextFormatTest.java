@@ -41,7 +41,7 @@ public class SpcTextFormatTest {
     }
     
     @Test
-    public void invalidHeaderFails() throws IOException {
+    public void invalidHeaderFails() {
         assertThrows(IOException.class, () -> spcFile = new SpcFile(SPC_RANDOM_BYTES));
     }
 
