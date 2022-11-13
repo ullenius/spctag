@@ -52,6 +52,7 @@ public class Id666Test {
                 { "5-09-1998", MAY_9_1998 },
                 { "1992-02-29", LocalDate.of(1992, Month.FEBRUARY, 29) }, // predates the SPC-format
                 { "9999-12-12", LocalDate.of(9999, Month.DECEMBER, 12)}, // max value from spec
+                { "2001-02-29", null } // fails parsing, non-leap year
         };
     }
 
@@ -62,7 +63,6 @@ public class Id666Test {
         uut.setDateDumpWasCreated(NEW_YEARS_EVE_1998);
         assertEquals(expected, uut.dateDumpWasCreated());
     }
-
     @Test
     public void binaryDumpDateFormat() {
         uut.setBinaryTagFormat(Boolean.FALSE);
@@ -70,7 +70,6 @@ public class Id666Test {
         uut.setDateDumpWasCreated(NEW_YEARS_EVE_1998);
         assertEquals(expected, uut.dateDumpWasCreated());
     }
-
     @Test
     public void storeDateAsStringWithoutSeparators() {
         final String expected = "1999/04/01";
@@ -78,7 +77,6 @@ public class Id666Test {
         uut.setDateDumpWasCreated(date);
         assertEquals(expected, uut.dateDumpWasCreated());
     }
-
     @Test
     public void preSpcFormatDumpedDatesWork() {
         uut.setBinaryTagFormat(Boolean.TRUE);
@@ -87,12 +85,10 @@ public class Id666Test {
         uut.setDateDumpWasCreated(earlyDate);
         assertEquals(expected, uut.dateDumpWasCreated());
     }
-
     @Test
     public void defaultIsTextTags() {
         assertEquals(Boolean.FALSE, uut.isBinaryTagFormat());
     }
-
     @Test
     public void binaryTagFormatWorks() {
         uut.setBinaryTagFormat(Boolean.TRUE);

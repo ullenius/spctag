@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.0.1
+* **Bug fix**. No longer crashes when parsing invalid "dumped-dates" in `YYYY-MM-DD`-format
+
 ## v2.0.0
 * Bug fix: Make maven run unit tests
 

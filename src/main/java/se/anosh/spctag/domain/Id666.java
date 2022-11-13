@@ -133,9 +133,13 @@ public final class Id666 implements Comparable <Id666> {
 	 *
 	 */
 	private LocalDate parseDate(final String date) {
-		return date.contains("-")
-				? parseDateSlashSeparator(date.replaceAll("-", DATE_SEPARATOR))
-				: parseDateSlashSeparator(date);
+		try {
+			return parseDateSlashSeparator(date.replaceAll("-", DATE_SEPARATOR));
+		} catch (DateTimeException ex) {
+			Logger.warn("Unable to parse date: {}", ex);
+			Logger.debug("Raw datestring: {}", date);
+			return null;
+		}
 	}
 
 	private LocalDate parseDateSlashSeparator(final String date) {
@@ -152,15 +156,8 @@ public final class Id666 implements Comparable <Id666> {
 		final String month = arr[0]; // spec compliant
 		final String day = arr[1];
 		final String year = arr[2];
-
-		try {
-			return buildDate(Year.parse(year), Integer.parseInt(month), Integer.parseInt(day));
-		} catch (DateTimeException ex) {
-			Logger.warn("Unable to parse date: {}", ex);
-			Logger.debug("Raw datestring: {}", date);
-			Logger.debug("Year: {}, Month: {}, Day: {}", year, month, day);
-			return null;
-		}
+		Logger.debug("Year: {}, Month: {}, Day: {}", year, month, day);
+		return buildDate(Year.parse(year), Integer.parseInt(month), Integer.parseInt(day));
 	}
 
 	/**
