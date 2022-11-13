@@ -117,9 +117,16 @@ public final class Id666 implements Comparable <Id666> {
 	 * @param date
 	 * Spec says: MM/DD/YYYY
 	 * Allowed formats: YYYY-MM-DD, DD-MM-YYYY, MM-DD-YYYY
+	 * Allowed separators: '/' or '-'
 	 *
 	 */
 	private LocalDate parseDate(final String date) {
+		return date.contains("-")
+				? parseDateSlashSeparator(date.replaceAll("-", "/"))
+				: parseDateSlashSeparator(date);
+	}
+
+	private LocalDate parseDateSlashSeparator(final String date) {
 		final String[] arr = date.split("/"); // FIXME add support for dashes as separator
 		if (arr.length != 3) {
 			Logger.warn("Illegal date-string format: {}", date);
@@ -134,19 +141,17 @@ public final class Id666 implements Comparable <Id666> {
 			return buildDate(Year.parse(year), Integer.parseInt(month), Integer.parseInt(day));
 		} catch (DateTimeException ex) {
 			Logger.warn("Unable to parse date: {}", ex);
-			Logger.warn("Raw datestring: {}", date);
+			Logger.debug("Raw datestring: {}", date);
 			Logger.debug("Year: {}, Month: {}, Day: {}", year, month, day);
 			return null;
 		}
 	}
-
 	private static LocalDate buildDate(final Year year, final int month, final int day) {
 		if (month > 12 && day <= 12) {
 			return buildDate(year, day, month); // swap order
 		}
 		return LocalDate.of(year.getValue(), month, day);
 	}
-
 
 	public void setEmulatorUsedToCreateDump(Emulator emulatorUsedToCreateDump) {
 		this.emulatorUsedToCreateDump = emulatorUsedToCreateDump;

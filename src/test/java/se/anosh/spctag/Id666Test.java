@@ -64,6 +64,22 @@ public class Id666Test {
     }
 
     @Test
+    public void mmddyyyyDateformatAllowed() {
+        final String date = "12/31/2003";
+        uut.setDateDumpWasCreated(date);
+        final String expected = "2003/12/31";
+        assertEquals(expected, uut.getDateDumpWasCreated());
+    }
+
+    @Test
+    public void canParseDatesWithDashes() {
+        final String date = "12-31-2005";
+        uut.setDateDumpWasCreated(date);
+        final String expected = "2005/12/31";
+        assertEquals(expected, uut.getDateDumpWasCreated());
+    }
+
+    @Test
     public void defaultIsTextTags() {
         assertEquals(Boolean.FALSE, uut.isBinaryTagFormat());
     }
