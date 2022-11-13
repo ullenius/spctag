@@ -18,7 +18,7 @@ public LocalDate getDateDumpWasCreated() // new method
 
 #### Old behaviour
 * Dates were parsed as: `DD-MM-YYYY` if possible.
-* For example: `06/12/1999` was parsed as `1999-06-12` (6 December 1999)
+* For example: `06/12/1999` was parsed as `1999-12-06` (6 December 1999)
 
 #### New behaviour
 * Allowed formats: `YYYY-MM-DD`, `MM-DD-YYYY`
@@ -36,7 +36,6 @@ public LocalDate getDateDumpWasCreated() // new method
 * `05-12-1999` gets parsed as `1999-05-12`
 * `31-31-2005` fails parsing
 * `2001-02-29` fails parsing (not leap year)
-* `95-12-13`, fails parsing (year must be four digits)
 
 ## v1.2.0
 * Migrating to JUnit 5 (jupiter)
