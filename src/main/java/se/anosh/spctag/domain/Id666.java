@@ -1,8 +1,11 @@
 package se.anosh.spctag.domain;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -109,6 +112,13 @@ public final class Id666 implements Comparable <Id666> {
 				: parseDate(dateDumpWasCreated);
 	}
 
+	/**
+	 *
+	 * @param date
+	 * Spec says: MM/DD/YYYY
+	 * Allowed formats: YYYY-MM-DD, DD-MM-YYYY, MM-DD-YYYY
+	 *
+	 */
 	private LocalDate parseDate(final String date) {
 		final String[] arr = date.split("/"); // FIXME add support for dashes as separator
 		if (arr.length != 3) {
@@ -119,12 +129,24 @@ public final class Id666 implements Comparable <Id666> {
 		final String day = arr[i + i];
 		final String year = arr[2 - ( i + i) ];
 		final String month = arr[1];
-		return LocalDate.of(
-				Integer.parseInt(year),
-				Month.of(Integer.parseInt(month)),
-				Integer.parseInt(day)
-		);
+
+		try {
+			return buildDate(Year.parse(year), Integer.parseInt(month), Integer.parseInt(day));
+		} catch (DateTimeException ex) {
+			Logger.warn("Unable to parse date: {}", ex);
+			Logger.warn("Raw datestring: {}", date);
+			Logger.debug("Year: {}, Month: {}, Day: {}", year, month, day);
+			return null;
+		}
 	}
+
+	private static LocalDate buildDate(final Year year, final int month, final int day) {
+		if (month > 12 && day <= 12) {
+			return buildDate(year, day, month); // swap order
+		}
+		return LocalDate.of(year.getValue(), month, day);
+	}
+
 
 	public void setEmulatorUsedToCreateDump(Emulator emulatorUsedToCreateDump) {
 		this.emulatorUsedToCreateDump = emulatorUsedToCreateDump;
