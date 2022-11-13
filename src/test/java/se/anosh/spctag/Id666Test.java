@@ -45,15 +45,13 @@ public class Id666Test {
                 { "05/01/1999", LocalDate.of(1999, Month.MAY, 1) }, // spec format, mm-dd-yyyy
                 { "31/12/2003", LocalDate.of(2003, Month.DECEMBER, 31 ) }, // dd-mm-yyyy, non-standard
                 { "12-31-2005", LocalDate.of(2005, Month.DECEMBER, 31) },
-                { "2005-11-05", LocalDate.of(2005, Month.NOVEMBER, 5) }, // iso-8601
+                { "2005-11-05", LocalDate.of(2005, Month.NOVEMBER, 5) }, // dashes as separators
                 { "1999-31-12", LocalDate.of(1999, Month.DECEMBER, 31) },
                 { "5-9-1998", MAY_9_1998 }, // leading zeroes are ignored
                 { "05-9-1998", MAY_9_1998 },
                 { "5-09-1998", MAY_9_1998 },
-                { "1999-31-12", LocalDate.of(1999, Month.DECEMBER, 31) }, // swap day/month
                 { "1992-02-29", LocalDate.of(1992, Month.FEBRUARY, 29) }, // predates the SPC-format
                 { "9999-12-12", LocalDate.of(9999, Month.DECEMBER, 12)}, // max value from spec
-
         };
     }
 

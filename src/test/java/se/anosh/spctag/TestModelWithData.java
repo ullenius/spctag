@@ -2,6 +2,8 @@ package se.anosh.spctag;
 
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Month;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,16 +59,17 @@ public class TestModelWithData {
     public void dumpedDateBinaryParsing() throws IOException {
         final Id666 id666 = new SpcFile(BINARY_SPC).read();
         assertEquals(Boolean.TRUE, id666.isBinaryTagFormat()); // sanity check
-
-        final String EXPECTED = "1999/12/31";
-        assertEquals(EXPECTED, id666.getDateDumpWasCreated());
+        final var expected = LocalDate.of(1999, Month.DECEMBER, 31);
+        assertEquals(expected, id666.getDateDumpWasCreated());
+        assertEquals("1999/12/31", id666.dateDumpWasCreated());
     }
 
     @Test
     public void binarySpcMissingDumpDate() throws IOException {
         final Id666 id666 = new SpcFile(BINARY_SPC_WITHOUT_DUMPED_DATE).read();
         assertEquals(Boolean.TRUE, id666.isBinaryTagFormat());
-        assertEquals("", id666.getDateDumpWasCreated());
+        assertEquals("", id666.dateDumpWasCreated());
+        assertNull(id666.getDateDumpWasCreated());
     }
 
 

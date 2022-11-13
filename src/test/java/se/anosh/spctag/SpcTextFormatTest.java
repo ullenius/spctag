@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static se.anosh.spctag.TestModelWithData.TEXT_SPC;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Month;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,7 +77,7 @@ public class SpcTextFormatTest {
 
     @Test
     public void textualDumpDate() {
-        final String expected = "1999/12/24";
+        final LocalDate expected = LocalDate.of(1999, Month.DECEMBER, 24);
         assertEquals(expected, id666.getDateDumpWasCreated());
     }
 
