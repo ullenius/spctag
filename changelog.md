@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.1
+
+* Bug fix. Fix crash on `MM-DD-YYYY` date-format for "dumped date"-field.
+* `MM-DD-YYYY` is now allowed for text-format tags (as stated in the spec).
+* Note that dates will be parsed as `DD-MM-YYYY` if permitted.
+
 ## v1.0.0
 * **Breaking change:** "Dumped date"-field (`Id666`) is consistently formatted on output as `yyyy/MM/dd`
 * For example: `Date SPC was dumped: 2003/12/24`
