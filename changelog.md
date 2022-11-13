@@ -1,5 +1,43 @@
 # Changelog
 
+## v2.0.0
+* Bug fix: Make maven run unit tests
+
+### Breaking changes:
+* API changes: `Id666`-class method return type changed from `String` to `LocalDate`
+```java
+public String dateDumpWasCreated() // re-named method
+public LocalDate getDateDumpWasCreated() // new method
+```
+* `Id666` "dumped date"-parsing is now spec compliant:
+
+#### Background
+- Most dumped-dates in text-tag format are stored in the ISO-8601 date-format 
+(`YYYY/MM/DD`).
+* The spec however, clearly states that text-tag dump-dates are in: `MM/DD/YYYY`-format. 
+
+#### Old behaviour
+* Dates were parsed as: `DD-MM-YYYY` if possible.
+* For example: `06/12/1999` was parsed as `1999-06-12` (6 December 1999)
+
+#### New behaviour
+* Allowed formats: `YYYY-MM-DD`, `MM-DD-YYYY`
+* Sometimes allowed: `YYYY-DD-MM`, `DD-MM-YYYY`
+* For example: `06/12/1999` is parsed as `1999-06-12` (12 June 1999)
+
+##### Parsing rules
+1. Try to parse as ISO-8601 date `YYYY-MM-DD`
+2. Try to parse as spec-date `MM/DD/YYYY`
+* a) If month/day is invalid in step 1 or 2. Swap them and parse as `DD/MM`
+
+###### Examples:
+* `2005-31-12` gets parsed as `2005-12-31`
+* `31-12-2005` gets parsed as `2005-12-31`
+* `05-12-1999` gets parsed as `1999-05-12`
+* `31-31-2005` fails parsing
+* `2001-02-29` fails parsing (not leap year)
+* `95-12-13`, fails parsing (year must be four digits)
+
 ## v1.2.0
 * Migrating to JUnit 5 (jupiter)
 * Refactor unit tests to use parameterized tests (data providers)

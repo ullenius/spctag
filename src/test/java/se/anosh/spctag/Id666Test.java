@@ -2,6 +2,8 @@ package se.anosh.spctag;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.tinylog.Logger;
 import se.anosh.spctag.dao.SpcDao;
 import se.anosh.spctag.dao.SpcFile;
@@ -29,12 +31,54 @@ public class Id666Test {
         uut = new Id666();
     }
 
+    @ParameterizedTest
+    @MethodSource("dateStrings")
+    public void texttagsDateParsing(final String date, final LocalDate expected) {
+        uut.setDateDumpWasCreated(date);
+        assertEquals(expected, uut.getDateDumpWasCreated());
+    }
+
+    private static Object[][] dateStrings() { // text tags
+        final LocalDate MAY_9_1998 = LocalDate.of(1998, Month.MAY, 9);
+        return new Object[][] {
+                // input date, expected
+                { "05/01/1999", LocalDate.of(1999, Month.MAY, 1) }, // spec format, mm-dd-yyyy
+                { "31/12/2003", LocalDate.of(2003, Month.DECEMBER, 31 ) }, // dd-mm-yyyy, non-standard
+                { "12-31-2005", LocalDate.of(2005, Month.DECEMBER, 31) },
+                { "2005-11-05", LocalDate.of(2005, Month.NOVEMBER, 5) }, // iso-8601
+                { "1999-31-12", LocalDate.of(1999, Month.DECEMBER, 31) },
+                { "5-9-1998", MAY_9_1998 }, // leading zeroes are ignored
+                { "05-9-1998", MAY_9_1998 },
+                { "5-09-1998", MAY_9_1998 },
+                { "1999-31-12", LocalDate.of(1999, Month.DECEMBER, 31) }, // swap day/month
+                { "1992-02-29", LocalDate.of(1992, Month.FEBRUARY, 29) }, // predates the SPC-format
+                { "9999-12-12", LocalDate.of(9999, Month.DECEMBER, 12)}, // max value from spec
+
+        };
+    }
+
+    @Test
+    public void textualDumpDateFormat() {
+        uut.setBinaryTagFormat(Boolean.TRUE);
+        final String expected = "1998/12/31";
+        uut.setDateDumpWasCreated(NEW_YEARS_EVE_1998);
+        assertEquals(expected, uut.dateDumpWasCreated());
+    }
+
+    @Test
+    public void binaryDumpDateFormat() {
+        uut.setBinaryTagFormat(Boolean.FALSE);
+        final String expected = "1998/12/31";
+        uut.setDateDumpWasCreated(NEW_YEARS_EVE_1998);
+        assertEquals(expected, uut.dateDumpWasCreated());
+    }
+
     @Test
     public void storeDateAsStringWithoutSeparators() {
         final String expected = "1999/04/01";
         var date = LocalDate.of(1999, Month.APRIL, 1);
         uut.setDateDumpWasCreated(date);
-        assertEquals(expected, uut.getDateDumpWasCreated());
+        assertEquals(expected, uut.dateDumpWasCreated());
     }
 
     @Test
@@ -43,47 +87,7 @@ public class Id666Test {
         final String expected = "1997/05/08";
         var earlyDate = LocalDate.of(1997, Month.MAY, 8);
         uut.setDateDumpWasCreated(earlyDate);
-        assertEquals(expected, uut.getDateDumpWasCreated());
-    }
-
-    @Test
-    public void textualDumpDateFormat() {
-        uut.setBinaryTagFormat(Boolean.TRUE);
-        final String expected = "1998/12/31";
-        uut.setDateDumpWasCreated(NEW_YEARS_EVE_1998);
-        assertEquals(expected, uut.getDateDumpWasCreated());
-    }
-
-    @Test
-    public void binaryDumpDateFormat() {
-        uut.setBinaryTagFormat(Boolean.FALSE);
-        final String expected = "1998/12/31";
-        uut.setDateDumpWasCreated(NEW_YEARS_EVE_1998);
-        assertEquals(expected, uut.getDateDumpWasCreated());
-    }
-
-    @Test
-    public void specFormattedDatesWork() {
-        final String mmddyyyy = "05/01/1999";
-        final String expected = "1999/05/01";
-        uut.setDateDumpWasCreated(mmddyyyy);
-        assertEquals(expected, uut.getDateDumpWasCreated());
-    }
-
-    @Test
-    public void mmddyyyyDateformatAllowed() {
-        final String date = "12/31/2003";
-        uut.setDateDumpWasCreated(date);
-        final String expected = "2003/12/31";
-        assertEquals(expected, uut.getDateDumpWasCreated());
-    }
-
-    @Test
-    public void canParseDatesWithDashes() {
-        final String date = "12-31-2005";
-        uut.setDateDumpWasCreated(date);
-        final String expected = "2005/12/31";
-        assertEquals(expected, uut.getDateDumpWasCreated());
+        assertEquals(expected, uut.dateDumpWasCreated());
     }
 
     @Test

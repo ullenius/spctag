@@ -57,7 +57,10 @@ public final class Id666 implements Comparable <Id666> {
 	public String getComments() {
 		return comments;
 	}
-	public String getDateDumpWasCreated() {
+	public LocalDate getDateDumpWasCreated() {
+		return dateDumpWasCreated;
+	}
+	public String dateDumpWasCreated() {
 		return dateDumpWasCreated != null
 				? dateDumpWasCreated.toString().replaceAll("-", "/")
 				: "";
@@ -117,13 +120,19 @@ public final class Id666 implements Comparable <Id666> {
 	 *
 	 * @param date
 	 * Spec says: MM/DD/YYYY
-	 * Allowed formats: YYYY-MM-DD, MM-DD-YYYY, DD-MM-YYYY
+	 * Allowed formats: YYYY-MM-DD, MM-DD-YYYY. Sometimes allowed: YYYY-DD-MM, DD-MM-YYYY
 	 * Allowed separators: '/' or '-'
-	 * Behaviour:
+	 * Leading zeroes are ignored for month or day fields
+	 * ---
+	 *  Behaviour:
 	 * 	1. Try to parse as ISO-8601 date YYYY-MM-DD
 	 * 	2. Try to parse as spec-date MM/DD/YYYY
-	 * 	3. If month/date is invalid. Swap them and parse as DD/MM/YYYY
-	 * 		FIXME add tests for 02 and 2 variants... they work using Integer.parseInt() - 09 -> 9
+	 * 	a) If month/day is invalid in step 1 or 2. Swap them and parse as DD/MM
+	 * ---
+	 * 	Examples:
+	 * 	2005-31-12 gets parsed as 2005-12-31
+	 * 	31-12-2005 gets parsed as 2005-12-31
+	 * 	05-12-1999 gets parsed as 1999-05-12
 	 *
 	 */
 	private LocalDate parseDate(final String date) {
@@ -143,9 +152,10 @@ public final class Id666 implements Comparable <Id666> {
 			return parseIso8601(arr);
 		}
 
-		final String year = arr[2];
 		final String month = arr[0]; // spec compliant
 		final String day = arr[1];
+		final String year = arr[2];
+
 		try {
 			return buildDate(Year.parse(year), Integer.parseInt(month), Integer.parseInt(day));
 		} catch (DateTimeException ex) {
