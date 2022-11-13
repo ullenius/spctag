@@ -109,8 +109,8 @@ public final class Id666 implements Comparable <Id666> {
 				: parseDate(dateDumpWasCreated);
 	}
 
-	private LocalDate parseDate(String date) {
-		final String[] arr = date.split("/");
+	private LocalDate parseDate(final String date) {
+		final String[] arr = date.split("/"); // FIXME add support for dashes as separator
 		if (arr.length != 3) {
 			Logger.warn("Illegal date-string format: {}", date);
 			return null;
