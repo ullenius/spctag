@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.0
+* Migrating to JUnit 5 (jupiter)
+* Refactor unit tests to use parameterized tests (data providers)
+
 ## v1.1.0
 * Lenient date-string parsing. Allow dash-separator `-` in "dumped date"-tags. 
 * For example: `12-31-2000`
