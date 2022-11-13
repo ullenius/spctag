@@ -1,7 +1,10 @@
 # Changelog
 
-## v1.0.1
+## v1.1.0
+* Lenient date-string parsing. Allow dash-separator `-` in "dumped date"-tags. 
+* For example: `12-31-2000`
 
+## v1.0.1
 * Bug fix. Fix crash on `MM-DD-YYYY` date-format for "dumped date"-field.
 * `MM-DD-YYYY` is now allowed for text-format tags (as stated in the spec).
 * Note that dates will be parsed as `DD-MM-YYYY` if permitted.
