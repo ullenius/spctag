@@ -1,17 +1,16 @@
 package se.anosh.spctag.emulator.factory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static se.anosh.spctag.emulator.factory.LegacyEmulator.*;
 import static se.anosh.spctag.emulator.factory.JapaneseEmulatorTest.*;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 
 public class LegacyEmulatorTest {
     
-    private Emulator result;
     private EmulatorFactory factory;
     
     @BeforeEach
@@ -19,35 +18,37 @@ public class LegacyEmulatorTest {
     	factory = new ModernEmulatorFactory();
     }
     
-    /**
-     * 
-     * Tests that the method returns the correct 
-     * enumeration based on the code provided
-     */
-    @Test
-    public void testValidLegacyEmulatorCodes() {
-    	 result = factory.orderEmulator(UNKNOWN, Type.LEGACY);
-         assertEquals(Name.Unknown,result.getName());
-         
-         result = factory.orderEmulator(ZSNES, Type.LEGACY);
-         assertEquals(Name.ZSNES,result.getName());
-         
-         result = factory.orderEmulator(SNES9x, Type.LEGACY);
-         assertEquals(Name.Snes9x,result.getName());
+    @ParameterizedTest
+    @MethodSource("validCodes")
+    public void testValidLegacyEmulatorCodes(final int code, final Name expected) {
+        final Emulator emulator = factory.orderEmulator(code, Type.LEGACY);
+        final Name actual = emulator.getName();
+         assertEquals(expected, actual);
     }
-    
-    @Test
-    public void testInvalidLegacyEmulatorCodes() {
-        result = factory.orderEmulator(JapaneseEmulator.SNES9X_TEXT, Type.LEGACY); // testing a valid value from the jp-spec
-        assertNotEquals(Name.ZSNES,result.getName());
-        
-        result = factory.orderEmulator(INVALID_POSITIVE_NUMBER, Type.LEGACY);
-        assertEquals(Name.Unknown,result.getName()); // unknown is default
-        
-        result = factory.orderEmulator(INVALID_NEGATIVE_NUMBER, Type.LEGACY);
-        assertEquals(Name.Unknown,result.getName()); // unknown is default
+
+    private static Object[][] validCodes() {
+        return new Object[][] {
+                // input code, expected
+                { UNKNOWN, Name.Unknown},
+                { ZSNES, Name.ZSNES},
+                { SNES9x, Name.Snes9x}
+        };
     }
-    
-    
+
+    @ParameterizedTest
+    @MethodSource("invalidCodes")
+    public void testInvalidLegacyEmulatorCodes(final int code) {
+        final Emulator emulator = factory.orderEmulator(code, Type.LEGACY);
+        final Name actual = emulator.getName();
+        assertEquals(Name.Unknown, actual);
+    }
+
+    private static Object[][] invalidCodes() {
+        return new Object[][] {
+                { INVALID_POSITIVE_NUMBER},
+                { INVALID_NEGATIVE_NUMBER},
+                { JapaneseEmulator.SNES9X_TEXT } // valid value from wrong spec
+        };
+    }
     
 }
