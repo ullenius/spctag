@@ -63,6 +63,14 @@ public class Id666Test {
     }
 
     @Test
+    public void specFormattedDatesWork() {
+        final String mmddyyyy = "05/01/1999";
+        final String expected = "1999/05/01";
+        uut.setDateDumpWasCreated(mmddyyyy);
+        assertEquals(expected, uut.getDateDumpWasCreated());
+    }
+
+    @Test
     public void mmddyyyyDateformatAllowed() {
         final String date = "12/31/2003";
         uut.setDateDumpWasCreated(date);

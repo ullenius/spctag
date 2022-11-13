@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -25,6 +24,8 @@ public final class Id666 implements Comparable <Id666> {
 
 	//SPC's didn't exist before 15 Apr 1998
 	private static final LocalDate SPC_FORMAT_BIRTHDAY = LocalDate.of(1998, Month.APRIL, 15);
+
+	private static final String DATE_SEPARATOR = "/";
 
 	private String header;
 	private String artist;
@@ -116,27 +117,35 @@ public final class Id666 implements Comparable <Id666> {
 	 *
 	 * @param date
 	 * Spec says: MM/DD/YYYY
-	 * Allowed formats: YYYY-MM-DD, DD-MM-YYYY, MM-DD-YYYY
+	 * Allowed formats: YYYY-MM-DD, MM-DD-YYYY, DD-MM-YYYY
 	 * Allowed separators: '/' or '-'
+	 * Behaviour:
+	 * 	1. Try to parse as ISO-8601 date YYYY-MM-DD
+	 * 	2. Try to parse as spec-date MM/DD/YYYY
+	 * 	3. If month/date is invalid. Swap them and parse as DD/MM/YYYY
+	 * 		FIXME add tests for 02 and 2 variants... they work using Integer.parseInt() - 09 -> 9
 	 *
 	 */
 	private LocalDate parseDate(final String date) {
 		return date.contains("-")
-				? parseDateSlashSeparator(date.replaceAll("-", "/"))
+				? parseDateSlashSeparator(date.replaceAll("-", DATE_SEPARATOR))
 				: parseDateSlashSeparator(date);
 	}
 
 	private LocalDate parseDateSlashSeparator(final String date) {
-		final String[] arr = date.split("/"); // FIXME add support for dashes as separator
+		final String[] arr = date.split(DATE_SEPARATOR);
 		if (arr.length != 3) {
 			Logger.warn("Illegal date-string format: {}", date);
 			return null;
 		}
-		final int i = (arr[0].length() >> 2) & 1;
-		final String day = arr[i + i];
-		final String year = arr[2 - ( i + i) ];
-		final String month = arr[1];
 
+		if (arr[0].length() == 4) { // iso8601 YYYY-MM-DD
+			return parseIso8601(arr);
+		}
+
+		final String year = arr[2];
+		final String month = arr[0]; // spec compliant
+		final String day = arr[1];
 		try {
 			return buildDate(Year.parse(year), Integer.parseInt(month), Integer.parseInt(day));
 		} catch (DateTimeException ex) {
@@ -146,6 +155,14 @@ public final class Id666 implements Comparable <Id666> {
 			return null;
 		}
 	}
+
+	/**
+	 * ISO-8601 date-format YYYY-MM-DD
+	 */
+	private LocalDate parseIso8601(String[] arr) {
+		return buildDate(Year.parse(arr[0]), Integer.parseInt(arr[1]), Integer.parseInt(arr[2]));
+	}
+
 	private static LocalDate buildDate(final Year year, final int month, final int day) {
 		if (month > 12 && day <= 12) {
 			return buildDate(year, day, month); // swap order
