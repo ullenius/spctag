@@ -109,14 +109,12 @@ ZSNES | 0x01 | 0x01
 Snes9x| 0x02 | 0x02
 
 ### :factory: Factory Method
-* *se.anosh.spctag.emulator.factory* contains a factory method pattern (*Gang of Four*). 
+* *se.anosh.spctag.emulator.factory* contains a factory method.
 * Used for creating immutable *Emulator*-objects based on the two aforementioned tables.
 
 #### Usage example:
 ```java
-EmulatorFactory myFactory = new ModernEmulatorFactory(); // First we create the factory
-
-Emulator emulatorUsed = myFacftory.orderEmulator(0x31, Type.JAPANESE) // Type.LEGACY is also available
+Emulator emulatorUsed = EmulatorFactory.createEmulator(0x31, Type.JAPANESE) // Type.LEGACY is also available
 ```
 
 ## :scroll::Licence

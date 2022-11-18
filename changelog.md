@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.1.0
+### Code refactoring
+* Simplified factory pattern
+* Replacing abstract class with interface
+* Made `Name`-enum nested inside `Emulator`
+
 ## v2.0.1
 * **Bug fix**. No longer crashes when parsing invalid "dumped-dates" in `YYYY-MM-DD`-format
 
