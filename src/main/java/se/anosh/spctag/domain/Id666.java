@@ -9,7 +9,6 @@ import java.util.Objects;
 
 import org.tinylog.Logger;
 import se.anosh.spctag.emulator.factory.Emulator;
-import se.anosh.spctag.emulator.factory.EmulatorI;
 
 public final class Id666 implements Comparable <Id666> {
 	
@@ -32,7 +31,7 @@ public final class Id666 implements Comparable <Id666> {
 	private String nameOfDumper;
 	private String comments;
 	private LocalDate dateDumpWasCreated;
-	private EmulatorI emulatorUsedToCreateDump;
+	private Emulator emulatorUsedToCreateDump;
 
 	private boolean hasId666Tags;
 	private boolean binaryTagFormat;
@@ -63,7 +62,7 @@ public final class Id666 implements Comparable <Id666> {
 				? dateDumpWasCreated.toString().replaceAll("-", "/")
 				: "";
 	}
-	public EmulatorI getEmulatorUsedToCreateDump() {
+	public Emulator getEmulatorUsedToCreateDump() {
 		return emulatorUsedToCreateDump;
 	}
 	public boolean hasId666Tags() {
@@ -175,7 +174,7 @@ public final class Id666 implements Comparable <Id666> {
 		return LocalDate.of(year.getValue(), month, day);
 	}
 
-	public void setEmulatorUsedToCreateDump(EmulatorI emulatorUsedToCreateDump) {
+	public void setEmulatorUsedToCreateDump(Emulator emulatorUsedToCreateDump) {
 		this.emulatorUsedToCreateDump = emulatorUsedToCreateDump;
 	}
 	public void setHasId666Tags(boolean hasId666Tags) {

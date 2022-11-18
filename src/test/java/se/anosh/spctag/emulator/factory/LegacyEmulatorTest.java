@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static se.anosh.spctag.emulator.factory.LegacyEmulator.*;
 import static se.anosh.spctag.emulator.factory.JapaneseEmulatorTest.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
@@ -16,7 +15,7 @@ public class LegacyEmulatorTest {
     @ParameterizedTest
     @MethodSource("validCodes")
     public void testValidLegacyEmulatorCodes(final int code, final Name expected) {
-        final EmulatorI emulator = EmulatorFactory.createEmulator(code, Type.LEGACY);
+        final Emulator emulator = EmulatorFactory.createEmulator(code, Type.LEGACY);
         final Name actual = emulator.getName();
          assertEquals(expected, actual);
     }
@@ -33,7 +32,7 @@ public class LegacyEmulatorTest {
     @ParameterizedTest
     @MethodSource("invalidCodes")
     public void testInvalidLegacyEmulatorCodes(final int code) {
-        final EmulatorI emulator = EmulatorFactory.createEmulator(code, Type.LEGACY);
+        final Emulator emulator = EmulatorFactory.createEmulator(code, Type.LEGACY);
         final Name actual = emulator.getName();
         assertEquals(Name.Unknown, actual);
     }

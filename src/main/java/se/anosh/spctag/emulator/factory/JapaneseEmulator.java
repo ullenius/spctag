@@ -8,7 +8,7 @@ import java.util.*;
  * accessible from the JUnit-tests
  * 
  */
-public class JapaneseEmulator extends Emulator implements EmulatorI {
+public class JapaneseEmulator implements Emulator {
     
     // emulator values for the TEXT tag offset
     static final int ZSNES_TEXT = 0x31;
@@ -67,16 +67,33 @@ public class JapaneseEmulator extends Emulator implements EmulatorI {
     	emulatorMap.put(SNESGT_TEXT, Name.SNESGT);
     	emulatorMap.put(SNESGT_BINARY, Name.SNESGT);
     }
+
+    private final int code;
     
-    /**
-     * 
-     * Matches the code provided (according to the japanese spec)
-     * using an internal HashMap
-     * 
-     * @param code
-     */
     JapaneseEmulator(int code) {
-        super(emulatorMap.get(code), code);
+        this.code = code;
     }
-    
+
+    @Override
+    public Name getName() {
+        return Objects.requireNonNullElse(emulatorMap.get(code), Name.Unknown);
+    }
+
+    @Override
+    public int code() {
+        return code;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JapaneseEmulator that = (JapaneseEmulator) o;
+        return code == that.code;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code);
+    }
 }

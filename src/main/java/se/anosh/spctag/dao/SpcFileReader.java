@@ -141,7 +141,7 @@ final class SpcFileReader {
 		Objects.requireNonNull(field);
 		final byte emulatorCode = readByte(field);
 		// use values from the Japanese spec
-		EmulatorI emulator = EmulatorFactory.createEmulator(emulatorCode, Type.JAPANESE);
+		Emulator emulator = EmulatorFactory.createEmulator(emulatorCode, Type.JAPANESE);
 		id666.setEmulatorUsedToCreateDump(emulator);
 	}
 

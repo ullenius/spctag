@@ -11,7 +11,7 @@ import java.util.*;
  * I created 2 different implementations.
  * 
  */
-public final class LegacyEmulator extends Emulator implements EmulatorI {
+public final class LegacyEmulator implements Emulator {
     
     // binary and text tags share the same value
     // in this spec
@@ -27,15 +27,32 @@ public final class LegacyEmulator extends Emulator implements EmulatorI {
         SNES9x,Name.Snes9x
     );
 
-    /**
-     * 
-     * This constructor uses an internal HashMap to Map the codes (keys) to 
-     * Emulator enums (values)
-     * 
-     */
-    public LegacyEmulator(int magicNumber) {
-        super(emulatorMap.get(magicNumber), magicNumber);
+    private final int code;
+    public LegacyEmulator(int code) {
+        this.code = code;
     }
-    
-    
+
+
+    @Override
+    public Name getName() {
+        return Objects.requireNonNullElse(emulatorMap.get(code), Name.Unknown);
+    }
+
+    @Override
+    public int code() {
+        return code;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LegacyEmulator that = (LegacyEmulator) o;
+        return code == that.code;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code);
+    }
 }

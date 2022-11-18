@@ -1,63 +1,22 @@
 package se.anosh.spctag.emulator.factory;
 
-import java.util.Objects;
+public interface Emulator {
 
-public abstract class Emulator implements EmulatorI {
-	private final Name name;
-	final int code;
-    protected Emulator(Name name, Integer code) {
-        this.name = Objects.requireNonNullElse(name, Name.Unknown);
-        // the model object knows whether its tag format is binary or text,
-        // so it knows where to put this value. But this object (Emulator)
-        // does not need to know what it is
-        this.code = Objects.requireNonNull(code); //auto-unboxing
+    Name getName();
+    int code();
+
+    public enum Name {
+        Unknown,
+        Other,
+        ZSNES,
+        Snes9x,
+        ZST2SPC,
+        SNEShout,
+        ZSNES_W,
+        Snes9xpp,
+        SNESGT
+
     }
-    public Name getName() {
-        return name;
-    }
-
-    @Override
-    public String toString() {
-        return "Emulator{" + "name=" + name + ", offset= 0x" + Integer.toHexString(code) + '}';
-    }
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + code;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Emulator other = (Emulator) obj;
-		if (code != other.code)
-			return false;
-		if (name != other.name)
-			return false;
-		return true;
-	}
-
-	public enum Name {
-		Unknown,
-		Other,
-		ZSNES,
-		Snes9x,
-		ZST2SPC,
-		SNEShout,
-		ZSNES_W,
-		Snes9xpp,
-		SNESGT
-
-	}
 
 
 }

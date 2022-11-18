@@ -3,7 +3,6 @@ package se.anosh.spctag.emulator.factory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static se.anosh.spctag.emulator.factory.JapaneseEmulator.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
@@ -16,7 +15,7 @@ public class JapaneseEmulatorTest {
     @ParameterizedTest
     @MethodSource("validCodes")
     public void japaneseEmulatorCodeMappings(final int code, final Name expected) {
-        final EmulatorI emulator = EmulatorFactory.createEmulator(code, Type.JAPANESE);
+        final Emulator emulator = EmulatorFactory.createEmulator(code, Type.JAPANESE);
         final Name actual = emulator.getName();
         assertEquals(expected, actual);
     }
@@ -59,7 +58,7 @@ public class JapaneseEmulatorTest {
     @ParameterizedTest
     @MethodSource("invalidCodes")
     public void testInvalidJapaneseEmulatorCodes(final int code) {
-        final EmulatorI emulator = EmulatorFactory.createEmulator(code, Type.JAPANESE);
+        final Emulator emulator = EmulatorFactory.createEmulator(code, Type.JAPANESE);
         final Name actual = emulator.getName();
         assertEquals(Name.Unknown, actual);
     }
