@@ -23,6 +23,9 @@ final class Xid6Reader {
 
     private static final Map<Byte, Id> mappningar = new HashMap<>();
     private static final long XID6_OFFSET = 0x10200L;
+
+    private static final int XID6_HEADER_SIZE = 8;
+
     static {
         mappningar.put((byte) 0x01, new Id(Xid6Tag.SONG, Type.TEXT));
         mappningar.put((byte) 0x02, new Id(Xid6Tag.GAME, Type.TEXT));
@@ -104,33 +107,33 @@ final class Xid6Reader {
     private void parseXid6(Path spc) throws IOException {
         final long fileSize = Files.size(spc);
         final long xid6Size = fileSize - XID6_OFFSET;
-        final long xid6SizeMinusHeader = xid6Size - 8; // size of header
+        final long xid6SizeMinusHeader = xid6Size - XID6_HEADER_SIZE;
         if (fileSize <= XID6_OFFSET) {
             throw new IOException("File too small. Does not contain xid6");
         }
         xid6 = new Xid6();
 
-        var fileChannel = FileChannel.open(spc, StandardOpenOption.READ);
+        final var fileChannel = FileChannel.open(spc, StandardOpenOption.READ);
         fileChannel.position(XID6_OFFSET);
 
-        var buffer = fileChannel.map(
+        final var buffer = fileChannel.map(
                 FileChannel.MapMode.READ_ONLY, XID6_OFFSET, xid6Size
         );
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         Logger.debug("Position: {}", buffer.position());
         Logger.debug("Limit: {}", buffer.limit());
 
-        byte[] magic = new byte[4];
+        final byte[] magic = new byte[4];
         buffer.get(magic);
-        ChunkHeader header = new ChunkHeader(magic, buffer.getInt());
+        final ChunkHeader header = new ChunkHeader(magic, buffer.getInt());
         // workaround if header is broken and actual filesize is less than chunk size in header
         final int chunkSize = (header.chunkSize > xid6SizeMinusHeader) ? (int) xid6SizeMinusHeader : header.chunkSize;
         Logger.debug("Chunk size: {}", chunkSize);
         Logger.debug("Current pos: {}", buffer.position());
 
-        byte[] subChunkArr = new byte[chunkSize]; // chunkSize exclusive header
+        final byte[] subChunkArr = new byte[chunkSize]; // chunkSize exclusive header
         buffer.get(subChunkArr); // contains all sub-chunks, including sub-chunk headers
-        var subChunks = ByteBuffer.wrap(subChunkArr).order(ByteOrder.LITTLE_ENDIAN);
+        final var subChunks = ByteBuffer.wrap(subChunkArr).order(ByteOrder.LITTLE_ENDIAN);
 
         Logger.debug("Subchunk contents");
         Logger.debug("-----------");
@@ -138,13 +141,13 @@ final class Xid6Reader {
             Logger.debug("Subchunk header");
             Logger.debug("Current pos: {}", subChunks.position());
 
-            byte id = subChunks.get();
+            final byte id = subChunks.get();
             if (!mappningar.containsKey(id)) {
                 break;
             }
-            Id mappatId = mappningar.get(id);
-            Type type = mappatId.type;
-            boolean dataStoredInHeader = subChunks.get() == 0 || type == Type.DATA; // workaround for broken type byte, always read from header
+            final Id mappatId = mappningar.get(id);
+            final Type type = mappatId.type;
+            final boolean dataStoredInHeader = subChunks.get() == 0 || type == Type.DATA; // workaround for broken type byte, always read from header
 
             Logger.debug("Id: 0x{}", toHexString(id));
             Logger.debug("Mapped id: {}", mappatId);
@@ -159,7 +162,7 @@ final class Xid6Reader {
                 if (size > 2) {
                     throw new IllegalStateException("Data stored in header. Yet size is larger than 2 bytes");
                 }
-                byte[] data = new byte[2]; // always allocate 2 bytes
+                final byte[] data = new byte[2]; // always allocate 2 bytes
                 subChunks.get(data);
 
                 var func = mappedBehaviourDataStoredInHeader.get(type);
@@ -172,20 +175,16 @@ final class Xid6Reader {
                         if ((size-1) % 4 == 0) {
                             final int peekPos = size - 1;
                             final int oldPos = subChunks.position();
-                            byte peek = subChunks.get(oldPos + peekPos);
+                            final byte peek = subChunks.get(oldPos + peekPos);
                             Logger.debug("Peek byte: {}", peek);
                             if (mappningar.containsKey(peek)) {
                                 size--;
                             }
                         }
-                        int bufsize = size;
-                        while (bufsize % 4 != 0) {
-                            bufsize++;
-                            Logger.debug("Increasing bufsize: {}", bufsize);
-                        }
-                        byte[] buf = new byte[bufsize];
+                        final int bufsize = createBufferSize(size);
+                        final byte[] buf = new byte[bufsize];
                         subChunks.get(buf);
-                        String text = new String(buf, StandardCharsets.UTF_8).trim();
+                        final String text = new String(buf, StandardCharsets.UTF_8).trim();
                         setText(mappatId.tag, text);
                         break;
                     case INTRO:
@@ -208,6 +207,15 @@ final class Xid6Reader {
             }
         }
         fileChannel.close();
+    }
+
+    private int createBufferSize(final int size) {
+        int bufsize = size;
+        while (bufsize % 4 != 0) {
+            bufsize++;
+            Logger.debug("Increasing bufsize: {}", bufsize);
+        }
+        return bufsize;
     }
 
     private final IntConsumer setDate = (num) -> xid6.setDate(num);
