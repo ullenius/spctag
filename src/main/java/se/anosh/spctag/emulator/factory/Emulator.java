@@ -3,7 +3,6 @@ package se.anosh.spctag.emulator.factory;
 public interface Emulator {
 
     Name getName();
-    int code();
 
     public enum Name {
         Unknown,

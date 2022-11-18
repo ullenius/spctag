@@ -40,8 +40,8 @@ final class LegacyEmulator implements Emulator {
     }
 
     @Override
-    public int code() {
-        return code;
+    public String toString() {
+        return "Emulator{" + "name=" + name + ", offset= 0x" + Integer.toHexString(code) + '}';
     }
 
     @Override
