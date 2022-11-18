@@ -80,7 +80,7 @@ public final class TagReader {
                 System.out.println("Name of dumper: " + myFile.getNameOfDumper());
                 System.out.println("Comments: " + myFile.getComments());
 
-                System.out.println("Date SPC was dumped: " + myFile.getDateDumpWasCreated());
+                System.out.println("Date SPC was dumped: " + myFile.dateDumpWasCreated());
                 System.out.println("Emulator used to dump SPC: " + myFile.getEmulatorUsedToCreateDump().getName());
 
                 if (cmd.hasOption(VERBOSE) || cmd.hasOption(XID6)) {

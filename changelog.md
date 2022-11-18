@@ -1,6 +1,7 @@
 # Changelog
 
 ## v2.1.0
+* Bug fix: Display empty string if dumped-date is not set (instead of printing `null`)
 ### Code refactoring
 * Simplified factory pattern
 * Replacing abstract class with interface
