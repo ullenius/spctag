@@ -1,22 +1,20 @@
 package se.anosh.spctag.emulator.factory;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  *
  * This class matches the code provided according to the legacy spec
  * made by creaothceann on 2006-02-27 21:48
- * 
- * Some of the values don't overlap in the Japanese spec. That's why
- * I created 2 different implementations.
+ * ---
+ * Some values don't overlap in the Japanese spec. That's why
+ * I created two different implementations.
  * 
  */
-public final class LegacyEmulator implements Emulator {
+final class LegacyEmulator implements Emulator {
     
-    // binary and text tags share the same value
-    // in this spec
-	//
-	// Package protected to make them accessible for JUnit-tests
+    // binary and text tags share the same values in this spec
     static final int UNKNOWN = 0;
     static final int ZSNES = 1;
     static final int SNES9x = 2;
@@ -28,14 +26,17 @@ public final class LegacyEmulator implements Emulator {
     );
 
     private final int code;
-    public LegacyEmulator(int code) {
+    private final Name name;
+
+    LegacyEmulator(int code) {
         this.code = code;
+        name = Objects.requireNonNullElse(emulatorMap.get(code), Name.Unknown);
     }
 
 
     @Override
     public Name getName() {
-        return Objects.requireNonNullElse(emulatorMap.get(code), Name.Unknown);
+        return name;
     }
 
     @Override

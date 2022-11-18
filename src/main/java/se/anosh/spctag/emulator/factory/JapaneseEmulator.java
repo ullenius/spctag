@@ -1,14 +1,11 @@
 package se.anosh.spctag.emulator.factory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
-/**
- *
- * The constants are made package private to make them
- * accessible from the JUnit-tests
- * 
- */
-public class JapaneseEmulator implements Emulator {
+
+final class JapaneseEmulator implements Emulator {
     
     // emulator values for the TEXT tag offset
     static final int ZSNES_TEXT = 0x31;
@@ -23,19 +20,19 @@ public class JapaneseEmulator implements Emulator {
     static final int SNESGT_TEXT = 0x38;
     
     // emulator values for the BINARY tag offset
-    static final int UNKNOWN_BINARY = 0x0;
+    static final int UNKNOWN_BINARY = 0x00;
     static final int UNKNOWN_TEXT = 0x30;
     
-    static final int ZSNES_BINARY = 0x1;
-    static final int SNES9X_BINARY = 0x2;
+    static final int ZSNES_BINARY = 0x01;
+    static final int SNES9X_BINARY = 0x02;
     
-    static final int ZST2SPC_BINARY = 0x3;
-    static final int OTHER_BINARY = 0x4;
-    static final int SNESHOUT_BINARY = 0x5;
+    static final int ZST2SPC_BINARY = 0x03;
+    static final int OTHER_BINARY = 0x04;
+    static final int SNESHOUT_BINARY = 0x05;
     
-    static final int ZSNES_W_BINARY = 0x6;
-    static final int SNES9XPP_BINARY = 0x7;
-    static final int SNESGT_BINARY= 0x8;
+    static final int ZSNES_W_BINARY = 0x06;
+    static final int SNES9XPP_BINARY = 0x07;
+    static final int SNESGT_BINARY= 0x08;
     
     static final Map<Integer,Name> emulatorMap = new HashMap<>();
     
@@ -69,14 +66,16 @@ public class JapaneseEmulator implements Emulator {
     }
 
     private final int code;
+    private final Name name;
     
     JapaneseEmulator(int code) {
         this.code = code;
+        name = Objects.requireNonNullElse(emulatorMap.get(code), Name.Unknown);
     }
 
     @Override
     public Name getName() {
-        return Objects.requireNonNullElse(emulatorMap.get(code), Name.Unknown);
+        return name;
     }
 
     @Override
