@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.anosh.spctag.dao.SpcFile;
 import se.anosh.spctag.domain.Id666;
-import se.anosh.spctag.emulator.factory.Name;
+import se.anosh.spctag.emulator.factory.Emulator;
 
 public class SpcTextFormatTest {
     
@@ -83,7 +83,7 @@ public class SpcTextFormatTest {
 
     @Test
     public void emulatorUsedToCreateDump() {
-        final Name emulator = Name.Unknown;
+        final Emulator.Name emulator = Emulator.Name.Unknown;
         assertEquals(emulator, id666.getEmulatorUsedToCreateDump().getName());
     }
 

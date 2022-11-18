@@ -43,7 +43,7 @@ public class Xid6Test {
 
     @Test
     public void emulatorUsedNotSet() {
-        assertEquals(Name.Snes9x, uut.getEmulator().getName());
+        assertEquals(Emulator.Name.Snes9x, uut.getEmulator().getName());
     }
 
     @Test
