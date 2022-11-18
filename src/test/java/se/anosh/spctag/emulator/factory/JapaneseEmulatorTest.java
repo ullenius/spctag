@@ -10,20 +10,13 @@ import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
 
 public class JapaneseEmulatorTest {
 
-    private EmulatorFactory factory;
-
     static final int INVALID_POSITIVE_NUMBER = 1337;
     static final int INVALID_NEGATIVE_NUMBER = -15;
-
-    @BeforeEach
-    public void setup() {
-        factory = new ModernEmulatorFactory();
-    }
 
     @ParameterizedTest
     @MethodSource("validCodes")
     public void japaneseEmulatorCodeMappings(final int code, final Name expected) {
-        final Emulator emulator = factory.orderEmulator(code, Type.JAPANESE);
+        final EmulatorI emulator = EmulatorFactory.createEmulator(code, Type.JAPANESE);
         final Name actual = emulator.getName();
         assertEquals(expected, actual);
     }
@@ -66,7 +59,7 @@ public class JapaneseEmulatorTest {
     @ParameterizedTest
     @MethodSource("invalidCodes")
     public void testInvalidJapaneseEmulatorCodes(final int code) {
-        final Emulator emulator = factory.orderEmulator(code, Type.JAPANESE);
+        final EmulatorI emulator = EmulatorFactory.createEmulator(code, Type.JAPANESE);
         final Name actual = emulator.getName();
         assertEquals(Name.Unknown, actual);
     }

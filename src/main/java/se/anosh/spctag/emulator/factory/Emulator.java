@@ -2,7 +2,7 @@ package se.anosh.spctag.emulator.factory;
 
 import java.util.Objects;
 
-public abstract class Emulator {
+public abstract class Emulator implements EmulatorI {
 	private final Name name;
 	final int code;
     protected Emulator(Name name, Integer code) {

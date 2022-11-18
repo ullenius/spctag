@@ -11,7 +11,7 @@ import java.util.*;
  * I created 2 different implementations.
  * 
  */
-public final class LegacyEmulator extends Emulator {
+public final class LegacyEmulator extends Emulator implements EmulatorI {
     
     // binary and text tags share the same value
     // in this spec
@@ -32,7 +32,6 @@ public final class LegacyEmulator extends Emulator {
      * This constructor uses an internal HashMap to Map the codes (keys) to 
      * Emulator enums (values)
      * 
-     * @param magicNumber 
      */
     public LegacyEmulator(int magicNumber) {
         super(emulatorMap.get(magicNumber), magicNumber);

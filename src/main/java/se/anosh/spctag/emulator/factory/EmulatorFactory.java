@@ -1,31 +1,24 @@
 package se.anosh.spctag.emulator.factory;
 
 
-/**
- * 
- * This package uses Factory method pattern (Gang Of Four)
- * 
- */
-public abstract class EmulatorFactory {
+import java.util.Objects;
+
+public final class EmulatorFactory {
     
     public enum Type {
         JAPANESE,
         LEGACY
     }
-    
-    public Emulator orderEmulator(int magicNumber, Type style) {
-        return createEmulator(magicNumber, style);
+
+    private EmulatorFactory() {
+        throw new AssertionError("Cannot be instantiated");
     }
-    
-    // Method overloading
-    // uses Japanese-type unless specified
-    public Emulator orderEmulator(int magicNumber) {
-        return orderEmulator(magicNumber, Type.JAPANESE);
-    }
-    
-    
     // this method act as a factory
-    protected abstract Emulator createEmulator(int magicNumber, Type style);
-    
-    
+    public static EmulatorI createEmulator(final int magicNumber, Type style) {
+        Objects.requireNonNull(style, "Style cannot be null");
+        return style == Type.JAPANESE
+                ? new JapaneseEmulator(magicNumber)
+                : new LegacyEmulator(magicNumber);
+    }
+
 }

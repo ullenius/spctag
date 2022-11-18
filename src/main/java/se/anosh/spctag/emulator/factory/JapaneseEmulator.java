@@ -8,7 +8,7 @@ import java.util.*;
  * accessible from the JUnit-tests
  * 
  */
-public class JapaneseEmulator extends Emulator {
+public class JapaneseEmulator extends Emulator implements EmulatorI {
     
     // emulator values for the TEXT tag offset
     static final int ZSNES_TEXT = 0x31;

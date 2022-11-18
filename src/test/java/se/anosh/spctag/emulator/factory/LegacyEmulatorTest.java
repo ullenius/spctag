@@ -13,15 +13,10 @@ public class LegacyEmulatorTest {
     
     private EmulatorFactory factory;
     
-    @BeforeEach
-    public void setup() {
-    	factory = new ModernEmulatorFactory();
-    }
-    
     @ParameterizedTest
     @MethodSource("validCodes")
     public void testValidLegacyEmulatorCodes(final int code, final Name expected) {
-        final Emulator emulator = factory.orderEmulator(code, Type.LEGACY);
+        final EmulatorI emulator = EmulatorFactory.createEmulator(code, Type.LEGACY);
         final Name actual = emulator.getName();
          assertEquals(expected, actual);
     }
@@ -38,7 +33,7 @@ public class LegacyEmulatorTest {
     @ParameterizedTest
     @MethodSource("invalidCodes")
     public void testInvalidLegacyEmulatorCodes(final int code) {
-        final Emulator emulator = factory.orderEmulator(code, Type.LEGACY);
+        final EmulatorI emulator = EmulatorFactory.createEmulator(code, Type.LEGACY);
         final Name actual = emulator.getName();
         assertEquals(Name.Unknown, actual);
     }

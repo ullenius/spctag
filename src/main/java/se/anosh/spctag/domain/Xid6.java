@@ -3,7 +3,7 @@ package se.anosh.spctag.domain;
 import org.tinylog.Logger;
 import se.anosh.spctag.emulator.factory.Emulator;
 import se.anosh.spctag.emulator.factory.EmulatorFactory;
-import se.anosh.spctag.emulator.factory.ModernEmulatorFactory;
+import se.anosh.spctag.emulator.factory.EmulatorI;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -26,7 +26,7 @@ public final class Xid6 {
     private String dumper;
     private LocalDate dumped;
     private Year year;
-    private Emulator emulator;
+    private EmulatorI emulator;
     private String comments;
     private String ostTitle;
     private Byte ostDisc;
@@ -102,13 +102,12 @@ public final class Xid6 {
         this.dumper = dumper;
     }
 
-    public Emulator getEmulator() {
+    public EmulatorI getEmulator() {
         return emulator;
     }
 
     public void setEmulator(byte emulator) {
-        EmulatorFactory factory = new ModernEmulatorFactory();
-        this.emulator = factory.orderEmulator(emulator);
+        this.emulator = EmulatorFactory.createEmulator(emulator, EmulatorFactory.Type.JAPANESE);
     }
 
     public String getComments() {
