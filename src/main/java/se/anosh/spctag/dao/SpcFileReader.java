@@ -172,16 +172,11 @@ final class SpcFileReader {
 	 * 
 	 * Checks if tag format is text format (as opposed to binary)
 	 * It is kind of ambigious which format is used since there are
-	 * no real inidcator in the file format specification.
-	 * 
+	 * no real indicators in the file format specification.
+	 * --
 	 * BUGS:
 	 * This method only works if the artist field is set...
 	 * and if the artist name doesn't start with a digit
-	 * 
-	 * On the other hand... The only other value that is affected
-	 * is the single byte that determines the emulator used for creating
-	 * the dump. And who cares? It's not even properly set in most SPC-files.
-	 * 
 	 */
 	private boolean hasBinaryTagFormat() throws IOException {
 		final char first = parse(Id666.Field.ARTIST_OF_SONG_BINARY_FORMAT,
