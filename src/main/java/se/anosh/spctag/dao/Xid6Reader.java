@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 
 import static java.lang.Integer.toHexString;
@@ -76,20 +77,16 @@ final class Xid6Reader {
 
     final BiConsumer<Id, byte[]> oneByteData = (id, data) -> setData(id.tag, data[0]);
 
-    private void setData(Xid6Tag tag, byte b) {
-        switch (tag) {
-            case EMULATOR:
-                xid6.setEmulator(b);
-                break;
-            case OST_DISC:
-                xid6.setOstDisc(b);
-                break;
-            case LOOP_TIMES:
-                xid6.setLoop(b);
-                break;
-            default:
-                throw new IllegalArgumentException("no mapping found for: " + tag);
+    private void setData(final Xid6Tag tag, final byte b) {
+        final Map<Xid6Tag, Consumer<Byte>> mappings = Map.of(
+                Xid6Tag.EMULATOR, xid6::setEmulator,
+                Xid6Tag.OST_DISC, xid6::setOstDisc,
+                Xid6Tag.LOOP_TIMES, xid6::setLoop
+        );
+        if (!mappings.containsKey(tag)) {
+            throw new IllegalArgumentException("no mapping found for: " + tag);
         }
+        mappings.get(tag).accept(b);
     }
 
     private final Map<Type, BiConsumer<Id, byte[]>> mappedBehaviourDataStoredInHeader = Map.of(
