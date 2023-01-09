@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.2.0
+* Migrate to Java 17
+* Minor refactoring
+* Documentation fixes (markdown and typos)
+
 ## v2.1.0
 * Bug fix: Display empty string if dumped-date is not set (instead of printing `null`)
 ### Code refactoring
