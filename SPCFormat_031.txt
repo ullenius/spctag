@@ -6,7 +6,7 @@ Addendum:
  * changed the version number to v0.31
  * Detecting the format of the SPC file (binary or text) can be a bit tricky, since fields
    might contain ambiguous values and there's no format indicator. Some fields have
-   different offsets depending of the format, which might help with the detection. The
+   different offsets depending on the format, which might help with the detection. The
    current Win32 version of ZSNES saves binary SPC files; SNES9x saves in text format.
 
 * Fixed binary dumped date. 2022
@@ -60,8 +60,8 @@ ID666 Tag (binary format):
 0007Eh    32 Comments
 
 ----
-0009Eh     1 Date SPC was dumped. Day part. (1 - 31
-0009Fh     1 Date SPC was dumped. Month part. (1 - 12)
+0009Eh     1 Date SPC was dumped. Day part (1 - 31)
+0009Fh     1 Date SPC was dumped. Month part (1 - 12)
 000A0h     2 Date SPC was dumped. Year part (1 - 9999)
 --- A.U 2022, fixed dumped date
 
