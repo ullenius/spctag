@@ -63,8 +63,8 @@ I've included a compiled jar-file with /lib dir to simplify for end-users who ca
 
 ## :wrench: Development
 1. I wrote this because there was a lack of tools supporting the SPC-format.
-1. And it would be a fun project to learn binary I/O in Java.
-1. Lastly, **spctag** has the best support for parsing the *"Emulator used for dumping SPC"*-tag :grin:
+2. And it would be a fun project to learn binary I/O in Java.
+3. Lastly, **spctag** has the best support for parsing the *"Emulator used for dumping SPC"*-tag :grin:
 
 Most of the existing tools are 15-20 year old legacy Windows programs that won't run on modern computers. The source code is lost. Or it was written in C/C++ for 32-bit architecture and won't compile on modern 64-bit computers.
 
@@ -85,28 +85,28 @@ There are two different set of specifications for emulator codes available. The 
 ### :jp: Japanese spec
 The following byte-values are used according to the [Japanese spec](https://dgrfactory.jp/spcplay/id666.html):
 
-Emulator name | Text format | Binary format
------------- | -------------| -------------
-Unknown | 0x30 | 0x00
-ZSNES | 0x31 | 0x01
-Snes9x| 0x32 | 0x02
-ZST2SPC| 0x33| 0x03
-Other | 0x34 | 0x04
-SNEShout| 0x35 | 0x05
-ZSNES / W | 0x36 | 0x06
-Snes9xpp | 0x37 | 0x07
-SNESGT | 0x38 | 0x08
+| Emulator name | Text format | Binary format |
+|---------------|-------------|---------------|
+| Unknown       | 0x30        | 0x00          |
+| ZSNES         | 0x31        | 0x01          |
+| Snes9x        | 0x32        | 0x02          |
+| ZST2SPC       | 0x33        | 0x03          |
+| Other         | 0x34        | 0x04          |
+| SNEShout      | 0x35        | 0x05          |
+| ZSNES / W     | 0x36        | 0x06          |
+| Snes9xpp      | 0x37        | 0x07          |
+| SNESGT        | 0x38        | 0x08          |
 
 Note: *Other* and *Unknown* are both specified with unique values (?) somehow...
 
 ### :older_woman: Legacy spec
 Only 3 values are defined in the legacy spec (SPC File Format v.0.31 txt-file)
 
-Emulator name | Text format | Binary format
------------- | -------------| -------------
-Unknown | 0x0 | 0x00
-ZSNES | 0x01 | 0x01
-Snes9x| 0x02 | 0x02
+| Emulator name | Text format | Binary format |
+|---------------|-------------|---------------|
+| Unknown       | 0x0         | 0x00          |
+| ZSNES         | 0x01        | 0x01          |
+| Snes9x        | 0x02        | 0x02          |
 
 ### :factory: Factory Method
 * *se.anosh.spctag.emulator.factory* contains a factory method.
