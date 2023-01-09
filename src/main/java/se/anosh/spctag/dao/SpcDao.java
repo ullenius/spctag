@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public interface SpcDao {
 	
-	public Id666 read() throws IOException;
+	public Id666 read();
 	public Xid6 readXid6() throws IOException;
 
 }
