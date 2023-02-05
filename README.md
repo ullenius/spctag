@@ -40,7 +40,7 @@ Fade length: 640000
 
 ## Features
 
-* :heavy_check_mark: 100% Java (Java 11) :coffee:
+* :heavy_check_mark: 100% Java (Java 17) :coffee:
 * :heavy_check_mark: Supports UTF-8 encoding in the tags!
 * :heavy_check_mark: Command line. Multi-platform.
 * :heavy_check_mark: Batch processing using wildcards is possible! For example: `java -jar spctag *.spc`
@@ -104,7 +104,7 @@ Only 3 values are defined in the legacy spec (SPC File Format v.0.31 txt-file)
 
 | Emulator name | Text format | Binary format |
 |---------------|-------------|---------------|
-| Unknown       | 0x0         | 0x00          |
+| Unknown       | 0x00        | 0x00          |
 | ZSNES         | 0x01        | 0x01          |
 | Snes9x        | 0x02        | 0x02          |
 
