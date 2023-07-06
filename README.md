@@ -50,10 +50,18 @@ Fade length: 640000
 ## :floppy_disk: Building
 This is a Maven-project.
 
+### Linux / POSIX
 Run:
 ```sh
-mvn clean install assembly:single
+./mvnw clean install assembly:single
 ```
+
+### Windows
+Run:
+```sh
+./mvnw.cmd clean install assembly:single
+```
+
 to build the JAR-file.
 
 ## :file_folder: Binaries

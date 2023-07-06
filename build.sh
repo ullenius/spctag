@@ -1,3 +1,3 @@
 #!/bin/sh
 # Build script for linux / un*x
-mvn clean install assembly:single
+./mvnw clean install assembly:single
