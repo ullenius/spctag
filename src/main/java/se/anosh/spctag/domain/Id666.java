@@ -30,6 +30,9 @@ public final class Id666 implements Comparable <Id666> {
 	private String gameTitle;
 	private String nameOfDumper;
 	private String comments;
+
+	private int lengthSeconds;
+
 	private LocalDate dateDumpWasCreated;
 	private Emulator emulatorUsedToCreateDump;
 
@@ -93,6 +96,15 @@ public final class Id666 implements Comparable <Id666> {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
+
+	public int getLengthSeconds() {
+		return lengthSeconds;
+	}
+
+	public void setLengthSeconds(int lengthSeconds) {
+		this.lengthSeconds = lengthSeconds;
+	}
+
 	public void setDateDumpWasCreated(final LocalDate dumpdate) {
 		Objects.requireNonNull(dumpdate);
 		if (dumpdate.isBefore(SPC_FORMAT_BIRTHDAY)) {
@@ -265,6 +277,8 @@ public final class Id666 implements Comparable <Id666> {
 		GAME_TITLE(0x4E, 32),
 		NAME_OF_DUMPER(0x6E, 16),
 		COMMENTS(0x7E, 32),
+
+		LENGTH_SECONDS(0xA9, 3),
 		DUMP_DATE_TEXT_FORMAT(0x9E, 11),
 		DUMP_DATE_BINARY_FORMAT(0x9E, 4),
 		ARTIST_OF_SONG_TEXT_FORMAT(0xB1, 32),

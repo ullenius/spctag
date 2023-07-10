@@ -42,7 +42,7 @@ final class SpcFileReader {
 	}
 
 	/**
-	 * 
+	 *
 	 * Calls all read methods and
 	 * sets all the Id666.Fields in the id666-object
 	 * SPC-file needs to be open for this to work.
@@ -52,7 +52,7 @@ final class SpcFileReader {
 		readHeader();
 		readSongTitle();
 		readGameTitle();
-		
+
 		readNameOfDumper();
 		readComments();
 
@@ -60,6 +60,7 @@ final class SpcFileReader {
 		readTagFormat();
 
 		// these depend on the tag-format being binary or text
+		readLengthSeconds();
 		readArtist();
 		readEmulatorUsedToCreateDump();
 		readDateDumpWasCreated();
@@ -72,19 +73,19 @@ final class SpcFileReader {
 	private void readSongTitle() throws IOException {
 		id666.setSongTitle(parse(Id666.Field.SONG_TITLE));
 	}
-	
+
 	private void readGameTitle() throws IOException {
 		id666.setGameTitle(parse(Id666.Field.GAME_TITLE));
 	}
-	
+
 	private void readNameOfDumper() throws IOException {
 		id666.setNameOfDumper(parse(Id666.Field.NAME_OF_DUMPER));
 	}
-	
+
 	private void readComments() throws IOException {
 		id666.setComments(parse(Id666.Field.COMMENTS));
 	}
-	
+
 	private void readDateDumpWasCreated() throws IOException {
 		if (id666.isBinaryTagFormat() && hasBinaryDumpDate()) {
 			id666.setDateDumpWasCreated(parseBinaryDumpDate());
@@ -112,11 +113,11 @@ final class SpcFileReader {
 	private void readHasId666Tags() throws IOException {
 		id666.setHasId666Tags(containsID666Tags());
 	}
-	
+
 	private void readTagFormat() throws IOException {
 		id666.setBinaryTagFormat(hasBinaryTagFormat());
 	}
-	
+
 	private void readArtist() throws IOException {
 		id666.setArtist(parseArtist());
 	}
@@ -125,6 +126,21 @@ final class SpcFileReader {
 		return id666.isBinaryTagFormat()
 				? parse(Id666.Field.ARTIST_OF_SONG_BINARY_FORMAT)
 				: parse(Id666.Field.ARTIST_OF_SONG_TEXT_FORMAT);
+	}
+
+	private void readLengthSeconds() throws IOException {
+		id666.setLengthSeconds(parseLengthSeconds());
+	}
+
+	private int parseLengthSeconds() throws IOException {
+		if (id666.isBinaryTagFormat()) {
+			return parse(Id666.Field.LENGTH_SECONDS, (bytes) -> {
+				// 24-bit unsigned number (little endian)
+				return (bytes[0] & 0xFF) | (bytes[1] << 8 & 0xFF00) | (bytes[2] << 16 & 0xFF0000);
+			});
+		}
+		String length = parse(Id666.Field.LENGTH_SECONDS);
+		return length.isBlank() ? 0 : Integer.parseInt(length);
 	}
 
 	private void readEmulatorUsedToCreateDump() throws IOException {
@@ -136,7 +152,7 @@ final class SpcFileReader {
 				? Id666.Field.EMULATOR_BINARY_FORMAT
 				: Id666.Field.EMULATOR_TEXT_FORMAT;
 	}
-	
+
 	private void setEmulatorUsedToCreateDump(final Id666.Field field) throws IOException {
 		Objects.requireNonNull(field);
 		final byte emulatorCode = readByte(field);
@@ -152,7 +168,7 @@ final class SpcFileReader {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws IOException if offset has invalid value SPC-file.
 	 */
 	private boolean containsID666Tags() throws IOException{
@@ -169,7 +185,7 @@ final class SpcFileReader {
 	}
 
 	/**
-	 * 
+	 *
 	 * Checks if tag format is text format (as opposed to binary)
 	 * It is kind of ambigious which format is used since there are
 	 * no real indicators in the file format specification.

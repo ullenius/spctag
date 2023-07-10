@@ -72,5 +72,18 @@ public class TestModelWithData {
         assertNull(id666.getDateDumpWasCreated());
     }
 
+    @Test
+    public void lengthSecondsText() {
+        final int expected = 99;
+        assertEquals(expected, id666.getLengthSeconds());
+    }
+
+    @Test
+    public void lengthSecondsBinary() throws IOException {
+        final Id666 id666 = new SpcFile(BINARY_SPC).read();
+        final int expected = 99;
+        assertEquals(expected, id666.getLengthSeconds());
+    }
+
 
 }
