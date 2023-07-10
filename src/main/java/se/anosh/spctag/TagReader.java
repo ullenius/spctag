@@ -69,9 +69,9 @@ public final class TagReader {
 
                 if (cmd.hasOption(VERBOSE)) {
                     System.out.println("File header: " + myFile.getHeader());
-
                     String format = myFile.isBinaryTagFormat() ? "Binary" : "Text";
                     System.out.println("Tag format: " + format);
+                    System.out.printf("Length (seconds): %d\n", myFile.getLengthSeconds() );
                 }
                 System.out.println("Artist: " + myFile.getArtist()); // composer
                 System.out.println("Song title: " + myFile.getSongTitle());
