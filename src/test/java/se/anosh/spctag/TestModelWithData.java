@@ -81,7 +81,7 @@ public class TestModelWithData {
     @Test
     public void lengthSecondsBinary() throws IOException {
         final Id666 id666 = new SpcFile(BINARY_SPC).read();
-        final int expected = 99;
+        final int expected = 0xFFAA91; // 24-bit unsigned
         assertEquals(expected, id666.getLengthSeconds());
     }
 
