@@ -19,7 +19,8 @@ usage: spctag <filename>
 For example:
 ```sh
 $ java -jar spctag -v "/warez/spc/dkc2/17 Stickerbrush Symphony.spc"
-
+```
+```
 File header: SNES-SPC700 Sound File Data v0.30
 Tag format: Text
 Artist: Dave Wise
