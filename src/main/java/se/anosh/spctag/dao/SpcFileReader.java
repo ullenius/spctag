@@ -152,7 +152,7 @@ final class SpcFileReader {
 			return parse(Id666.Field.FADE_LENGTH_MILLISECONDS_BINARY_FORMAT, (bytes) -> {
 				// 32-bit unsigned number (little endian)
 				long val = (bytes[0] & 0xFF) | (bytes[1] << 8 & 0xFF00) | (bytes[2] << 16 & 0xFF0000)
-						| (bytes[3] << 24 & 0xFF000000);
+						| (bytes[3] << 24 & 0xFF000000L);
 				return val;
 			});
 		}

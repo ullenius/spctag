@@ -91,5 +91,12 @@ public class TestModelWithData {
         assertEquals(expected, id666.getFadeLengthMilliseconds());
     }
 
+    @Test
+    public void fadeLengthBinary() throws IOException {
+        final Id666 id666 = new SpcFile(BINARY_SPC).read();
+        final long expected = 0xFFAA1B58L;
+        assertEquals(expected, id666.getFadeLengthMilliseconds());
+    }
+
 
 }
