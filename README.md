@@ -29,6 +29,8 @@ Name of dumper: Datschge
 Comments: Bramble Maze
 Date SPC was dumped:
 Emulator used to dump SPC: Unknown
+Length (seconds): 253
+Fade length (milliseconds): 10000
 -----------
 XID6 tags:
 -----------
