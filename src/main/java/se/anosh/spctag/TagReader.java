@@ -19,8 +19,8 @@ import se.anosh.spctag.domain.Xid6;
  */
 public final class TagReader {
     
-    private static final String VERSION ="spctag version 1.0.0";
-    private static final String ABOUT = "code by A. Ullenius 2019-2022";
+    private static final String VERSION ="spctag version 2.2.1";
+    private static final String ABOUT = "code by A. Ullenius 2019-2023";
     private static final String LICENCE = "Licence: Gnu General Public License - version 3.0 only";
     private static final String TRIBUTE = "spctag is dedicated to my favourite OC remixer: Avien (1986-2004). RIP";
 
@@ -72,6 +72,7 @@ public final class TagReader {
                     String format = myFile.isBinaryTagFormat() ? "Binary" : "Text";
                     System.out.println("Tag format: " + format);
                     System.out.printf("Length (seconds): %d\n", myFile.getLengthSeconds() );
+                    System.out.printf("Fade length (milliseconds): %d", myFile.getFadeLengthMilliseconds());
                 }
                 System.out.println("Artist: " + myFile.getArtist()); // composer
                 System.out.println("Song title: " + myFile.getSongTitle());
