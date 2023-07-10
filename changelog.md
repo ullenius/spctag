@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.2.1
+* Bump dependencies
+* Add Maven-wrapper
+
 ## v2.2.0
 * Migrate to Java 17
 * Minor refactoring
