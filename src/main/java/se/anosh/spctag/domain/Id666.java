@@ -29,8 +29,8 @@ public final class Id666 implements Comparable<Id666> {
     private String gameTitle;
     private String nameOfDumper;
     private String comments;
-
     private int lengthSeconds;
+    private long fadeLengthMilliseconds; // uint32
 
     private LocalDate dateDumpWasCreated;
     private Emulator emulatorUsedToCreateDump;
@@ -118,6 +118,14 @@ public final class Id666 implements Comparable<Id666> {
 
     public void setLengthSeconds(int lengthSeconds) {
         this.lengthSeconds = lengthSeconds;
+    }
+
+    public long getFadeLengthMilliseconds() {
+        return fadeLengthMilliseconds;
+    }
+
+    public void setFadeLengthMilliseconds(long fadeLengthMilliseconds) {
+        this.fadeLengthMilliseconds = fadeLengthMilliseconds;
     }
 
     public void setDateDumpWasCreated(final LocalDate dumpdate) {
@@ -230,8 +238,8 @@ public final class Id666 implements Comparable<Id666> {
 
     /**
      * Using all fields to compare except hasId666Tags.
-     * Even the Header is used. Since older versions used a different
-     * version number in the header.
+     * Even the Header-field is used. Since older versions used a different version
+     * number in the header.
      */
     @Override
     public boolean equals(Object o) {
@@ -255,6 +263,8 @@ public final class Id666 implements Comparable<Id666> {
         NAME_OF_DUMPER(0x6E, 16),
         COMMENTS(0x7E, 32),
         LENGTH_SECONDS(0xA9, 3),
+        FADE_LENGTH_MILLISECONDS_TEXT_FORMAT(0xAC, 5),
+        FADE_LENGTH_MILLISECONDS_BINARY_FORMAT(0xAC, 4),
         DUMP_DATE_TEXT_FORMAT(0x9E, 11),
         DUMP_DATE_BINARY_FORMAT(0x9E, 4),
         ARTIST_OF_SONG_TEXT_FORMAT(0xB1, 32),

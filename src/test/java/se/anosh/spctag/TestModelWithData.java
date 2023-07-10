@@ -85,5 +85,11 @@ public class TestModelWithData {
         assertEquals(expected, id666.getLengthSeconds());
     }
 
+    @Test
+    public void fadeLengthText() {
+        final int expected = 12345;
+        assertEquals(expected, id666.getFadeLengthMilliseconds());
+    }
+
 
 }

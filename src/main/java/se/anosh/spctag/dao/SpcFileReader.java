@@ -23,7 +23,6 @@ final class SpcFileReader {
 	private static final String CORRECT_HEADER = "SNES-SPC700 Sound File Data";
 	private static final byte CONTAINS_ID666_TAG = 0x1A;
 	private static final byte MISSING_ID666_TAG = 0x1B;
-
 	private static final String READ_ONLY = "r";
 
 	public Id666 getId666() {
@@ -61,6 +60,7 @@ final class SpcFileReader {
 
 		// these depend on the tag-format being binary or text
 		readLengthSeconds();
+		readFadeLength();
 		readArtist();
 		readEmulatorUsedToCreateDump();
 		readDateDumpWasCreated();
@@ -141,6 +141,23 @@ final class SpcFileReader {
 		}
 		String length = parse(Id666.Field.LENGTH_SECONDS);
 		return length.isBlank() ? 0 : Integer.parseInt(length);
+	}
+
+	private void readFadeLength() throws IOException {
+		id666.setFadeLengthMilliseconds(parseFadeLengthMilliseconds());
+	}
+
+	private long parseFadeLengthMilliseconds() throws IOException {
+		if (id666.isBinaryTagFormat()) {
+			return parse(Id666.Field.FADE_LENGTH_MILLISECONDS_BINARY_FORMAT, (bytes) -> {
+				// 32-bit unsigned number (little endian)
+				long val = (bytes[0] & 0xFF) | (bytes[1] << 8 & 0xFF00) | (bytes[2] << 16 & 0xFF0000)
+						| (bytes[3] << 24 & 0xFF000000);
+				return val;
+			});
+		}
+		final String fadelength = parse(Id666.Field.FADE_LENGTH_MILLISECONDS_TEXT_FORMAT);
+		return fadelength.isBlank() ? 0 : Long.parseLong(fadelength);
 	}
 
 	private void readEmulatorUsedToCreateDump() throws IOException {
