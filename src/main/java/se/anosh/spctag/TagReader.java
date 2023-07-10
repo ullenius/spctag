@@ -37,17 +37,19 @@ public final class TagReader {
         HelpFormatter formatter = new HelpFormatter();
         try {
             CommandLine cmd = parser.parse(options, args);
-            if (cmd.hasOption("V"))
+            if (cmd.hasOption("V")) {
                 printVersionAndCreditsAndExit();
+            }
             
-            if (cmd.getArgList().isEmpty())
-                    throw new ParseException("No arguments");
+            if (cmd.getArgList().isEmpty()) {
+                throw new ParseException("No arguments");
+            }
             
             TagReader demo = new TagReader();
             demo.go(cmd);
         } catch (ParseException ex) {
             formatter.printHelp("spctag <filename>", options);
-            System.exit(0);
+            System.exit(-1);
         }
     }
     
@@ -72,7 +74,7 @@ public final class TagReader {
                     String format = myFile.isBinaryTagFormat() ? "Binary" : "Text";
                     System.out.println("Tag format: " + format);
                     System.out.printf("Length (seconds): %d\n", myFile.getLengthSeconds() );
-                    System.out.printf("Fade length (milliseconds): %d", myFile.getFadeLengthMilliseconds());
+                    System.out.printf("Fade length (milliseconds): %d\n", myFile.getFadeLengthMilliseconds());
                 }
                 System.out.println("Artist: " + myFile.getArtist()); // composer
                 System.out.println("Song title: " + myFile.getSongTitle());
