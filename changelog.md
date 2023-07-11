@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.3.0
+### New features
+Add support for two ID666-fields:
+1. Fade length-field ("Number of seconds to play song before fading out")
+2. Length-field ("Length of fade in milliseconds")
+
+### Minor changes
+* Code refactoring
+* Bump dependencies
+
 ## v2.2.1
 * Bump dependencies
 * Add Maven-wrapper

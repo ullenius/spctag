@@ -62,7 +62,7 @@ Run:
 ### Windows
 Run:
 ```sh
-./mvnw.cmd clean install assembly:single
+mvnw.cmd clean install assembly:single
 ```
 
 to build the JAR-file.
