@@ -14,7 +14,7 @@ public class JapaneseEmulatorTest {
 
     @ParameterizedTest
     @MethodSource("validCodes")
-    public void japaneseEmulatorCodeMappings(final int code, final Name expected) {
+    void japaneseEmulatorCodeMappings(final int code, final Name expected) {
         final Emulator emulator = EmulatorFactory.createEmulator(code, Type.JAPANESE);
         final Name actual = emulator.getName();
         assertEquals(expected, actual);
@@ -57,7 +57,7 @@ public class JapaneseEmulatorTest {
 
     @ParameterizedTest
     @MethodSource("invalidCodes")
-    public void testInvalidJapaneseEmulatorCodes(final int code) {
+    void testInvalidJapaneseEmulatorCodes(final int code) {
         final Emulator emulator = EmulatorFactory.createEmulator(code, Type.JAPANESE);
         final Name actual = emulator.getName();
         assertEquals(Name.Unknown, actual);

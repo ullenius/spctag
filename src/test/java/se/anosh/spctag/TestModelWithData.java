@@ -28,35 +28,35 @@ public class TestModelWithData {
     private Id666 id666;
 
     @BeforeEach
-    public void setup() throws IOException {
+    void setup() throws IOException {
         spcFile = new SpcFile(TEXT_SPC);
         id666 = spcFile.read();
     }
 
     @Test
-    public void headerContainsTags() {
+    void headerContainsTags() {
         assertTrue(id666.hasId666Tags());
     }
 
     @Test
-    public void headerDoesNotContainsTags() throws IOException {
+    void headerDoesNotContainsTags() throws IOException {
         spcFile = new SpcFile(SPC_WITH_NO_ID666_TAGS);
         id666 = spcFile.read();
         assertFalse(id666.hasId666Tags());
     }
 
     @Test
-    public void hasTextTags() {
+    void hasTextTags() {
         assertTrue(id666.isTextTagFormat());
     }
 
     @Test
-    public void tagsAreDetectedAsBinary() {
+    void tagsAreDetectedAsBinary() {
         assertFalse(id666.isBinaryTagFormat());
     }
 
     @Test
-    public void dumpedDateBinaryParsing() throws IOException {
+    void dumpedDateBinaryParsing() throws IOException {
         final Id666 id666 = new SpcFile(BINARY_SPC).read();
         assertEquals(Boolean.TRUE, id666.isBinaryTagFormat()); // sanity check
         final var expected = LocalDate.of(1999, Month.DECEMBER, 31);
@@ -65,7 +65,7 @@ public class TestModelWithData {
     }
 
     @Test
-    public void binarySpcMissingDumpDate() throws IOException {
+    void binarySpcMissingDumpDate() throws IOException {
         final Id666 id666 = new SpcFile(BINARY_SPC_WITHOUT_DUMPED_DATE).read();
         assertEquals(Boolean.TRUE, id666.isBinaryTagFormat());
         assertEquals("", id666.dateDumpWasCreated());
@@ -73,26 +73,26 @@ public class TestModelWithData {
     }
 
     @Test
-    public void lengthSecondsText() {
+    void lengthSecondsText() {
         final int expected = 99;
         assertEquals(expected, id666.getLengthSeconds());
     }
 
     @Test
-    public void lengthSecondsBinary() throws IOException {
+    void lengthSecondsBinary() throws IOException {
         final Id666 id666 = new SpcFile(BINARY_SPC).read();
         final int expected = 0xFFAA91; // 24-bit unsigned
         assertEquals(expected, id666.getLengthSeconds());
     }
 
     @Test
-    public void fadeLengthText() {
+    void fadeLengthText() {
         final int expected = 12345;
         assertEquals(expected, id666.getFadeLengthMilliseconds());
     }
 
     @Test
-    public void fadeLengthBinary() throws IOException {
+    void fadeLengthBinary() throws IOException {
         final Id666 id666 = new SpcFile(BINARY_SPC).read();
         final long expected = 0xFFAA1B58L;
         assertEquals(expected, id666.getFadeLengthMilliseconds());

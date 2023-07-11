@@ -30,54 +30,55 @@ public class Xid6Test {
     private static final String SPC_MUTED_CHANNELS_0x43 = "src/test/resources/spc/bar.spc";
 
     @BeforeEach
-    public void setup() throws IOException {
+    void setup() throws IOException {
         spc = Paths.get(SPC_XID6);
         dao = new SpcFile(spc.toString());
         uut = dao.readXid6();
     }
 
     @Test
-    public void dateDumpedNotSet() {
+    void dateDumpedNotSet() {
         assertNull(uut.getDate());
     }
 
     @Test
-    public void emulatorUsedNotSet() {
+    void emulatorUsedNotSet() {
         assertEquals(Emulator.Name.Snes9x, uut.getEmulator().getName());
     }
 
     @Test
-    public void gameName() {
+    void gameName() {
         assertEquals("Kyouraku Sanyou Toyomaru Okumura Daiichi Maruhon Parlor Parlor! 4 CR", uut.getGame());
     }
+
     @Test
-    public void commentsWorks() {
+    void commentsWorks() {
         assertEquals("\"Auld Lang Syne\", scottish folk song. Taken down in musical notation by Robert Burns.",
                 uut.getComments());
     }
 
     @Test
-    public void publishersNameWorks() {
+    void publishersNameWorks() {
         assertEquals("Nihon Telenet", uut.getPublisher());
     }
 
     @Test
-    public void copyrightYearWorks() {
+    void copyrightYearWorks() {
         assertEquals(Year.of(1995), uut.getYear());
     }
 
     @Test
-    public void introLength() {
+    void introLength() {
         assertEquals(Double.valueOf(12.6), uut.getIntrolength());
     }
 
     @Test
-    public void fadeLength() {
+    void fadeLength() {
         assertEquals(Integer.valueOf(448000), uut.getFadeLength());
     }
 
     @Test
-    public void dateConversionWorks() {
+    void dateConversionWorks() {
         final int dumpedDate = 20201224;
         final LocalDate expected = LocalDate.of(2020, Month.DECEMBER, 24);
         final Xid6 uut2 = new Xid6();
@@ -86,7 +87,7 @@ public class Xid6Test {
     }
 
     @Test
-    public void dateConversionReturnsNullOnParsingError() {
+    void dateConversionReturnsNullOnParsingError() {
         final int erroneousDumpedDate = 991224; // 1999-12-24
         final Xid6 xid6 = new Xid6();
         xid6.setDate(erroneousDumpedDate);
@@ -94,7 +95,7 @@ public class Xid6Test {
     }
 
     @Test
-    public void dateFormatterUsesYear() {
+    void dateFormatterUsesYear() {
         final int date = 20040404;
         final Xid6 xid6 = new Xid6();
         xid6.setDate(date);
@@ -102,7 +103,7 @@ public class Xid6Test {
     }
 
     @Test
-    public void dateRequiresTwoDigitsForMonthAndDay() {
+    void dateRequiresTwoDigitsForMonthAndDay() {
         final int monthOneDigit = 2000110;
         final int dayOneDigit = 2003121;
         final Xid6 month = new Xid6();
@@ -116,7 +117,7 @@ public class Xid6Test {
     }
 
     @Test
-    public void mutedChannelHasEightBits() {
+    void mutedChannelHasEightBits() {
         short mutedChannels = 0xFF;
         final Xid6 uut2 = new Xid6();
         uut2.setMutedChannels(mutedChannels);
@@ -125,7 +126,7 @@ public class Xid6Test {
     }
 
     @Test
-    public void parseMutedChannelsFromFile() throws IOException {
+    void parseMutedChannelsFromFile() throws IOException {
         Path spc2 = Paths.get(SPC_MUTED_CHANNELS_0x43);
         SpcDao dao2 = new SpcFile(spc2.toString());
         Xid6 uut2 = dao2.readXid6();
@@ -134,7 +135,7 @@ public class Xid6Test {
     }
 
     @Test
-    public void parseMutedChannelsFromFileAllBitsSet() throws IOException {
+    void parseMutedChannelsFromFileAllBitsSet() throws IOException {
         Path spc2 = Paths.get(SPC_MUTED_CHANNELS_ALL_BITS_TOGGLED);
         SpcDao dao2 = new SpcFile(spc2.toString());
         Xid6 uut2 = dao2.readXid6();
@@ -143,14 +144,14 @@ public class Xid6Test {
     }
 
     @Test
-    public void ostTrackConstructorWorks() {
+    void ostTrackConstructorWorks() {
         final byte trackNumber = 42;
         final Xid6.OstTrack ostTrack = new Xid6.OstTrack(trackNumber);
         assertEquals(Integer.toString(trackNumber), ostTrack.toString());
     }
 
     @Test
-    public void ostTrackWithTrackCharacter() {
+    void ostTrackWithTrackCharacter() {
         // OST track (upper byte is the number 0-99, lower byte is an optional ASCII character
         final byte trackNumber = 99;
         final Xid6.OstTrack ostTrack = new Xid6.OstTrack(trackNumber, 'A');
@@ -159,58 +160,58 @@ public class Xid6Test {
 
     // ------------ NULL CHECKS -------------------------------------
     @Test
-    public void mutedVoices() {
+    void mutedVoices() {
         assertFalse(uut.hasMutedChannels());
     }
 
     @Test
-    public void songNameNotSet() {
+    void songNameNotSet() {
         assertNull(uut.getSong());
     }
 
     @Test
-    public void dumpersNameNotSet() {
+    void dumpersNameNotSet() {
         assertNull(uut.getDumper());
     }
 
     @Test
-    public void artistNotSet() {
+    void artistNotSet() {
         assertNull(uut.getArtist());
     }
 
 
     @Test
-    public void ostTitleNotSet() {
+    void ostTitleNotSet() {
         assertNull(uut.getOstTitle());
     }
 
     @Test
-    public void ostDiscNotSet() {
+    void ostDiscNotSet() {
         assertNull(uut.getOstDisc());
     }
 
     @Test
-    public void ostTrackNotSet() {
+    void ostTrackNotSet() {
         assertNull(uut.getOstTrack());
     }
 
     @Test
-    public void numberOfLoopsNotSet() {
+    void numberOfLoopsNotSet() {
         assertNull(uut.getLoops());
     }
 
     @Test
-    public void endLengthNotSet() {
+    void endLengthNotSet() {
         assertNull(uut.getEndLength());
     }
 
     @Test
-    public void mixingPreampLevelNotSet() {
+    void mixingPreampLevelNotSet() {
         assertNull(uut.getMixingLevel());
     }
 
     @Test
-    public void toStringDoesNotCrash() {
+    void toStringDoesNotCrash() {
         Xid6 empty = new Xid6();
         assertNotNull(empty.toString());
     }

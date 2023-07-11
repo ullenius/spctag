@@ -27,76 +27,81 @@ public class Id666Test {
     private Id666 uut;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         uut = new Id666();
     }
 
     @ParameterizedTest
     @MethodSource("dateStrings")
-    public void texttagsDateParsing(final String date, final LocalDate expected) {
+    void texttagsDateParsing(final String date, final LocalDate expected) {
         uut.setDateDumpWasCreated(date);
         assertEquals(expected, uut.getDateDumpWasCreated());
     }
 
     private static Object[][] dateStrings() { // text tags
         final LocalDate MAY_9_1998 = LocalDate.of(1998, Month.MAY, 9);
-        return new Object[][] {
+        return new Object[][]{
                 // input date, expected
-                { "05/01/1999", LocalDate.of(1999, Month.MAY, 1) }, // spec format, mm-dd-yyyy
-                { "31/12/2003", LocalDate.of(2003, Month.DECEMBER, 31 ) }, // dd-mm-yyyy, non-standard
-                { "12-31-2005", LocalDate.of(2005, Month.DECEMBER, 31) },
-                { "2005-11-05", LocalDate.of(2005, Month.NOVEMBER, 5) }, // dashes as separators
-                { "1999-31-12", LocalDate.of(1999, Month.DECEMBER, 31) },
-                { "5-9-1998", MAY_9_1998 }, // leading zeroes are ignored
-                { "05-9-1998", MAY_9_1998 },
-                { "5-09-1998", MAY_9_1998 },
-                { "1992-02-29", LocalDate.of(1992, Month.FEBRUARY, 29) }, // predates the SPC-format
-                { "9999-12-12", LocalDate.of(9999, Month.DECEMBER, 12)}, // max value from spec
-                { "2001-02-29", null } // fails parsing, non-leap year
+                {"05/01/1999", LocalDate.of(1999, Month.MAY, 1)}, // spec format, mm-dd-yyyy
+                {"31/12/2003", LocalDate.of(2003, Month.DECEMBER, 31)}, // dd-mm-yyyy, non-standard
+                {"12-31-2005", LocalDate.of(2005, Month.DECEMBER, 31)},
+                {"2005-11-05", LocalDate.of(2005, Month.NOVEMBER, 5)}, // dashes as separators
+                {"1999-31-12", LocalDate.of(1999, Month.DECEMBER, 31)},
+                {"5-9-1998", MAY_9_1998}, // leading zeroes are ignored
+                {"05-9-1998", MAY_9_1998},
+                {"5-09-1998", MAY_9_1998},
+                {"1992-02-29", LocalDate.of(1992, Month.FEBRUARY, 29)}, // predates the SPC-format
+                {"9999-12-12", LocalDate.of(9999, Month.DECEMBER, 12)}, // max value from spec
+                {"2001-02-29", null} // fails parsing, non-leap year
         };
     }
 
     @Test
-    public void textualDumpDateFormat() {
+    void textualDumpDateFormat() {
         uut.setBinaryTagFormat(Boolean.TRUE);
         final String expected = "1998/12/31";
         uut.setDateDumpWasCreated(NEW_YEARS_EVE_1998);
         assertEquals(expected, uut.dateDumpWasCreated());
     }
+
     @Test
-    public void binaryDumpDateFormat() {
+    void binaryDumpDateFormat() {
         uut.setBinaryTagFormat(Boolean.FALSE);
         final String expected = "1998/12/31";
         uut.setDateDumpWasCreated(NEW_YEARS_EVE_1998);
         assertEquals(expected, uut.dateDumpWasCreated());
     }
+
     @Test
-    public void storeDateAsStringWithoutSeparators() {
+    void storeDateAsStringWithoutSeparators() {
         final String expected = "1999/04/01";
         var date = LocalDate.of(1999, Month.APRIL, 1);
         uut.setDateDumpWasCreated(date);
         assertEquals(expected, uut.dateDumpWasCreated());
     }
+
     @Test
-    public void preSpcFormatDumpedDatesWork() {
+    void preSpcFormatDumpedDatesWork() {
         uut.setBinaryTagFormat(Boolean.TRUE);
         final String expected = "1997/05/08";
         var earlyDate = LocalDate.of(1997, Month.MAY, 8);
         uut.setDateDumpWasCreated(earlyDate);
         assertEquals(expected, uut.dateDumpWasCreated());
     }
+
     @Test
-    public void defaultIsTextTags() {
+    void defaultIsTextTags() {
         assertEquals(Boolean.FALSE, uut.isBinaryTagFormat());
     }
+
     @Test
-    public void binaryTagFormatWorks() {
+    void binaryTagFormatWorks() {
         uut.setBinaryTagFormat(Boolean.TRUE);
         assertEquals(Boolean.TRUE, uut.isBinaryTagFormat());
     }
 
     @Test
-    public void hashCodeAndEqualsIdentical() throws IOException {
+    void hashCodeAndEqualsIdentical() throws IOException {
         SpcFile textSpc = new SpcFile(TEXT_SPC);
         SpcFile textSpc2 = new SpcFile(TEXT_SPC);
 
@@ -108,7 +113,7 @@ public class Id666Test {
     }
 
     @Test
-    public void differentHashcodes() throws IOException {
+    void differentHashcodes() throws IOException {
         SpcFile binary = new SpcFile(BINARY_SPC);
         Id666 binaryTags = binary.read();
 
@@ -118,7 +123,7 @@ public class Id666Test {
     }
 
     @Test
-    public void nonEqualObjects() throws IOException {
+    void nonEqualObjects() throws IOException {
         SpcFile binarySpc = new SpcFile(BINARY_SPC);
         SpcFile textSpc = new SpcFile(TEXT_SPC);
 
@@ -128,7 +133,7 @@ public class Id666Test {
     }
 
     @Test
-    public void sortingWorks() throws IOException {
+    void sortingWorks() throws IOException {
         final SpcFile otherFile = new SpcFile(BINARY_SPC);
         final Id666 other = otherFile.read();
 
@@ -147,7 +152,7 @@ public class Id666Test {
     }
 
     @Test
-    public void comparatorAllowsNullValues() throws IOException {
+    void comparatorAllowsNullValues() throws IOException {
         final SpcDao binary = new SpcFile(BINARY_SPC);
         final Id666 binaryTags = binary.read();
         final Id666 emptyTags = new Id666();
@@ -164,7 +169,6 @@ public class Id666Test {
         assertNotNull(myList.get(1).getArtist());
         assertNotNull(myList.get(1).getSongTitle());
     }
-
 
 
 }
