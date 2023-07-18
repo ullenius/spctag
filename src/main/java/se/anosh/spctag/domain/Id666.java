@@ -32,6 +32,8 @@ public final class Id666 implements Comparable<Id666> {
     private int lengthSeconds;
     private long fadeLengthMilliseconds; // uint32
 
+    private short version;
+
     private LocalDate dateDumpWasCreated;
     private Emulator emulatorUsedToCreateDump;
 
@@ -126,6 +128,14 @@ public final class Id666 implements Comparable<Id666> {
 
     public void setFadeLengthMilliseconds(long fadeLengthMilliseconds) {
         this.fadeLengthMilliseconds = fadeLengthMilliseconds;
+    }
+
+    public short getVersion() {
+        return version;
+    }
+
+    public void setVersion(short version) {
+        this.version = version;
     }
 
     public void setDateDumpWasCreated(final LocalDate dumpdate) {
@@ -272,7 +282,10 @@ public final class Id666 implements Comparable<Id666> {
         EMULATOR_TEXT_FORMAT(0xD2, 1),
         EMULATOR_BINARY_FORMAT(0xD1, 1),
 
-        HEADER_CONTAINS_ID666_TAG(0x23, 1);
+        HEADER_CONTAINS_ID666_TAG(0x23, 1),
+
+        VERSION_MINOR(0x24, 1);
+
 
         private final int length;
         private final int offset;

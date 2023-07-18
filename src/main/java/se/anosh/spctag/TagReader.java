@@ -73,10 +73,10 @@ public final class TagReader {
                     System.out.println("File header: " + myFile.getHeader());
                     String format = myFile.isBinaryTagFormat() ? "Binary" : "Text";
                     System.out.println("Tag format: " + format);
+                    System.out.printf("SPC version minor: %d\n", myFile.getVersion());
                 }
                 System.out.println("Artist: " + myFile.getArtist()); // composer
                 System.out.println("Song title: " + myFile.getSongTitle());
-
                 System.out.println("Game title: " + myFile.getGameTitle());
                 System.out.println("Name of dumper: " + myFile.getNameOfDumper());
                 System.out.println("Comments: " + myFile.getComments());
@@ -93,7 +93,6 @@ public final class TagReader {
                         System.out.printf("Fade length (milliseconds): %d\n", myFile.getFadeLengthMilliseconds());
                     }
                 }
-
                 if (cmd.hasOption(VERBOSE) || cmd.hasOption(XID6)) {
                     try {
                         Xid6 xid6 = spcReader.readXid6();

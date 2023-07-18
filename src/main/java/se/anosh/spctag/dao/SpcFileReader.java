@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.function.Function;
 
+import org.tinylog.Logger;
 import se.anosh.spctag.domain.Id666;
 import se.anosh.spctag.emulator.factory.*;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
@@ -56,6 +57,7 @@ final class SpcFileReader {
 		readComments();
 
 		readHasId666Tags();
+		readVersion();
 		readTagFormat();
 
 		// these depend on the tag-format being binary or text
@@ -160,6 +162,21 @@ final class SpcFileReader {
 		return fadelength.isBlank() ? 0 : Long.parseLong(fadelength);
 	}
 
+	private void readVersion() throws IOException {
+		short headerVersion = Short.parseShort(id666.getHeader().substring(CORRECT_HEADER.length() + 1 + 3)); // off-by-one plus "v0."-prefix
+		short byteVersion = parseVersion();
+		if (headerVersion != parseVersion()) {
+			Logger.warn("Minor version in header does not match binary tag: {} and {}", headerVersion, byteVersion);
+		}
+		id666.setVersion(byteVersion);
+	}
+
+	private short parseVersion() throws IOException {
+		short minorVersion = readByte(Id666.Field.VERSION_MINOR);
+		return (short) (minorVersion & 0xFF);
+	}
+
+
 	private void readEmulatorUsedToCreateDump() throws IOException {
 		setEmulatorUsedToCreateDump(detectOffsetEmulatorUsedToCreateDump());
 	}
@@ -172,7 +189,7 @@ final class SpcFileReader {
 
 	private void setEmulatorUsedToCreateDump(final Id666.Field field) throws IOException {
 		Objects.requireNonNull(field);
-		final byte emulatorCode = readByte(field);
+		final short emulatorCode = readByte(field);
 		// use values from the Japanese spec
 		Emulator emulator = EmulatorFactory.createEmulator(emulatorCode, Type.JAPANESE);
 		id666.setEmulatorUsedToCreateDump(emulator);
@@ -189,7 +206,7 @@ final class SpcFileReader {
 	 * @throws IOException if offset has invalid value SPC-file.
 	 */
 	private boolean containsID666Tags() throws IOException{
-		final byte tag = readByte(Id666.Field.HEADER_CONTAINS_ID666_TAG);
+		final short tag = readByte(Id666.Field.HEADER_CONTAINS_ID666_TAG);
 		if (tag == CONTAINS_ID666_TAG) {
 			return true;
 		}
@@ -233,7 +250,7 @@ final class SpcFileReader {
 		return func.apply(bytes);
 	}
 
-	private byte readByte(Id666.Field field) throws IOException {
+	private short readByte(Id666.Field field) throws IOException {
 		assertTrue(field == Id666.Field.DUMP_DATE_BINARY_FORMAT || field.getLength() == 1, "Field length must be 1 byte");
 		raf.seek(field.getOffset());
 		return raf.readByte();
