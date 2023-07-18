@@ -268,6 +268,8 @@ public final class Id666 implements Comparable<Id666> {
 
     public enum Field {
         HEADER(0x00, 33),
+        HEADER_CONTAINS_ID666_TAG(0x23, 1),
+        VERSION_MINOR(0x24, 1),
         SONG_TITLE(0x2E, 32),
         GAME_TITLE(0x4E, 32),
         NAME_OF_DUMPER(0x6E, 16),
@@ -277,14 +279,12 @@ public final class Id666 implements Comparable<Id666> {
         FADE_LENGTH_MILLISECONDS_BINARY_FORMAT(0xAC, 4),
         DUMP_DATE_TEXT_FORMAT(0x9E, 11),
         DUMP_DATE_BINARY_FORMAT(0x9E, 4),
-        ARTIST_OF_SONG_TEXT_FORMAT(0xB1, 32),
         ARTIST_OF_SONG_BINARY_FORMAT(0xB0, 32),
-        EMULATOR_TEXT_FORMAT(0xD2, 1),
+        ARTIST_OF_SONG_TEXT_FORMAT(0xB1, 32),
         EMULATOR_BINARY_FORMAT(0xD1, 1),
+        EMULATOR_TEXT_FORMAT(0xD2, 1);
 
-        HEADER_CONTAINS_ID666_TAG(0x23, 1),
 
-        VERSION_MINOR(0x24, 1);
 
 
         private final int length;
