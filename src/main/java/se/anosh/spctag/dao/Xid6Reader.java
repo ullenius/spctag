@@ -167,9 +167,9 @@ final class Xid6Reader {
 
             } else {
                 switch (type) {
-                    case TEXT:
+                    case TEXT -> {
                         // peek at last byte, workaround for broken tags
-                        if ((size-1) % 4 == 0) {
+                        if ((size - 1) % 4 == 0) {
                             final int peekPos = size - 1;
                             final int oldPos = subChunks.position();
                             final byte peek = subChunks.get(oldPos + peekPos);
@@ -183,13 +183,13 @@ final class Xid6Reader {
                         subChunks.get(buf);
                         final String text = new String(buf, StandardCharsets.UTF_8).trim();
                         setText(mappatId.tag, text);
-                        break;
-                    case INTRO:
+                    }
+                    case INTRO -> {
                         if (type.size() == Integer.BYTES) {
                             xid6.setIntro(subChunks.getInt());
                         }
-                        break;
-                    case NUMBER:
+                    }
+                    case NUMBER -> {
                         if (type.size() == Integer.BYTES) {
                             if (!mappedNumberBehaviours.containsKey(mappatId.tag)) {
                                 throw new IllegalArgumentException("no mapping found for: " + mappatId.tag);
@@ -197,9 +197,8 @@ final class Xid6Reader {
                             var func = mappedNumberBehaviours.get(mappatId.tag);
                             func.accept(subChunks.getInt());
                         }
-                        break;
-                    default:
-                        throw new IllegalStateException("no mapping for type: " + type);
+                    }
+                    default -> throw new IllegalStateException("no mapping for type: " + type);
                 }
             }
         }
@@ -233,29 +232,14 @@ final class Xid6Reader {
 
     private void setText(Xid6Tag tag, String text) {
         switch (tag) {
-            case SONG:
-                xid6.setSong(text);
-                break;
-            case GAME:
-                xid6.setGame(text);
-                break;
-            case ARTIST:
-                xid6.setArtist(text);
-                break;
-            case DUMPER:
-                xid6.setDumper(text);
-                break;
-            case COMMENTS:
-                xid6.setComments(text);
-                break;
-            case OST_TITLE:
-                xid6.setOstTitle(text);
-                break;
-            case PUBLISHER:
-                xid6.setPublisher(text);
-                break;
-            default:
-                throw new IllegalArgumentException("no mapping found for: " + tag);
+            case SONG -> xid6.setSong(text);
+            case GAME -> xid6.setGame(text);
+            case ARTIST -> xid6.setArtist(text);
+            case DUMPER -> xid6.setDumper(text);
+            case COMMENTS -> xid6.setComments(text);
+            case OST_TITLE -> xid6.setOstTitle(text);
+            case PUBLISHER -> xid6.setPublisher(text);
+            default -> throw new IllegalArgumentException("no mapping found for: " + tag);
         }
     }
 
