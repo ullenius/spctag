@@ -170,5 +170,13 @@ public class Id666Test {
         assertNotNull(myList.get(1).getSongTitle());
     }
 
+    @Test
+    void minorVersionUint8() {
+        Id666 tag = new Id666();
+        tag.setVersion(Short.MAX_VALUE);
+        final short expected = 0xFF;
+        assertEquals(expected, tag.getVersion());
+    }
+
 
 }

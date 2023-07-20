@@ -28,17 +28,17 @@ public final class Xid6 {
     private Emulator emulator;
     private String comments;
     private String ostTitle;
-    private Byte ostDisc;
+    private Byte ostDisc; // TODO support uint8
     private OstTrack ostTrack;
     private String publisher;
 
-    private Integer loopLength;
-    private Integer endLength;
-    private Integer fadeLength;
-    private short mutedChannels; // unsigned byte
-    private Byte loops;
-    private Long mixingLevel;
-    private Integer introLength;
+    private Integer loopLength; // TODO support uint32
+    private Integer endLength; // TODO support uint32
+    private Integer fadeLength; // TODO support uint32
+    private short mutedChannels; // uint8
+    private Byte loops; // TODO support uint8
+    private Long mixingLevel; // uint32
+    private Integer introLength; // TODO support uint32
 
     public String getOstTitle() {
         return ostTitle;
@@ -209,9 +209,9 @@ public final class Xid6 {
     }
 
    public static final class OstTrack {
-       final byte track;
+       final byte track; // TODO add validation. Values 0-99 supported
        final char ch;
-        public OstTrack(byte track) {
+        public OstTrack(final byte track) {
             this.track = track;
             this.ch = 0;
         }

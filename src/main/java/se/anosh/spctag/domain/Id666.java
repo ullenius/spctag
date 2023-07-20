@@ -29,10 +29,10 @@ public final class Id666 implements Comparable<Id666> {
     private String gameTitle;
     private String nameOfDumper;
     private String comments;
-    private int lengthSeconds;
+    private int lengthSeconds; // TODO change to uint32
     private long fadeLengthMilliseconds; // uint32
 
-    private short version;
+    private short version; // uint8
 
     private LocalDate dateDumpWasCreated;
     private Emulator emulatorUsedToCreateDump;
@@ -135,7 +135,7 @@ public final class Id666 implements Comparable<Id666> {
     }
 
     public void setVersion(short version) {
-        this.version = version;
+        this.version = (short) (version & 0xFF); //uint8
     }
 
     public void setDateDumpWasCreated(final LocalDate dumpdate) {
@@ -283,9 +283,6 @@ public final class Id666 implements Comparable<Id666> {
         ARTIST_OF_SONG_TEXT_FORMAT(0xB1, 32),
         EMULATOR_BINARY_FORMAT(0xD1, 1),
         EMULATOR_TEXT_FORMAT(0xD2, 1);
-
-
-
 
         private final int length;
         private final int offset;
