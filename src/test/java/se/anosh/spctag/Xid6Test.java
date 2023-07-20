@@ -19,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class Xid6Test {
 
-    private Path spc;
-    private SpcDao dao;
     private Xid6 uut;
 
     private static final String SPC_XID6 = "src/test/resources/spc/xid6.spc";
@@ -31,8 +29,8 @@ public class Xid6Test {
 
     @BeforeEach
     void setup() throws IOException {
-        spc = Paths.get(SPC_XID6);
-        dao = new SpcFile(spc.toString());
+        Path spc = Paths.get(SPC_XID6);
+        SpcDao dao = new SpcFile(spc.toString());
         uut = dao.readXid6();
     }
 
@@ -215,6 +213,14 @@ public class Xid6Test {
     void toStringDoesNotCrash() {
         Xid6 empty = new Xid6();
         assertNotNull(empty.toString());
+    }
+
+    @Test
+    void numberOfTimesToLoopUint8() {
+        Xid6 xid6 = new Xid6();
+        xid6.setLoop(Short.MAX_VALUE);
+        final short expected = 255;
+        assertEquals(expected, xid6.getLoops());
     }
 
 }

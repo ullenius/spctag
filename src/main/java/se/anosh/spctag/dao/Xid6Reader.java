@@ -76,8 +76,8 @@ final class Xid6Reader {
 
     final BiConsumer<Id, byte[]> oneByteData = (id, data) -> setData(id.tag, data[0]);
 
-    private void setData(final Xid6Tag tag, final byte b) {
-        final Map<Xid6Tag, Consumer<Byte>> mappings = Map.of(
+    private void setData(final Xid6Tag tag, final short val) {
+        final Map<Xid6Tag, Consumer<Short>> mappings = Map.of(
                 Xid6Tag.EMULATOR, xid6::setEmulator,
                 Xid6Tag.OST_DISC, xid6::setOstDisc,
                 Xid6Tag.LOOP_TIMES, xid6::setLoop
@@ -85,7 +85,7 @@ final class Xid6Reader {
         if (!mappings.containsKey(tag)) {
             throw new IllegalArgumentException("no mapping found for: " + tag);
         }
-        mappings.get(tag).accept(b);
+        mappings.get(tag).accept((short) (val & 0xFF) ); // uint8
     }
 
     private final Map<Type, BiConsumer<Id, byte[]>> mappedBehaviourDataStoredInHeader = Map.of(

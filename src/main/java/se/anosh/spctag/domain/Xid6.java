@@ -31,12 +31,11 @@ public final class Xid6 {
     private Byte ostDisc;
     private OstTrack ostTrack;
     private String publisher;
-
     private Long loopLength; // uint32
     private Long endLength; // uint32
     private Long fadeLength; // uint32
     private short mutedChannels; // uint8
-    private Byte loops; // TODO support uint8
+    private Short loops; // uint8, number of times to loop
     private Long mixingLevel; // uint32
     private Long introLength; // uint32
 
@@ -105,7 +104,7 @@ public final class Xid6 {
         return emulator;
     }
 
-    public void setEmulator(byte emulator) {
+    public void setEmulator(short emulator) {
         this.emulator = EmulatorFactory.createEmulator(emulator, EmulatorFactory.Type.JAPANESE);
     }
 
@@ -121,8 +120,8 @@ public final class Xid6 {
         return ostDisc;
     }
 
-    public void setOstDisc(byte ostDisc) {
-        this.ostDisc = ostDisc;
+    public void setOstDisc(short ostDisc) {
+        this.ostDisc = (byte) (ostDisc & 0xFF);
     }
 
     public OstTrack getOstTrack() {
@@ -177,15 +176,15 @@ public final class Xid6 {
     }
 
     public void setMutedChannels(short mutedVoices) {
-        this.mutedChannels = (short) (mutedVoices & 0xFFFF);
+        this.mutedChannels = (short) (mutedVoices & 0xFF); // uint8
     }
 
-    public Byte getLoops() {
+    public Short getLoops() {
         return loops;
     }
 
-    public void setLoop(byte loops) {
-        this.loops = loops;
+    public void setLoop(short loops) {
+        this.loops = (short) (loops & 0xFF);
     }
 
     public Long getMixingLevel() {
@@ -193,7 +192,7 @@ public final class Xid6 {
     }
 
     public void setMixingLevel(long mixingLevel) {
-        this.mixingLevel = mixingLevel & 0xFFFF_FFFFL; //uint32
+        this.mixingLevel = mixingLevel & 0xFFFF_FFFFL; // uint32
     }
 
     public void setYear(int year) {
