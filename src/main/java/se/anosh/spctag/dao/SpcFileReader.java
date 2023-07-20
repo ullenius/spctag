@@ -54,10 +54,8 @@ final class SpcFileReader {
         if (id666.hasId666Tags()) {
             readSongTitle();
             readGameTitle();
-
             readNameOfDumper();
             readComments();
-
 
             readTagFormat();
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.3.1
+A warning is printed if the minor version (binary) field doesn't match the
+minor version in the header (plain text).
+
+### Bug fix:
+Mixing (pre-amp) level is parsed correctly (xid6).
+
+The length is 4 bytes. The old spec had an error where this field's length was
+set to 1 byte. This was fixed in commit 29082c0e but the code was never updated.
+
 ## v2.3.0
 ### New features
 Add support for two ID666-fields:
