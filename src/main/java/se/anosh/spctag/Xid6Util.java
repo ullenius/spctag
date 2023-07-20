@@ -60,9 +60,9 @@ public final class Xid6Util {
             printLine(Xid6Tag.PUBLISHER, xid6.getPublisher());
             printLine(Xid6Tag.COPYRIGHT_YEAR, xid6.getYear() != null ? xid6.getYear().toString() : null);
             printLine(Xid6Tag.INTRO, xid6.getIntrolength() != null ? Double.toString(xid6.getIntrolength()) : null);
-            printLine(Xid6Tag.LOOP_LENGTH, xid6.getLoopLength() != null ? Integer.toString(xid6.getLoopLength()) : null);
-            printLine(Xid6Tag.END, xid6.getEndLength() != null ? Integer.toString(xid6.getEndLength()) : null);
-            printLine(Xid6Tag.FADE, xid6.getFadeLength() != null ? Integer.toString(xid6.getFadeLength()) : null);
+            printLine(Xid6Tag.LOOP_LENGTH, xid6.getLoopLength() != null ? Long.toString(xid6.getLoopLength()) : null);
+            printLine(Xid6Tag.END, xid6.getEndLength() != null ? Long.toString(xid6.getEndLength()) : null);
+            printLine(Xid6Tag.FADE, xid6.getFadeLength() != null ? Long.toString(xid6.getFadeLength()) : null);
             if (xid6.hasMutedChannels()) {
                 System.out.println("Muted channels: " + xid6.getMutedChannels());
             }

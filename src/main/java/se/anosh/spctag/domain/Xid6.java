@@ -28,17 +28,17 @@ public final class Xid6 {
     private Emulator emulator;
     private String comments;
     private String ostTitle;
-    private Byte ostDisc; // TODO support uint8
+    private Byte ostDisc;
     private OstTrack ostTrack;
     private String publisher;
 
-    private Integer loopLength; // TODO support uint32
-    private Integer endLength; // TODO support uint32
-    private Integer fadeLength; // TODO support uint32
+    private Long loopLength; // TODO support uint32
+    private Long endLength; // TODO support uint32
+    private Long fadeLength; // TODO support uint32
     private short mutedChannels; // uint8
     private Byte loops; // TODO support uint8
     private Long mixingLevel; // uint32
-    private Integer introLength; // TODO support uint32
+    private Long introLength; // TODO support uint32
 
     public String getOstTitle() {
         return ostTitle;
@@ -61,8 +61,8 @@ public final class Xid6 {
         ostTitle = title;
     }
 
-    public void setIntro(int length) {
-        this.introLength = length;
+    public void setIntro(long length) {
+        this.introLength = toUint32(length);
     }
 
     public Double getIntrolength() {
@@ -137,28 +137,28 @@ public final class Xid6 {
         this.publisher = publisher;
     }
 
-    public Integer getLoopLength() {
+    public Long getLoopLength() {
         return loopLength;
     }
 
-    public void setLoopLength(int loopLength) {
-        this.loopLength = loopLength;
+    public void setLoopLength(long loopLength) {
+        this.loopLength = toUint32(loopLength);
     }
 
-    public Integer getEndLength() {
+    public Long getEndLength() {
         return endLength;
     }
 
     public void setEndLength(int endLength) {
-        this.endLength = endLength;
+        this.endLength = toUint32(endLength);
     }
 
-    public Integer getFadeLength() {
+    public Long getFadeLength() {
         return fadeLength;
     }
 
-    public void setFadeLength(int fadeLength) {
-        this.fadeLength = fadeLength;
+    public void setFadeLength(long fadeLength) {
+        this.fadeLength = toUint32(fadeLength);
     }
 
     public boolean hasMutedChannels() {
@@ -177,7 +177,7 @@ public final class Xid6 {
     }
 
     public void setMutedChannels(short mutedVoices) {
-        this.mutedChannels = mutedVoices;
+        this.mutedChannels = (short) (mutedVoices & 0xFFFF);
     }
 
     public Byte getLoops() {
@@ -270,5 +270,9 @@ public final class Xid6 {
                 ", mixingLevel=" + mixingLevel +
                 ", introLength=" + introLength +
                 '}';
+    }
+
+    private static long toUint32(long val) {
+        return val & 0xFFFF_FFFFL;
     }
 }

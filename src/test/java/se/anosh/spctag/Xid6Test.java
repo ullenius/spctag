@@ -217,5 +217,4 @@ public class Xid6Test {
         assertNotNull(empty.toString());
     }
 
-
 }
