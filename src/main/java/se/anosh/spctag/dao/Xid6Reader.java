@@ -49,7 +49,6 @@ final class Xid6Reader {
         mappningar.put((byte) 0x36, new Id(Xid6Tag.MIXING, Type.NUMBER));
     }
 
-    private final Path filename;
     private Xid6 xid6 = null;
 
     final BiConsumer<Id, byte[]> year = (id, data) -> xid6.setYear( (data[0] & 0xFF | data[1] << 8 & 0xFF00)); // little endian uint16
@@ -97,8 +96,8 @@ final class Xid6Reader {
     );
 
     Xid6Reader(String filename) throws IOException {
-        this.filename = Paths.get(filename);
-        parseXid6(this.filename);
+        Path filename1 = Paths.get(filename);
+        parseXid6(filename1);
     }
 
     private void parseXid6(Path spc) throws IOException {
@@ -260,22 +259,15 @@ final class Xid6Reader {
         }
     }
 
-    private static final class Id {
-        Id(Xid6Tag tag, Type type) {
-            this.tag = tag;
-            this.type = type;
-        }
-
-        final Xid6Tag tag;
-        final Type type;
+    private record Id(Xid6Tag tag, Type type) {
 
         @Override
-        public String toString() {
-            return "Id{" +
-                    "name='" + tag + '\'' +
-                    ", type=" + type +
-                    '}';
+            public String toString() {
+                return "Id{" +
+                        "name='" + tag + '\'' +
+                        ", type=" + type +
+                        '}';
+            }
         }
-    }
 
 }
