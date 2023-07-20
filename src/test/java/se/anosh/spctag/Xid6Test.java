@@ -42,7 +42,7 @@ public class Xid6Test {
     }
 
     @Test
-    void emulatorUsedNotSet() {
+    void emulatorUsed() {
         assertEquals(Emulator.Name.Snes9x, uut.getEmulator().getName());
     }
 
@@ -206,8 +206,9 @@ public class Xid6Test {
     }
 
     @Test
-    void mixingPreampLevelNotSet() {
-        assertNull(uut.getMixingLevel());
+    void mixingPreampLevelWorks() {
+        final Long expected = 0xF00D_BEEFL; // uint32
+        assertEquals(expected, uut.getMixingLevel());
     }
 
     @Test

@@ -37,7 +37,7 @@ public final class Xid6 {
     private Integer fadeLength;
     private short mutedChannels; // unsigned byte
     private Byte loops;
-    private Byte mixingLevel;
+    private Long mixingLevel;
     private Integer introLength;
 
     public String getOstTitle() {
@@ -188,12 +188,12 @@ public final class Xid6 {
         this.loops = loops;
     }
 
-    public Byte getMixingLevel() {
+    public Long getMixingLevel() {
         return mixingLevel;
     }
 
-    public void setMixingLevel(byte mixingLevel) {
-        this.mixingLevel = mixingLevel;
+    public void setMixingLevel(long mixingLevel) {
+        this.mixingLevel = mixingLevel & 0xFFFF_FFFFL; //uint32
     }
 
     public void setYear(int year) {

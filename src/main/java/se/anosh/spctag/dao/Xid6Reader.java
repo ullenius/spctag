@@ -220,7 +220,7 @@ final class Xid6Reader {
     private final IntConsumer setEnd = (num) -> xid6.setEndLength(num);
     private final IntConsumer setFade = (num) -> xid6.setFadeLength(num);
     private final IntConsumer setMuted = (num) -> xid6.setMutedChannels( (short) num);
-    private final IntConsumer setMixing = (num) -> xid6.setMixingLevel( (byte) num);
+    private final IntConsumer setMixing = (num) -> xid6.setMixingLevel(num);
 
     private final Map<Xid6Tag, IntConsumer> mappedNumberBehaviours = Map.of(
             Xid6Tag.DATE, setDate,

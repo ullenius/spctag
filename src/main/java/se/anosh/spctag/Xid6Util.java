@@ -67,7 +67,7 @@ public final class Xid6Util {
                 System.out.println("Muted channels: " + xid6.getMutedChannels());
             }
             printLine(Xid6Tag.LOOP_TIMES, xid6.getLoops() != null ? Integer.toString(xid6.getLoops()) : null);
-            printLine(Xid6Tag.MIXING, xid6.getMixingLevel() != null ? Integer.toString(xid6.getMixingLevel()) : null);
+            printLine(Xid6Tag.MIXING, xid6.getMixingLevel() != null ? Long.toString(xid6.getMixingLevel()) : null);
         }
 
     private void printLine(Xid6Tag field, String text) {
