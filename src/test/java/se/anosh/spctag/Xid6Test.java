@@ -74,7 +74,7 @@ public class Xid6Test {
 
     @Test
     void fadeLength() {
-        assertEquals(Integer.valueOf(448000), uut.getFadeLength());
+        assertEquals(Long.valueOf(448000), uut.getFadeLength());
     }
 
     @Test

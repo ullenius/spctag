@@ -16,7 +16,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.IntConsumer;
+import java.util.function.LongConsumer;
 
 import static java.lang.Integer.toHexString;
 
@@ -52,7 +52,7 @@ final class Xid6Reader {
     private final Path filename;
     private Xid6 xid6 = null;
 
-    final BiConsumer<Id, byte[]> year = (id, data) -> xid6.setYear(toShort(data));
+    final BiConsumer<Id, byte[]> year = (id, data) -> xid6.setYear( (data[0] & 0xFF | data[1] << 8 & 0xFF00)); // little endian uint16
     final BiConsumer<Id, byte[]> muted = (id, data) -> xid6.setMutedChannels( (short) (data[0] & 0xFF) );
 
     final BiConsumer<Id, byte[]> ost = (id, data) -> {
@@ -215,14 +215,14 @@ final class Xid6Reader {
         return bufsize;
     }
 
-    private final IntConsumer setDate = (num) -> xid6.setDate(num);
-    private final IntConsumer setLoopLength = (num) -> xid6.setLoopLength(num);
-    private final IntConsumer setEnd = (num) -> xid6.setEndLength(num);
-    private final IntConsumer setFade = (num) -> xid6.setFadeLength(num);
-    private final IntConsumer setMuted = (num) -> xid6.setMutedChannels( (short) num);
-    private final IntConsumer setMixing = (num) -> xid6.setMixingLevel(num);
+    private final LongConsumer setDate = (num) -> xid6.setDate( (int) num);
+    private final LongConsumer setLoopLength = (num) -> xid6.setLoopLength(num);
+    private final LongConsumer setEnd = (num) -> xid6.setEndLength(num);
+    private final LongConsumer setFade = (num) -> xid6.setFadeLength(num);
+    private final LongConsumer setMuted = (num) -> xid6.setMutedChannels( (short) num);
+    private final LongConsumer setMixing = (num) -> xid6.setMixingLevel(num);
 
-    private final Map<Xid6Tag, IntConsumer> mappedNumberBehaviours = Map.of(
+    private final Map<Xid6Tag, LongConsumer> mappedNumberBehaviours = Map.of(
             Xid6Tag.DATE, setDate,
             Xid6Tag.LOOP_LENGTH, setLoopLength,
             Xid6Tag.END, setEnd,
@@ -257,10 +257,6 @@ final class Xid6Reader {
             default:
                 throw new IllegalArgumentException("no mapping found for: " + tag);
         }
-    }
-
-    private short toShort(final byte[] buf) {
-        return ByteBuffer.wrap(buf).order(ByteOrder.LITTLE_ENDIAN).getShort();
     }
 
     Xid6 getXid6() {

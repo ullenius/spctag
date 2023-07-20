@@ -32,13 +32,13 @@ public final class Xid6 {
     private OstTrack ostTrack;
     private String publisher;
 
-    private Long loopLength; // TODO support uint32
-    private Long endLength; // TODO support uint32
-    private Long fadeLength; // TODO support uint32
+    private Long loopLength; // uint32
+    private Long endLength; // uint32
+    private Long fadeLength; // uint32
     private short mutedChannels; // uint8
     private Byte loops; // TODO support uint8
     private Long mixingLevel; // uint32
-    private Long introLength; // TODO support uint32
+    private Long introLength; // uint32
 
     public String getOstTitle() {
         return ostTitle;
@@ -149,7 +149,7 @@ public final class Xid6 {
         return endLength;
     }
 
-    public void setEndLength(int endLength) {
+    public void setEndLength(long endLength) {
         this.endLength = toUint32(endLength);
     }
 
