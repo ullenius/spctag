@@ -1,16 +1,17 @@
 # Changelog
 
 ## 2.3.2
-### Bug fixes:
-Some xid6-tags were signed int 32 whereas the spec says uint32. Fixed the
+* Code refactoring (use new Java 17 features)
+* Length in seconds is masked to 24-bits (id666)
+* Convert SPC spec to utf-8
+
+### Bug fixes
+Some xid6-tags were `signed int 32` whereas the spec says `uint32`. Fixed the
 following:
 * loop length
 * end length
 * fade length
 * intro length
-
-* Code refactoring (use new Java 17 features)
-* Length in seconds is masked to 24-bits (id666)
 
 ## 2.3.1
 A warning is printed if the minor version (binary) field doesn't match the
