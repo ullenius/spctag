@@ -178,5 +178,12 @@ public class Id666Test {
         assertEquals(expected, tag.getVersion());
     }
 
+    @Test
+    void lengthInSecondsUint24() {
+        Id666 tag = new Id666();
+        final int expected = 0xFF_FFFF;
+        tag.setLengthSeconds(Integer.MAX_VALUE);
+        assertEquals(expected, tag.getLengthSeconds());
+    }
 
 }

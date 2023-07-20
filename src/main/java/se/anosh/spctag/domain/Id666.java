@@ -29,7 +29,7 @@ public final class Id666 implements Comparable<Id666> {
     private String gameTitle;
     private String nameOfDumper;
     private String comments;
-    private int lengthSeconds; // TODO change to uint32
+    private int lengthSeconds; // uint24
     private long fadeLengthMilliseconds; // uint32
 
     private short version; // uint8
@@ -119,7 +119,7 @@ public final class Id666 implements Comparable<Id666> {
     }
 
     public void setLengthSeconds(int lengthSeconds) {
-        this.lengthSeconds = lengthSeconds;
+        this.lengthSeconds = lengthSeconds & 0xFF_FFFF; //uint24
     }
 
     public long getFadeLengthMilliseconds() {
