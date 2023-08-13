@@ -1,6 +1,13 @@
 # Changelog
 
-## 2.3.2
+## v2.3.3
+### Bug fix:
+* End length - allow negative values (`signed int 32`)
+
+According to a better spec I found in `kfile_spc` end length can contain
+a negative value.
+
+## v2.3.2
 * Code refactoring (use new Java 17 features)
 * Length in seconds is masked to 24-bits (id666)
 * Convert SPC spec to utf-8
@@ -13,7 +20,7 @@ following:
 * fade length
 * intro length
 
-## 2.3.1
+## v2.3.1
 A warning is printed if the minor version (binary) field doesn't match the
 minor version in the header (plain text).
 

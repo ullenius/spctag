@@ -32,7 +32,7 @@ public final class Xid6 {
     private OstTrack ostTrack;
     private String publisher;
     private Long loopLength; // uint32
-    private Long endLength; // uint32
+    private Integer endLength; // signed int32
     private Long fadeLength; // uint32
     private short mutedChannels; // uint8
     private Short loops; // uint8, number of times to loop
@@ -144,12 +144,12 @@ public final class Xid6 {
         this.loopLength = toUint32(loopLength);
     }
 
-    public Long getEndLength() {
+    public Integer getEndLength() {
         return endLength;
     }
 
-    public void setEndLength(long endLength) {
-        this.endLength = toUint32(endLength);
+    public void setEndLength(int endLength) {
+        this.endLength = (endLength);
     }
 
     public Long getFadeLength() {

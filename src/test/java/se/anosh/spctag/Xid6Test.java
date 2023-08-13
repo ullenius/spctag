@@ -223,4 +223,13 @@ public class Xid6Test {
         assertEquals(expected, xid6.getLoops());
     }
 
+    @Test
+    void endLengthIsSigned() {
+        Xid6 xid6 = new Xid6();
+        final int expected = -1;
+        xid6.setEndLength(expected);
+        final long actual = xid6.getEndLength();
+        assertEquals(expected, actual);
+    }
+
 }

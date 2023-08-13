@@ -215,7 +215,7 @@ final class Xid6Reader {
 
     private final LongConsumer setDate = (num) -> xid6.setDate( (int) num);
     private final LongConsumer setLoopLength = (num) -> xid6.setLoopLength(num);
-    private final LongConsumer setEnd = (num) -> xid6.setEndLength(num);
+    private final LongConsumer setEnd = (num) -> xid6.setEndLength( (int) num);
     private final LongConsumer setFade = (num) -> xid6.setFadeLength(num);
     private final LongConsumer setMuted = (num) -> xid6.setMutedChannels( (short) num);
     private final LongConsumer setMixing = (num) -> xid6.setMixingLevel(num);

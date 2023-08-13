@@ -47,7 +47,7 @@ Fade length: 640000
 * :heavy_check_mark: Supports UTF-8 encoding in the tags!
 * :heavy_check_mark: Command line. Multi-platform.
 * :heavy_check_mark: Batch processing using wildcards is possible! For example: `java -jar spctag *.spc`
-* :heavy_check_mark:: xid6 support (extended tags).
+* :heavy_check_mark: xid6 support (extended tags).
 * :x: Edit tags (as of yet)
 
 ## :floppy_disk: Building
