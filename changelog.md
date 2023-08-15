@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.3.4
+Bump dependencies (JUnit)
+
 ## v2.3.3
 ### Bug fix:
 * End length - allow negative values (`signed int 32`)
