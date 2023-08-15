@@ -22,31 +22,31 @@ import static java.lang.Integer.toHexString;
 
 final class Xid6Reader {
 
-    private static final Map<Byte, Id> mappningar = new HashMap<>();
+    private static final Map<Byte, Id> mappings = new HashMap<>();
     private static final long XID6_OFFSET = 0x10200L;
 
     private static final int XID6_HEADER_SIZE = 8;
 
     static {
-        mappningar.put((byte) 0x01, new Id(Xid6Tag.SONG, Type.TEXT));
-        mappningar.put((byte) 0x02, new Id(Xid6Tag.GAME, Type.TEXT));
-        mappningar.put((byte) 0x03, new Id(Xid6Tag.ARTIST, Type.TEXT));
-        mappningar.put((byte) 0x04, new Id(Xid6Tag.DUMPER, Type.TEXT));
-        mappningar.put((byte) 0x06, new Id(Xid6Tag.EMULATOR, Type.DATA));
-        mappningar.put((byte) 0x07, new Id(Xid6Tag.COMMENTS, Type.TEXT));
-        mappningar.put((byte) 0x10, new Id(Xid6Tag.OST_TITLE, Type.TEXT));
-        mappningar.put((byte) 0x11, new Id(Xid6Tag.OST_DISC, Type.DATA));
-        mappningar.put((byte) 0x12, new Id(Xid6Tag.OST_TRACK, Type.OST));
-        mappningar.put((byte) 0x13, new Id(Xid6Tag.PUBLISHER, Type.TEXT));
-        mappningar.put((byte) 0x14, new Id(Xid6Tag.COPYRIGHT_YEAR, Type.YEAR));
+        mappings.put((byte) 0x01, new Id(Xid6Tag.SONG, Type.TEXT));
+        mappings.put((byte) 0x02, new Id(Xid6Tag.GAME, Type.TEXT));
+        mappings.put((byte) 0x03, new Id(Xid6Tag.ARTIST, Type.TEXT));
+        mappings.put((byte) 0x04, new Id(Xid6Tag.DUMPER, Type.TEXT));
+        mappings.put((byte) 0x06, new Id(Xid6Tag.EMULATOR, Type.DATA));
+        mappings.put((byte) 0x07, new Id(Xid6Tag.COMMENTS, Type.TEXT));
+        mappings.put((byte) 0x10, new Id(Xid6Tag.OST_TITLE, Type.TEXT));
+        mappings.put((byte) 0x11, new Id(Xid6Tag.OST_DISC, Type.DATA));
+        mappings.put((byte) 0x12, new Id(Xid6Tag.OST_TRACK, Type.OST));
+        mappings.put((byte) 0x13, new Id(Xid6Tag.PUBLISHER, Type.TEXT));
+        mappings.put((byte) 0x14, new Id(Xid6Tag.COPYRIGHT_YEAR, Type.YEAR));
         // song info stuff
-        mappningar.put((byte) 0x30, new Id(Xid6Tag.INTRO, Type.INTRO));
-        mappningar.put((byte) 0x31, new Id(Xid6Tag.LOOP_LENGTH, Type.NUMBER));
-        mappningar.put((byte) 0x32, new Id(Xid6Tag.END, Type.NUMBER));
-        mappningar.put((byte) 0x33, new Id(Xid6Tag.FADE, Type.NUMBER));
-        mappningar.put((byte) 0x34, new Id(Xid6Tag.MUTED, Type.MUTED));
-        mappningar.put((byte) 0x35, new Id(Xid6Tag.LOOP_TIMES, Type.DATA));
-        mappningar.put((byte) 0x36, new Id(Xid6Tag.MIXING, Type.NUMBER));
+        mappings.put((byte) 0x30, new Id(Xid6Tag.INTRO, Type.INTRO));
+        mappings.put((byte) 0x31, new Id(Xid6Tag.LOOP_LENGTH, Type.NUMBER));
+        mappings.put((byte) 0x32, new Id(Xid6Tag.END, Type.NUMBER));
+        mappings.put((byte) 0x33, new Id(Xid6Tag.FADE, Type.NUMBER));
+        mappings.put((byte) 0x34, new Id(Xid6Tag.MUTED, Type.MUTED));
+        mappings.put((byte) 0x35, new Id(Xid6Tag.LOOP_TIMES, Type.DATA));
+        mappings.put((byte) 0x36, new Id(Xid6Tag.MIXING, Type.NUMBER));
     }
 
     private Xid6 xid6 = null;
@@ -138,10 +138,10 @@ final class Xid6Reader {
             Logger.debug("Current pos: {}", subChunks.position());
 
             final byte id = subChunks.get();
-            if (!mappningar.containsKey(id)) {
+            if (!mappings.containsKey(id)) {
                 break;
             }
-            final Id mappatId = mappningar.get(id);
+            final Id mappatId = mappings.get(id);
             final Type type = mappatId.type;
             final boolean dataStoredInHeader = subChunks.get() == 0 || type == Type.DATA; // workaround for broken type byte, always read from header
 
@@ -173,7 +173,7 @@ final class Xid6Reader {
                             final int oldPos = subChunks.position();
                             final byte peek = subChunks.get(oldPos + peekPos);
                             Logger.debug("Peek byte: {}", peek);
-                            if (mappningar.containsKey(peek)) {
+                            if (mappings.containsKey(peek)) {
                                 size--;
                             }
                         }
