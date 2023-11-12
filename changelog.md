@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.3.5
+Bump dependencies.
+
 ## v2.3.4
 Bump dependencies (JUnit)
 
