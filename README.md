@@ -56,21 +56,20 @@ This is a Maven-project.
 ### Linux / POSIX
 Run:
 ```sh
-./mvnw clean install assembly:single
+./build.sh
 ```
 
 ### Windows
 Run:
-```sh
+```dosbatch
 mvnw.cmd clean install assembly:single
 ```
 
 to build the JAR-file.
 
 ## :file_folder: Binaries
-I've included a compiled jar-file with /lib dir to simplify for end-users who can't compile stuff on their platform.
-* Download **spctag-bin.zip**
-
+Binaries are included with every release on Github to simplify for end-users who
+can't compile stuff on their platform.
 
 ## :wrench: Development
 1. I wrote this because there was a lack of tools supporting the SPC-format.
