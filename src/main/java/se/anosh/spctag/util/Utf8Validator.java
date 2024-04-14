@@ -1,5 +1,7 @@
 package se.anosh.spctag.util;
 
+import org.tinylog.Logger;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -39,7 +41,7 @@ public final class Utf8Validator {
                     final int val = hi << 8 | low;
 
                     if (val <= 0x7F) {
-                        System.err.println("invalid 2-byte utf8 character");
+                        Logger.debug("invalid 2-byte utf8 character");
                         valid = false;
                     }
                 }
@@ -56,14 +58,14 @@ public final class Utf8Validator {
 
                     final int combined = first << 8 | second;
                     if (combined <= 0x7FF) {
-                        System.err.println("invalid 3-byte utf8 character");
+                        Logger.debug("invalid 3-byte utf8 character");
                         valid = false;
                     }
                     else if (combined >= 0xD800 && combined <= 0xDFFF) {
-                        System.err.println("invalid 4-byte ut8 character, surrogate.");
+                        Logger.debug("invalid 4-byte ut8 character, surrogate.");
                         valid = false;
                     }
-                    //System.err.println("combined: " + Integer.toHexString(combined));
+                    //Logger.debug("combined: " + Integer.toHexString(combined));
                 }
                 i += 3;
             }
@@ -81,21 +83,21 @@ public final class Utf8Validator {
 
                     final int combined = (first << 16 | second << 8 | third) & 0x1FFFFF;
                     if (combined <= 0xFFFF) {
-                        System.err.println("invalid 4-byte utf8 character");
+                        Logger.debug("invalid 4-byte utf8 character");
                         valid = false;
                     }
                     else if (combined > 0x10FFFF) {
-                        System.err.println("invalid 4-byte utf8 character, too large");
-                        System.err.println("Offset " + i);
+                        Logger.debug("invalid 4-byte utf8 character, too large");
+                        Logger.debug("Offset " + i);
                         valid = false;
                     }
                 }
                 i += 4;
-                System.err.println("Four bytes");
+                Logger.debug("Four bytes");
             }
             else {
-                System.err.println("Invalid UTF-8");
-                System.err.println("Offset " + i);
+                Logger.debug("Invalid UTF-8");
+                Logger.debug("Offset " + i);
                 valid = false;
             }
         }
