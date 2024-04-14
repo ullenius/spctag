@@ -19,7 +19,7 @@ import se.anosh.spctag.domain.Xid6;
  */
 public final class TagReader {
     
-    private static final String VERSION ="spctag version 2.3.5";
+    private static final String VERSION ="spctag version 2.3.6";
     private static final String ABOUT = "code by A. Ullenius 2019-2023";
     private static final String LICENCE = "Licence: Gnu General Public License - version 3.0 only";
     private static final String TRIBUTE = "spctag is dedicated to my favourite OC remixer: Avien (1986-2004). RIP";
@@ -107,7 +107,7 @@ public final class TagReader {
                 Logger.error("I/O error: {}", ex);
                 System.exit(1);
             }
-        } // end of for-each-loop
+        }
     }
     
 }
