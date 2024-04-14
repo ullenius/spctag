@@ -22,7 +22,7 @@ public final class Utf8Validator {
         return (Byte.toUnsignedInt(b) >> 6) == 0x2;
     }
 
-    private static boolean validate(byte[] arr) {
+    static boolean validate(byte[] arr) {
         boolean valid = true;
         final int length = arr.length;
         int i = 0;
