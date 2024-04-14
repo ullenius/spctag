@@ -20,6 +20,9 @@ public class TestModelWithData {
 
     private static final String BINARY_SPC_WITHOUT_DUMPED_DATE = ROOT_PATH + "binary-nodate.spc";
 
+    private static final String LATIN1_TEXT_SPC = ROOT_PATH + "latin1.spc";
+    private static final String UTF8_TEXT_SPC = ROOT_PATH + "utf8.spc";
+
     static final String TEXT_SPC = ROOT_PATH + "text.spc";
 
     private static final String SPC_WITH_NO_ID666_TAGS = ROOT_PATH + "containsNoTagSetToTrue.spc";
@@ -96,6 +99,24 @@ public class TestModelWithData {
         final Id666 id666 = new SpcFile(BINARY_SPC).read();
         final long expected = 0xFFAA1B58L;
         assertEquals(expected, id666.getFadeLengthMilliseconds());
+    }
+
+    @Test
+    void latin1FallbackParsing() throws IOException {
+        spcFile = new SpcFile(LATIN1_TEXT_SPC);
+        Id666 id666 = spcFile.read();
+
+        String expected = "ÅÄÖ åäö ±±±±±±±±";
+        assertEquals(expected, id666.getNameOfDumper());
+    }
+
+    @Test
+    void utf8Parsing() throws IOException {
+        spcFile = new SpcFile(UTF8_TEXT_SPC);
+        Id666 id666 = spcFile.read();
+
+        String expected = "ÅÄÖ€€€";
+        assertEquals(expected, id666.getNameOfDumper());
     }
 
 

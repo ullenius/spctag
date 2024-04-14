@@ -13,6 +13,7 @@ import org.tinylog.Logger;
 import se.anosh.spctag.domain.Id666;
 import se.anosh.spctag.emulator.factory.*;
 import se.anosh.spctag.emulator.factory.EmulatorFactory.Type;
+import se.anosh.spctag.util.Utf8Validator;
 
 final class SpcFileReader {
 
@@ -217,7 +218,7 @@ final class SpcFileReader {
 
     /**
      * Checks if tag format is text format (as opposed to binary)
-     * It is kind of ambigious which format is used since there are
+     * It is kind of ambiguous which format is used since there are
      * no real indicators in the file format specification.
      * --
      * BUGS:
@@ -226,7 +227,7 @@ final class SpcFileReader {
      */
     private boolean hasBinaryTagFormat() throws IOException {
         final char first = parse(Id666.Field.ARTIST_OF_SONG_BINARY_FORMAT,
-                (bytes) -> new String(bytes, StandardCharsets.UTF_8)) // don't cleanup result
+                (bytes) -> new String(bytes, StandardCharsets.UTF_8)) // FIXME re-write algorithm
                 .charAt(0);
         // If 0xB0 is *NOT* a valid char or *IS* a digit then don't allow it.
         // Sometimes we have valid digits in this offset (if the tag-format is text)
@@ -234,7 +235,7 @@ final class SpcFileReader {
     }
 
     private String parse(Id666.Field field) throws IOException {
-        Function<byte[], String> func = (bytes) -> new String(bytes, StandardCharsets.UTF_8).trim(); // remove NULL characters;
+        Function<byte[], String> func = (bytes) -> new String(bytes, Utf8Validator.autoDetectCharset(bytes)).trim(); // remove NULL characters;
         return parse(field, func);
     }
 

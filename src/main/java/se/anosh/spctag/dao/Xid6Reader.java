@@ -3,6 +3,7 @@ package se.anosh.spctag.dao;
 import org.tinylog.Logger;
 import se.anosh.spctag.domain.Xid6;
 import se.anosh.spctag.domain.Xid6Tag;
+import se.anosh.spctag.util.Utf8Validator;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -180,7 +181,7 @@ final class Xid6Reader {
                         final int bufsize = createBufferSize(size);
                         final byte[] buf = new byte[bufsize];
                         subChunks.get(buf);
-                        final String text = new String(buf, StandardCharsets.UTF_8).trim();
+                        final String text = new String(buf, Utf8Validator.autoDetectCharset(buf)).trim();
                         setText(mappatId.tag, text);
                     }
                     case INTRO -> {
@@ -251,7 +252,7 @@ final class Xid6Reader {
         private static final String MAGIC_NUMBER = "xid6";
         private final int chunkSize;
         ChunkHeader(byte[] magicNumber, int size) {
-            String actual = new String(magicNumber, StandardCharsets.UTF_8);
+            String actual = new String(magicNumber, StandardCharsets.US_ASCII);
             if (!MAGIC_NUMBER.contentEquals(actual)) {
                 throw new IllegalArgumentException("invalid magic number");
             }
