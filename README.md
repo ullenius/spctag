@@ -24,7 +24,7 @@ $ java -jar spctag -v "/warez/spc/dkc2/17 Stickerbrush Symphony.spc"
 File header: SNES-SPC700 Sound File Data v0.30
 Tag format: Text
 Artist: Dave Wise
-Song title: Stickerbrush Symphony
+Song title: Stickerbush Symphony
 Game title: Donkey Kong Country 2
 Name of dumper: Datschge
 Comments: Bramble Maze
@@ -70,6 +70,19 @@ to build the JAR-file.
 ## :file_folder: Binaries
 Binaries are included with every release on Github to simplify for end-users who
 can't compile stuff on their platform.
+
+## Character encodings
+Supported character encodings are:
+
+* utf-8
+* latin-1
+
+The program validates utf-8 tags, invalid tags are parsed as latin-1. This may
+result in mojibake.
+
+Noncharacters in utf-8 are disallowed for security reasons.
+
+* [Which code points are noncharacters?](https://www.unicode.org/faq/private_use.html#noncharacters)
 
 ## :wrench: Development
 1. I wrote this because there was a lack of tools supporting the SPC-format.

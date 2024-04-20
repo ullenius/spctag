@@ -3,11 +3,15 @@
 ## v2.3.6
 * Bump dependencies.
 * Fix broken latin-1 parsing:
-The program now auto-detects utf-8 tags when parsing. If the utf-8 valdiation
-fails the tags are parsed as latin-1.
+
+Latin-1 code points were parsed as utf-8 resulting in the replacement character
+'�' (`U+FFFD`).
+
+The program now validates utf-8 tags when parsing. If validation fails the tag
+is parsed as latin-1.
 
 ### BUGS
-This will still cause emojibake for other encodings such as UTF-16, JIS, EUC
+This will still cause mojibake for other encodings such as UTF-16, JIS, EUC
 etcetera.
 
 ## v2.3.5
