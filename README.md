@@ -74,13 +74,13 @@ can't compile stuff on their platform.
 ## Character encodings
 Supported character encodings are:
 
-* utf-8
+* UTF-8
 * latin-1
 
-The program validates utf-8 tags, invalid tags are parsed as latin-1. This may
-result in mojibake.
+The program auto-detect character encodings, if text is not valid UTF-8 then
+latin-1 is used. This may result in mojibake.
 
-Noncharacters in utf-8 are disallowed for security reasons.
+Noncharacters in UTF-8 are disallowed for security reasons.
 
 * [Which code points are noncharacters?](https://www.unicode.org/faq/private_use.html#noncharacters)
 
