@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -168,11 +167,11 @@ public class Utf8ValidatorTest {
     // Maximum overlong sequences
     @Test
     void overlongSequences() {
-        byte[] broken = { (byte) 0xC1, (byte) 0xBF }; // DRY
-        byte[] broken2 = { (byte) 0xE0, (byte) 0x9F, (byte) 0xBF };
-        byte[] broken3 = { (byte) 0xF0, (byte) 0x80, (byte) 0xBF, (byte) 0xBF };
-        byte[] broken4 = { (byte) 0xF8, (byte) 0x87, (byte) 0xBF, (byte) 0xBF, (byte) 0xBF }; // 5 bytes
-        byte[] broken5 = { (byte) 0xFC, (byte) 0x83, (byte) 0xBF, (byte) 0xBF, (byte) 0xBF, (byte) 0xBF}; // 6 bytes
+        byte[] broken = {(byte) 0xC1, (byte) 0xBF}; // DRY
+        byte[] broken2 = {(byte) 0xE0, (byte) 0x9F, (byte) 0xBF};
+        byte[] broken3 = {(byte) 0xF0, (byte) 0x80, (byte) 0xBF, (byte) 0xBF};
+        byte[] broken4 = {(byte) 0xF8, (byte) 0x87, (byte) 0xBF, (byte) 0xBF, (byte) 0xBF}; // 5 bytes
+        byte[] broken5 = {(byte) 0xFC, (byte) 0x83, (byte) 0xBF, (byte) 0xBF, (byte) 0xBF, (byte) 0xBF}; // 6 bytes
 
         assertFalse(Utf8Validator.validate(broken));
         assertFalse(Utf8Validator.validate(broken2));
@@ -183,11 +182,11 @@ public class Utf8ValidatorTest {
 
     @Test
     void overlongAscii() {
-        byte[] broken = { (byte) 0xC0, (byte) 0xAF };
-        byte[] broken2 = { (byte) 0xE0, (byte) 0x80, (byte) 0xAF };
-        byte[] broken3 = { (byte) 0xF0, (byte) 0x80, (byte) 0x80, (byte) 0xAF };
-        byte[] broken4 = { (byte) 0xF8, (byte) 0x80, (byte) 0x80, (byte) 0x80, (byte) 0xAF }; // 5-byte
-        byte[] broken5 = { (byte) 0xFC, (byte) 0x80, (byte) 0x80, (byte) 0x80, (byte) 0x80, (byte) 0xAF }; // 6-byte
+        byte[] broken = {(byte) 0xC0, (byte) 0xAF};
+        byte[] broken2 = {(byte) 0xE0, (byte) 0x80, (byte) 0xAF};
+        byte[] broken3 = {(byte) 0xF0, (byte) 0x80, (byte) 0x80, (byte) 0xAF};
+        byte[] broken4 = {(byte) 0xF8, (byte) 0x80, (byte) 0x80, (byte) 0x80, (byte) 0xAF}; // 5-byte
+        byte[] broken5 = {(byte) 0xFC, (byte) 0x80, (byte) 0x80, (byte) 0x80, (byte) 0x80, (byte) 0xAF}; // 6-byte
         assertFalse(Utf8Validator.validate(broken));
         assertFalse(Utf8Validator.validate(broken2));
         assertFalse(Utf8Validator.validate(broken3));
@@ -197,9 +196,9 @@ public class Utf8ValidatorTest {
 
     @Test
     void impossibleBytes() {
-        byte[] broken = { (byte) 0x7C, (byte) 0xFE };
-        byte[] broken2 = { (byte) 0x7C, (byte) 0xFF };
-        byte[] broken3 = { (byte) 0xFE, (byte) 0xFE, (byte) 0xFF, (byte) 0xFF };
+        byte[] broken = {(byte) 0x7C, (byte) 0xFE};
+        byte[] broken2 = {(byte) 0x7C, (byte) 0xFF};
+        byte[] broken3 = {(byte) 0xFE, (byte) 0xFE, (byte) 0xFF, (byte) 0xFF};
         assertFalse(Utf8Validator.validate(broken));
         assertFalse(Utf8Validator.validate(broken2));
         assertFalse(Utf8Validator.validate(broken3));
@@ -213,119 +212,147 @@ public class Utf8ValidatorTest {
     }
 
     @Test
-    // 64 noncharacters
-    void blockNoncharacters() {
+        /*
+         * A contiguous range of 32 noncharacters: U+FDD0..U+FDEF in the BMP
+         * https://www.unicode.org/faq/private_use.html#noncharacters
+         *
+         * Tests 32/66 noncharacter
+         *
+         */
+    void disallowContigiousNoncharacters() {
         final byte[][] contigious = {
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x90 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x91 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x92 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x93 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x94 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x95 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x96 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x97 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x98 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x99 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x9A },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x9B },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x9C },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x9D },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x9E },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0x9F },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xA0 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xA1 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xA2 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xA3 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xA4 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xA5 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xA6 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xA7 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xA8 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xA9 },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xAA },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xAB },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xAC },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xAD },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xAE },
-                { (byte) 0xEF, (byte) 0xB7, (byte) 0xAF }
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x90},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x91},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x92},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x93},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x94},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x95},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x96},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x97},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x98},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x99},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x9A},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x9B},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x9C},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x9D},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x9E},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0x9F},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xA0},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xA1},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xA2},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xA3},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xA4},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xA5},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xA6},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xA7},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xA8},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xA9},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xAA},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xAB},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xAC},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xAD},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xAE},
+                {(byte) 0xEF, (byte) 0xB7, (byte) 0xAF}
         };
         assertEquals(32, contigious.length);
-
         for (int i = 0; i < contigious.length; i++) {
             assertFalse(Utf8Validator.validate(contigious[i]), "Noncharacter at offset[%d] passed validation".formatted(i));
         }
+    }
 
+    /*
+     * Disallow noncharacters
+     *
+     * "the last two code points of the BMP, U+FFFE and U+FFFF"
+     *
+     * "With such internal use of noncharacters, it may be desirable and safer
+     * to block those code points in UTF-8 decoders, as they should never
+     * occur legitimately in incoming UTF-8 data, and could trigger unsafe
+     * behaviour in subsequent processing."
+     * - Markus Kuhn, UTF-8 decoder capability and stress test
+     *
+     * Tests 2/66 noncharacter
+     *
+     */
+    @Test
+    void blockLastTwoCodePoints() {
         final byte[][] lastTwoOfBmp = {
                 {(byte) 0xEF, (byte) 0xBF, (byte) 0xBE},
                 {(byte) 0xEF, (byte) 0xBF, (byte) 0xBF}
         };
-
+        assertEquals(2, lastTwoOfBmp.length);
         for (int i = 0; i < lastTwoOfBmp.length; i++) {
             assertFalse(Utf8Validator.validate(lastTwoOfBmp[i]), "Noncharacter at offset[%d] passed validation".formatted(i));
         }
+    }
 
+    /*
+     * Block noncharacters
+     *
+     * "the last two code points of each of the 16 supplementary planes:
+     *  U+1FFFE, U+1FFFF, U+2FFFE, U+2FFFF, ... U+10FFFE, U+10FFFF"
+     *
+     *  https://www.unicode.org/faq/private_use.html#noncharacters
+     *
+     * Tests 32/66 noncharacter
+     */
+    @Test
+    void blockNoncharacters() {
         final byte[][] lastTwoOfSupplementaryPlanes = {
-                { (byte) 0xF0, (byte) 0x9F, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF0, (byte) 0x9F, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF0, (byte) 0x9F, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF0, (byte) 0x9F, (byte) 0xBF, (byte) 0xBF},
 
-                { (byte) 0xF0, (byte) 0xAF, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF0, (byte) 0xAF, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF0, (byte) 0xAF, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF0, (byte) 0xAF, (byte) 0xBF, (byte) 0xBF},
 
-                { (byte) 0xF0, (byte) 0xBF, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF0, (byte) 0xBF, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF0, (byte) 0xBF, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF0, (byte) 0xBF, (byte) 0xBF, (byte) 0xBF},
 
-                // --------- start
-                { (byte) 0xF1, (byte) 0x8F, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF1, (byte) 0x8F, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF1, (byte) 0x8F, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF1, (byte) 0x8F, (byte) 0xBF, (byte) 0xBF},
 
-                { (byte) 0xF1, (byte) 0x9F, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF1, (byte) 0x9F, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF1, (byte) 0x9F, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF1, (byte) 0x9F, (byte) 0xBF, (byte) 0xBF},
 
-                { (byte) 0xF1, (byte) 0xAF, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF1, (byte) 0xAF, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF1, (byte) 0xAF, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF1, (byte) 0xAF, (byte) 0xBF, (byte) 0xBF},
 
-                { (byte) 0xF1, (byte) 0xBF, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF1, (byte) 0xBF, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF1, (byte) 0xBF, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF1, (byte) 0xBF, (byte) 0xBF, (byte) 0xBF},
 
-                { (byte) 0xF2, (byte) 0x8F, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF2, (byte) 0x8F, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF2, (byte) 0x8F, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF2, (byte) 0x8F, (byte) 0xBF, (byte) 0xBF},
 
-                { (byte) 0xF2, (byte) 0x9F, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF2, (byte) 0x9F, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF2, (byte) 0x9F, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF2, (byte) 0x9F, (byte) 0xBF, (byte) 0xBF},
 
-                { (byte) 0xF2, (byte) 0xAF, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF2, (byte) 0xAF, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF2, (byte) 0xAF, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF2, (byte) 0xAF, (byte) 0xBF, (byte) 0xBF},
 
-                { (byte) 0xF2, (byte) 0xBF, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF2, (byte) 0xBF, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF2, (byte) 0xBF, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF2, (byte) 0xBF, (byte) 0xBF, (byte) 0xBF},
 
-                { (byte) 0xF3, (byte) 0x8F, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF3, (byte) 0x8F, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF3, (byte) 0x8F, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF3, (byte) 0x8F, (byte) 0xBF, (byte) 0xBF},
 
-                { (byte) 0xF3, (byte) 0x9F, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF3, (byte) 0x9F, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF3, (byte) 0x9F, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF3, (byte) 0x9F, (byte) 0xBF, (byte) 0xBF},
 
-                { (byte) 0xF3, (byte) 0xAF, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF3, (byte) 0xAF, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF3, (byte) 0xAF, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF3, (byte) 0xAF, (byte) 0xBF, (byte) 0xBF},
 
-                // -------------
-                { (byte) 0xF3, (byte) 0xBF, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF3, (byte) 0xBF, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF3, (byte) 0xBF, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF3, (byte) 0xBF, (byte) 0xBF, (byte) 0xBF},
 
-                { (byte) 0xF4, (byte) 0x8F, (byte) 0xBF, (byte) 0xBE },
-                { (byte) 0xF4, (byte) 0x8F, (byte) 0xBF, (byte) 0xBF },
+                {(byte) 0xF4, (byte) 0x8F, (byte) 0xBF, (byte) 0xBE},
+                {(byte) 0xF4, (byte) 0x8F, (byte) 0xBF, (byte) 0xBF},
         };
         assertEquals(lastTwoOfSupplementaryPlanes.length, 32);
-
-        assertEquals(66, lastTwoOfSupplementaryPlanes.length + contigious.length + lastTwoOfBmp.length);
 
         for (int i = 0; i < lastTwoOfSupplementaryPlanes.length; i++) {
             assertFalse(Utf8Validator.validate(lastTwoOfSupplementaryPlanes[i]), "Noncharacter at offset[%d] passed validation".formatted(i));
         }
-
-
     }
-
 
 
 }
