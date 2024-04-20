@@ -149,7 +149,7 @@ public final class Xid6 {
     }
 
     public void setEndLength(int endLength) {
-        this.endLength = (endLength);
+        this.endLength = endLength;
     }
 
     public Long getFadeLength() {

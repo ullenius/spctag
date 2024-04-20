@@ -213,7 +213,7 @@ public class Utf8ValidatorTest {
 
     @Test
         /*
-         * A contiguous range of 32 noncharacters: U+FDD0..U+FDEF in the BMP
+         * "A contiguous range of 32 noncharacters: U+FDD0..U+FDEF in the BMP"
          * https://www.unicode.org/faq/private_use.html#noncharacters
          *
          * Tests 32/66 noncharacter

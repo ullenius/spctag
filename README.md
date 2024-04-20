@@ -91,7 +91,7 @@ Noncharacters in utf-8 are disallowed for security reasons.
 
 Most of the existing tools are 15-20 year old legacy Windows programs that won't run on modern computers. The source code is lost. Or it was written in C/C++ for 32-bit architecture and won't compile on modern 64-bit computers.
 
-Java is multi-platform and you can run and compile 20-year old Java programs without any issues. So I'd figure this would be a suitable platform for posterity.
+Java is multi-platform and you can run and compile 20-year-old Java programs without any issues. So I'd figure this would be a suitable platform for posterity.
 
 Hopefully doing it in Java makes it easy to convert to XML and JSON, as well as persisting it in databases using SQL.
 

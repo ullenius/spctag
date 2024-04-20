@@ -227,7 +227,7 @@ final class SpcFileReader {
      */
     private boolean hasBinaryTagFormat() throws IOException {
         final char first = parse(Id666.Field.ARTIST_OF_SONG_BINARY_FORMAT,
-                (bytes) -> new String(bytes, StandardCharsets.UTF_8)) // FIXME re-write algorithm
+                (bytes) -> new String(bytes, StandardCharsets.UTF_8)) // TODO re-write algorithm
                 .charAt(0);
         // If 0xB0 is *NOT* a valid char or *IS* a digit then don't allow it.
         // Sometimes we have valid digits in this offset (if the tag-format is text)
