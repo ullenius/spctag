@@ -19,27 +19,30 @@ usage: spctag <filename>
 
 For example:
 ```sh
-$ java -jar spctag -v "/warez/spc/dkc2/17 Stickerbrush Symphony.spc"
+$ java -jar spctag -v --json "/warez/spc/dkc2/17 Stickerbrush Symphony.spc"
 ```
-```
-File header: SNES-SPC700 Sound File Data v0.30
-Tag format: Text
-Artist: Dave Wise
-Song title: Stickerbush Symphony
-Game title: Donkey Kong Country 2
-Name of dumper: Datschge
-Comments: Bramble Maze
-Date SPC was dumped:
-Emulator used to dump SPC: Unknown
-Length (seconds): 253
-Fade length (milliseconds): 10000
------------
-XID6 tags:
------------
-Publisher's name: Rare, Nintendo
-Copyright year: 1995
-Introduction length: 25.3
-Fade length: 640000
+```json
+[
+  {
+    "fileHeader": "SNES-SPC700 Sound File Data v0.30",
+    "tagFormat": "Text",
+    "artist": "Dave Wise",
+    "songTitle": "Stickerbush Symphony",
+    "gameTitle": "Donkey Kong Country 2",
+    "dumpedBy": "Datschge",
+    "comments": "Bramble Maze",
+    "dateSpcWasDumped": "",
+    "lengthSeconds": 253,
+    "fadeLengthMilliseconds": 10000,
+    "emulatorUsedToDumpSpc": "Unknown",
+    "xid6": {
+      "publishersName": "Rare, Nintendo",
+      "copyrightYear": "1995",
+      "introductionLength": 25.3,
+      "fadeLength": 640000
+    }
+  }
+]
 ```
 
 ## Features
