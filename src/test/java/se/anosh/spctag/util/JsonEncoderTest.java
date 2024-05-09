@@ -33,15 +33,19 @@ public class JsonEncoderTest {
 				"escapedAsciiControlCharacters" : "\\u0000\\u0001\\u0002\\u0003\\u0004\\u0005\\u0006\\u0007\\u000e\\u000f\\u0010\\u0011\\u0012\\u0013\\u0014\\u0015\\u0016\\u0017\\u0018\\u0019\\u001a\\u001b\\u001c\\u001d\\u001e\\u001f\"""";
 
 		assertEquals(expected, JsonEncoder.toJson(key, sb.toString()));
-		System.out.print("{" + expected +" }");
+	}
+
+	@Test
+	void integersSupported() {
+		final String key = "Track number";
+		final int val = 42;
+		String expected = """
+			"trackNumber" : 42""";
+		assertEquals(expected, JsonEncoder.toJson(key, val));
 	}
 
 	/*
 				""".formatted(
-                JsonEncoder.toJson("song name", "du gamla du fria\tfoobar"),
-                JsonEncoder.toJson("artist name", "michael jackson"),
-                JsonEncoder.toJson("track no", 42),
-                JsonEncoder.toJson("null funkar", null),
                 JsonEncoder.toJson("sant funkar", true),
                 JsonEncoder.toJson("falskt funkar", false),
                 JsonEncoder.toJson("double funkar", Math.PI),
