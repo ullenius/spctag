@@ -59,11 +59,11 @@ public final class Utf8Validator {
                         Logger.debug("invalid 3-byte utf8 character");
                         valid = false;
                     } else if (combined >= 0xD800 && combined <= 0xDFFF) {
-                        Logger.debug("invalid 4-byte ut8 character, surrogate.");
+                        Logger.debug("invalid 4-byte utf8 character, surrogate.");
                         valid = false;
                     }
                     // Disallow 32 pair of 3-byte noncharacters
-                    if (combined >= 0xFDD0 && combined <= 0xFDEF) {
+                    else if (combined >= 0xFDD0 && combined <= 0xFDEF) {
                         Logger.debug("Contiguous noncharacter: 0x{}", String.format("%X", combined));
                         valid = false;
                     }
@@ -96,7 +96,7 @@ public final class Utf8Validator {
                         valid = false;
                     }
                     // Disallow 32 4-byte noncharacters
-                    if (combined == 0x1FFFE || combined == 0x1FFFF ||
+                    else if (combined == 0x1FFFE || combined == 0x1FFFF ||
                             combined == 0x2FFFE || combined == 0x2FFFF ||
                             combined == 0x3FFFE || combined == 0x3FFFF ||
                             combined == 0x4FFFE || combined == 0x4FFFF ||
@@ -120,7 +120,7 @@ public final class Utf8Validator {
                 i += 4;
             } else {
                 Logger.debug("Invalid UTF-8");
-                Logger.debug("Offset " + i);
+                Logger.debug("Offset {}", i);
                 valid = false;
             }
         }

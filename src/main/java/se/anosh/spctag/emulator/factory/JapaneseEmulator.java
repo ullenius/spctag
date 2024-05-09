@@ -1,6 +1,5 @@
 package se.anosh.spctag.emulator.factory;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -34,35 +33,36 @@ final class JapaneseEmulator implements Emulator {
     static final int SNES9XPP_BINARY = 0x07;
     static final int SNESGT_BINARY= 0x08;
     
-    static final Map<Integer,Name> emulatorMap = new HashMap<>();
+    static final Map<Integer,Name> emulatorMap;
     
     static {
-    	emulatorMap.put(ZSNES_TEXT, Name.ZSNES);
-    	emulatorMap.put(ZSNES_BINARY, Name.ZSNES);
+        emulatorMap = Map.ofEntries(
+    	Map.entry(ZSNES_TEXT, Name.ZSNES),
+    	Map.entry(ZSNES_BINARY, Name.ZSNES),
     	
-    	emulatorMap.put(SNES9X_TEXT, Name.Snes9x);
-    	emulatorMap.put(SNES9X_BINARY, Name.Snes9x);
+    	Map.entry(SNES9X_TEXT, Name.Snes9x),
+    	Map.entry(SNES9X_BINARY, Name.Snes9x),
     	
-    	emulatorMap.put(ZST2SPC_TEXT, Name.ZST2SPC);
-    	emulatorMap.put(ZST2SPC_BINARY, Name.ZST2SPC);
+    	Map.entry(ZST2SPC_TEXT, Name.ZST2SPC),
+    	Map.entry(ZST2SPC_BINARY, Name.ZST2SPC),
     	
-    	emulatorMap.put(OTHER_TEXT, Name.Other);
-    	emulatorMap.put(OTHER_BINARY, Name.Other);
+    	Map.entry(OTHER_TEXT, Name.Other),
+    	Map.entry(OTHER_BINARY, Name.Other),
     	
-    	emulatorMap.put(UNKNOWN_BINARY, Name.Unknown);
-        emulatorMap.put(UNKNOWN_TEXT, Name.Unknown);
+    	Map.entry(UNKNOWN_BINARY, Name.Unknown),
+        Map.entry(UNKNOWN_TEXT, Name.Unknown),
     	
-    	emulatorMap.put(SNESHOUT_TEXT, Name.SNEShout);
-    	emulatorMap.put(SNESHOUT_BINARY, Name.SNEShout);
+    	Map.entry(SNESHOUT_TEXT, Name.SNEShout),
+    	Map.entry(SNESHOUT_BINARY, Name.SNEShout),
     	
-    	emulatorMap.put(ZSNES_W_TEXT, Name.ZSNES_W);
-    	emulatorMap.put(ZSNES_W_BINARY, Name.ZSNES_W);
+    	Map.entry(ZSNES_W_TEXT, Name.ZSNES_W),
+    	Map.entry(ZSNES_W_BINARY, Name.ZSNES_W),
     	
-    	emulatorMap.put(SNES9XPP_TEXT, Name.Snes9xpp);
-    	emulatorMap.put(SNES9XPP_BINARY, Name.Snes9xpp);
+    	Map.entry(SNES9XPP_TEXT, Name.Snes9xpp),
+    	Map.entry(SNES9XPP_BINARY, Name.Snes9xpp),
     	
-    	emulatorMap.put(SNESGT_TEXT, Name.SNESGT);
-    	emulatorMap.put(SNESGT_BINARY, Name.SNESGT);
+    	Map.entry(SNESGT_TEXT, Name.SNESGT),
+    	Map.entry(SNESGT_BINARY, Name.SNESGT));
     }
 
     private final int code;
