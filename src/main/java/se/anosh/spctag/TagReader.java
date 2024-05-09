@@ -78,6 +78,7 @@ public final class TagReader {
     private void go(final CommandLine cmd) {
         String[] fileNames = cmd.getArgs();
         final int len = fileNames.length;
+        final int lastElement = len - 1;
 
         for (int i = 0; i < len; i++) {
             String file = fileNames[i];
@@ -88,6 +89,7 @@ public final class TagReader {
                 final boolean verbose = cmd.hasOption(VERBOSE);
                 final boolean printXid6 = cmd.hasOption(XID6);
 
+                // JSON OUTPUT--------------------------------------------
                 if (cmd.hasOption("json")) {
                     if (i == 0) {
                         System.out.println("[");
@@ -121,14 +123,13 @@ public final class TagReader {
                         System.out.println();
                     }
                     System.out.print("}");
-                    if (i == len -1) { // last element
-                        System.out.println("\n]"); // trailing comma
+                    if (i == lastElement) {
+                        System.out.println("\n]");
                     }
                     else {
                         System.out.println(",");
                     }
                 }
-
                 // NON-JSON OUTPUT--------------------------------------------
                 else {
                     if (verbose) {
@@ -146,15 +147,9 @@ public final class TagReader {
                     System.out.printf("%s: %s\n", DATE_SPC_WAS_DUMPED, myFile.dateDumpWasCreated());
                     System.out.printf("%s: %s\n", EMULATOR_USED_TO_DUMP_SPC, myFile.getEmulatorUsedToCreateDump().getName());
                     if (verbose) {
-                        int length = myFile.getLengthSeconds();
-                        long fadelength = myFile.getFadeLengthMilliseconds();
-                        if (length != 0) {
-                            System.out.printf("%s: %d\n", LENGTH_SECONDS, myFile.getLengthSeconds());
+                        System.out.printf("%s: %d\n", LENGTH_SECONDS, myFile.getLengthSeconds());
+                        System.out.printf("%s: %d\n", FADE_LENGTH_MILLISECONDS, myFile.getFadeLengthMilliseconds());
                         }
-                        if (fadelength != 0) {
-                            System.out.printf("%s: %d\n", FADE_LENGTH_MILLISECONDS, myFile.getFadeLengthMilliseconds());
-                        }
-                    }
                     if (verbose || printXid6) {
                         try {
                             Xid6 xid6 = spcReader.readXid6();
