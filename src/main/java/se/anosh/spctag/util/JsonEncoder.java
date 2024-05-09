@@ -19,16 +19,21 @@ public final class JsonEncoder {
 		return "\"%s\" : %s".formatted(toCamelCase(key.toString()), parseValue(value));
 	}
 
+	// Does not work if text is already camel case!
 	private static String toCamelCase(String text) {
 		StringBuilder sb = new StringBuilder();
 
 		boolean uppercase = false;
 		for (int i = 0; i < text.length(); i++) {
-			char ch = (char) (text.charAt(i) | LOWERCASE_BITMASK);
+			char ch = text.charAt(i);
 			if (ch == ' ') {
 				uppercase = true;
 				continue;
 			}
+			if (ch > ' ' && ch < 'A') { // remove single quotes ' and parentheses
+				continue;
+			}
+			ch = (char) (ch | LOWERCASE_BITMASK);
 			if (uppercase) {
 				ch = (char) (ch & UPPERCASE_BITMASK);
 				uppercase = false;

@@ -9,7 +9,6 @@ import se.anosh.spctag.dao.*;
 import se.anosh.spctag.domain.Id666;
 import se.anosh.spctag.domain.Xid6;
 import se.anosh.spctag.util.JsonEncoder;
-import se.anosh.spctag.util.StringUtil;
 
 /**
  * SPC tag
@@ -75,8 +74,35 @@ public final class TagReader {
                 final boolean printXid6 = cmd.hasOption(XID6);
 
                 if (cmd.hasOption("json")) {
-                    printJson(myFile, );
-
+                    System.out.println("{");
+                    if (verbose) {
+                        System.out.printf("\t%s,\n", JsonEncoder.toJson("file header", myFile.getHeader()));
+                        System.out.printf("\t%s,\n", JsonEncoder.toJson("tag Format",
+                                myFile.isBinaryTagFormat() ? "binary" : "text"));
+                    }
+                    System.out.printf("\t%s,\n", JsonEncoder.toJson("artist", myFile.getArtist()));
+                    System.out.printf("\t%s,\n", JsonEncoder.toJson("song Title", myFile.getSongTitle()));
+                    System.out.printf("\t%s,\n", JsonEncoder.toJson("game Title", myFile.getGameTitle()));
+                    System.out.printf("\t%s,\n", JsonEncoder.toJson("dumper", myFile.getNameOfDumper()));
+                    System.out.printf("\t%s,\n", JsonEncoder.toJson("comments", myFile.getComments()));
+                    System.out.printf("\t%s,\n", JsonEncoder.toJson("date Spc Was Dumped", myFile.dateDumpWasCreated()));
+                    if (verbose) {
+                        System.out.printf("\t%s,\n", JsonEncoder.toJson("length (Seconds)", myFile.getLengthSeconds()));
+                        System.out.printf("\t%s,\n", JsonEncoder.toJson("fade Length (Milliseconds)", myFile.getFadeLengthMilliseconds()));
+                        }
+                    System.out.printf("\t%s", JsonEncoder.toJson("emulator Used To Dump", myFile.getEmulatorUsedToCreateDump().getName()));
+                    if (verbose || printXid6) {
+                        try {
+                            Xid6 xid6 = spcReader.readXid6();
+                            Xid6Util util = new Xid6Util();
+                            util.printJson(xid6);
+                        } catch (IOException xid6ex) {
+                            Logger.warn("Unable to read xid6 tags", xid6ex);
+                        }
+                    } else {
+                        System.out.printf("\n");
+                    }
+                    System.out.println("}");
                 }
 
                 // NON-JSON OUTPUT--------------------------------------------
@@ -122,42 +148,6 @@ public final class TagReader {
                 System.exit(1);
             }
         }
-    }
-
-
-    private void printJson() {
-
-        System.out.println("{");
-        if (verbose) {
-            System.out.printf("t%s,\n", JsonEncoder.toJson("file header", myFile.getHeader()));
-            System.out.printf("\t%s,\n", JsonEncoder.toJson("Tag format",
-                    myFile.isBinaryTagFormat() ? "Binary" : "Text"));
-        }
-        System.out.printf("\t%s,\n", JsonEncoder.toJson("artist", myFile.getArtist()));
-        System.out.printf("\t%s,\n", JsonEncoder.toJson("Song Title", myFile.getSongTitle()));
-        System.out.printf("\t%s,\n", JsonEncoder.toJson("game title", myFile.getGameTitle()));
-        System.out.printf("\t%s,\n", JsonEncoder.toJson("name of dumper", myFile.getNameOfDumper()));
-        System.out.printf("\t%s,\n", JsonEncoder.toJson("comments", myFile.getComments()));
-        System.out.printf("\t%s,\n", JsonEncoder.toJson("date SPC was dumped", myFile.dateDumpWasCreated()));
-        if (verbose) {
-            System.out.printf("\t%s,\n", JsonEncoder.toJson("lengthSeconds", myFile.getLengthSeconds()));
-            System.out.printf("\t%s,\n", JsonEncoder.toJson("\tFade lengthMilliseconds", myFile.getFadeLengthMilliseconds()));
-        }
-        System.out.printf("\t%s", JsonEncoder.toJson("Emulator used to dump SPC", myFile.getEmulatorUsedToCreateDump().getName()));
-        if (verbose || printXid6) {
-            try {
-                Xid6 xid6 = spcReader.readXid6();
-                Xid6Util util = new Xid6Util();
-                util.printJson(xid6);
-            } catch (IOException xid6ex) {
-                Logger.warn("Unable to read xid6 tags", xid6ex);
-            }
-        } else {
-            System.out.printf("\n");
-        }
-        System.out.println("}");
-
-
     }
 
 }

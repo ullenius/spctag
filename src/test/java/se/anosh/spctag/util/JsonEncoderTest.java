@@ -8,7 +8,7 @@ public class JsonEncoderTest {
 
     @Test
     void encodingWorks() {
-        final String key = "Song Name";
+        final String key = "Song name";
         final String val = "du gamla du fria	foobar"; // tab character
 
         final String expected = """
