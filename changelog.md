@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.4.0
+* Add JSON-output support
+* Always output length and fade length in verbose mode (id666). Previously
+zero-values were omitted.
+* Bump dependencies
+
 ## v2.3.6
 * Bump dependencies.
 * Fix broken latin-1 parsing:

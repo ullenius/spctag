@@ -11,6 +11,7 @@ SPC-files are sound files containing ripped chiptune music from Super Nintendo a
 
 ```sh
 usage: spctag <filename>
+ -j,--json      output JSON
  -v,--verbose   verbose output
  -V,--version   print version
  -x,--xid6      print xid6 tags
@@ -74,6 +75,7 @@ can't compile stuff on their platform.
 ## Character encodings
 Supported character encodings are:
 
+* ASCII
 * UTF-8
 * latin-1
 
