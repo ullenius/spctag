@@ -82,18 +82,14 @@ public final class JsonEncoder {
 				: Objects.toString(val);
 	}
 	/**
-	 * Arrays and objects are not supported, 
-	 * only Strings, Number, boolean and null as per JSON specification (subset of JSON)
+	 * Arrays, objects and NULL are not supported,
+	 * only Strings, Number, boolean as per JSON specification (subset of JSON)
 	 * 
 	 * @param val
 	 */
 	private static boolean useQuotes(Object val) {
 		boolean quotes = true;
-		
-		if (val == null) {
-			quotes = false; // TODO remove
-		}
-		else if (val instanceof Number) {
+		if (val instanceof Number) {
 			quotes = false;
 		}
 		else if (val instanceof Boolean) {
