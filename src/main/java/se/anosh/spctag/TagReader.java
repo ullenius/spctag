@@ -77,8 +77,11 @@ public final class TagReader {
 
     private void go(final CommandLine cmd) {
         String[] fileNames = cmd.getArgs();
+        final int len = fileNames.length;
 
-        for (String file : fileNames) {
+        for (int i = 0; i < len; i++) {
+            String file = fileNames[i];
+
             try {
                 SpcDao spcReader = new SpcFile(file);
                 Id666 myFile = spcReader.read();
@@ -86,6 +89,9 @@ public final class TagReader {
                 final boolean printXid6 = cmd.hasOption(XID6);
 
                 if (cmd.hasOption("json")) {
+                    if (i == 0) {
+                        System.out.println("[");
+                    }
                     System.out.println("{");
                     if (verbose) {
                         System.out.printf("\t%s,\n", JsonEncoder.toJson(FILE_HEADER, myFile.getHeader()));
@@ -114,7 +120,13 @@ public final class TagReader {
                     } else {
                         System.out.printf("\n");
                     }
-                    System.out.println("}");
+                    System.out.printf("}");
+                    if (i == len -1) { // last element
+                        System.out.print("\n]"); // trailing comma
+                    }
+                    else {
+                        System.out.println(",");
+                    }
                 }
 
                 // NON-JSON OUTPUT--------------------------------------------
