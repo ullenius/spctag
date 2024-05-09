@@ -88,14 +88,11 @@ public final class JsonEncoder {
 	 * @param val
 	 */
 	private static boolean useQuotes(Object val) {
-		boolean quotes = true;
-		if (val instanceof Number) {
-			quotes = false;
+		Objects.requireNonNull(val, "null not supported");
+		if (val instanceof Boolean) {
+			throw new IllegalArgumentException("boolean not supported");
 		}
-		else if (val instanceof Boolean) {
-			quotes = false;
-		}
-		return quotes;
+		return !(val instanceof Number);
 	}
 	
 

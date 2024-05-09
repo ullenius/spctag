@@ -27,6 +27,17 @@ public final class TagReader {
 
     private static final String VERBOSE = "v";
     private static final String XID6 = "x";
+    private static final String FILE_HEADER = "File header";
+    private static final String TAG_FORMAT = "Tag format";
+    private static final String ARTIST = "Artist";
+    private static final String SONG_TITLE = "Song title";
+    private static final String GAME_TITLE = "Game title";
+    private static final String NAME_OF_DUMPER = "Name of dumper";
+    private static final String COMMENTS = "Comments";
+    private static final String DATE_SPC_WAS_DUMPED = "Date SPC was dumped";
+    private static final String EMULATOR_USED_TO_DUMP_SPC = "Emulator used to dump SPC";
+    private static final String LENGTH_SECONDS_D = "Length (seconds)";
+    private static final String FADE_LENGTH_MILLISECONDS = "Fade length (milliseconds)";
 
     public static void main(String[] args) {
         Options options = new Options();
@@ -109,27 +120,27 @@ public final class TagReader {
                 // foobar
                 else {
                     if (verbose) {
-                        System.out.println("File header: " + myFile.getHeader());
+                        System.out.printf("%s: %s\n", FILE_HEADER, myFile.getHeader());
                         String format = myFile.isBinaryTagFormat() ? "Binary" : "Text";
-                        System.out.println("Tag format: " + format);
+                        System.out.printf("%s: %s\n", TAG_FORMAT, format);
                         //System.out.printf("SPC version minor: %d\n", myFile.getVersion());
                     }
-                    System.out.println("Artist: " + myFile.getArtist()); // composer
-                    System.out.println("Song title: " + myFile.getSongTitle());
-                    System.out.println("Game title: " + myFile.getGameTitle());
-                    System.out.println("Name of dumper: " + myFile.getNameOfDumper());
-                    System.out.println("Comments: " + myFile.getComments());
+                    System.out.printf("%s: %s\n", ARTIST, myFile.getArtist()); // composer
+                    System.out.printf("%s: %s\n", SONG_TITLE, myFile.getSongTitle());
+                    System.out.printf("%s: %s\n", GAME_TITLE, myFile.getGameTitle());
+                    System.out.printf("%s: %s\n", NAME_OF_DUMPER, myFile.getNameOfDumper());
+                    System.out.printf("%s: %s\n", COMMENTS, myFile.getComments());
 
-                    System.out.println("Date SPC was dumped: " + myFile.dateDumpWasCreated());
-                    System.out.println("Emulator used to dump SPC: " + myFile.getEmulatorUsedToCreateDump().getName());
+                    System.out.printf("%s: %s\n", DATE_SPC_WAS_DUMPED, myFile.dateDumpWasCreated());
+                    System.out.printf("%s: %s\n", EMULATOR_USED_TO_DUMP_SPC, myFile.getEmulatorUsedToCreateDump().getName());
                     if (verbose) {
                         int length = myFile.getLengthSeconds();
                         long fadelength = myFile.getFadeLengthMilliseconds();
                         if (length != 0) {
-                            System.out.printf("Length (seconds): %d\n", myFile.getLengthSeconds());
+                            System.out.printf("%s: %d\n", LENGTH_SECONDS_D, myFile.getLengthSeconds());
                         }
                         if (fadelength != 0) {
-                            System.out.printf("Fade length (milliseconds): %d\n", myFile.getFadeLengthMilliseconds());
+                            System.out.printf("%s: %d\n", FADE_LENGTH_MILLISECONDS, myFile.getFadeLengthMilliseconds());
                         }
                     }
                     if (verbose || printXid6) {

@@ -1,5 +1,6 @@
 package se.anosh.spctag.util;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +19,14 @@ public class JsonEncoderTest {
 	}
 
 	@Test
-	// escaped as UTF-16
+	/*
+		"All Unicode characters may be placed within the
+		quotation marks, except for the characters that must be escaped:
+		quotation mark, reverse solidus, and the control characters (U+0000	through U+001F)."
+
+			- RFC 7159 (The JavaScript Object Notation (JSON) Data Interchange Format)
+	*/
+	@DisplayName("Ascii control chars are escaped as UTF-16")
 	void asciiControlCharactersAreEscaped() {
 		final String key = "escaped ascii control characters";
 		StringBuilder sb = new StringBuilder();
@@ -44,21 +52,24 @@ public class JsonEncoderTest {
 		assertEquals(expected, JsonEncoder.toJson(key, val));
 	}
 
-	/*
-				""".formatted(
-                JsonEncoder.toJson("sant funkar", true),
-                JsonEncoder.toJson("falskt funkar", false),
-                JsonEncoder.toJson("double funkar", Math.PI),
+	@Test
+	void floatingPointSupported() {
+		final String key = "floating point";
+		final double val = Math.PI;
+		final String expected = """
+			"floatingPoint" : 3.141592653589793""";
+		assertEquals(expected, JsonEncoder.toJson(key, val));
+	}
 
-                JsonEncoder.toJson("UTF-16 test", Character.toString( (char) 0x1F )), // ASCII, unit separator control code U+001F
-                JsonEncoder.toJson("UTF-8 test", "😐")
-						/*
-							All Unicode characters may be placed within the
-							quotation marks, except for the characters that must be escaped:
-							quotation mark, reverse solidus, and the control characters (U+0000	through U+001F).
+	@Test
+	@DisplayName("Multibyte UTF-8 is not escaped")
+	void utf8Works() {
+		final String key = "yiddish letter";
+		final String val = "א"; // shtumer alef
+		final String expected = """
+			"yiddishLetter" : "א\"""";
+		assertEquals(expected, JsonEncoder.toJson(key, val));
+	}
 
-							- RFC 7159 (The JavaScript Object Notation (JSON) Data Interchange Format)
-						*/
-     //   ));
 
 }
