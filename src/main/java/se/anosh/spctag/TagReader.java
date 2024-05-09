@@ -24,7 +24,6 @@ public final class TagReader {
     private static final String ABOUT = "code by A. Ullenius 2019-2023";
     private static final String LICENCE = "Licence: Gnu General Public License - version 3.0 only";
     private static final String TRIBUTE = "spctag is dedicated to my favourite OC remixer: Avien (1986-2004). RIP";
-
     private static final String VERBOSE = "v";
     private static final String XID6 = "x";
     private static final String FILE_HEADER = "File header";
@@ -32,12 +31,14 @@ public final class TagReader {
     private static final String ARTIST = "Artist";
     private static final String SONG_TITLE = "Song title";
     private static final String GAME_TITLE = "Game title";
-    private static final String NAME_OF_DUMPER = "Name of dumper";
+    private static final String NAME_OF_DUMPER = "Dumped by";
     private static final String COMMENTS = "Comments";
     private static final String DATE_SPC_WAS_DUMPED = "Date SPC was dumped";
     private static final String EMULATOR_USED_TO_DUMP_SPC = "Emulator used to dump SPC";
-    private static final String LENGTH_SECONDS_D = "Length (seconds)";
+    private static final String LENGTH_SECONDS = "Length (seconds)";
     private static final String FADE_LENGTH_MILLISECONDS = "Fade length (milliseconds)";
+    private static final String BINARY = "Binary";
+    private static final String TEXT = "Text";
 
     public static void main(String[] args) {
         Options options = new Options();
@@ -87,21 +88,21 @@ public final class TagReader {
                 if (cmd.hasOption("json")) {
                     System.out.println("{");
                     if (verbose) {
-                        System.out.printf("\t%s,\n", JsonEncoder.toJson("file header", myFile.getHeader()));
-                        System.out.printf("\t%s,\n", JsonEncoder.toJson("tag Format",
-                                myFile.isBinaryTagFormat() ? "binary" : "text"));
+                        System.out.printf("\t%s,\n", JsonEncoder.toJson(FILE_HEADER, myFile.getHeader()));
+                        System.out.printf("\t%s,\n", JsonEncoder.toJson(TAG_FORMAT,
+                                myFile.isBinaryTagFormat() ? BINARY : TEXT));
                     }
-                    System.out.printf("\t%s,\n", JsonEncoder.toJson("artist", myFile.getArtist()));
-                    System.out.printf("\t%s,\n", JsonEncoder.toJson("song Title", myFile.getSongTitle()));
-                    System.out.printf("\t%s,\n", JsonEncoder.toJson("game Title", myFile.getGameTitle()));
-                    System.out.printf("\t%s,\n", JsonEncoder.toJson("dumper", myFile.getNameOfDumper()));
-                    System.out.printf("\t%s,\n", JsonEncoder.toJson("comments", myFile.getComments()));
-                    System.out.printf("\t%s,\n", JsonEncoder.toJson("date Spc Was Dumped", myFile.dateDumpWasCreated()));
+                    System.out.printf("\t%s,\n", JsonEncoder.toJson(ARTIST, myFile.getArtist()));
+                    System.out.printf("\t%s,\n", JsonEncoder.toJson(SONG_TITLE, myFile.getSongTitle()));
+                    System.out.printf("\t%s,\n", JsonEncoder.toJson(GAME_TITLE, myFile.getGameTitle()));
+                    System.out.printf("\t%s,\n", JsonEncoder.toJson(NAME_OF_DUMPER, myFile.getNameOfDumper()));
+                    System.out.printf("\t%s,\n", JsonEncoder.toJson(COMMENTS, myFile.getComments()));
+                    System.out.printf("\t%s,\n", JsonEncoder.toJson(DATE_SPC_WAS_DUMPED, myFile.dateDumpWasCreated()));
                     if (verbose) {
-                        System.out.printf("\t%s,\n", JsonEncoder.toJson("length (Seconds)", myFile.getLengthSeconds()));
-                        System.out.printf("\t%s,\n", JsonEncoder.toJson("fade Length (Milliseconds)", myFile.getFadeLengthMilliseconds()));
+                        System.out.printf("\t%s,\n", JsonEncoder.toJson(LENGTH_SECONDS, myFile.getLengthSeconds()));
+                        System.out.printf("\t%s,\n", JsonEncoder.toJson(FADE_LENGTH_MILLISECONDS, myFile.getFadeLengthMilliseconds()));
                         }
-                    System.out.printf("\t%s", JsonEncoder.toJson("emulator Used To Dump", myFile.getEmulatorUsedToCreateDump().getName()));
+                    System.out.printf("\t%s", JsonEncoder.toJson(EMULATOR_USED_TO_DUMP_SPC, myFile.getEmulatorUsedToCreateDump().getName()));
                     if (verbose || printXid6) {
                         try {
                             Xid6 xid6 = spcReader.readXid6();
@@ -117,11 +118,10 @@ public final class TagReader {
                 }
 
                 // NON-JSON OUTPUT--------------------------------------------
-                // foobar
                 else {
                     if (verbose) {
                         System.out.printf("%s: %s\n", FILE_HEADER, myFile.getHeader());
-                        String format = myFile.isBinaryTagFormat() ? "Binary" : "Text";
+                        String format = myFile.isBinaryTagFormat() ? BINARY : TEXT;
                         System.out.printf("%s: %s\n", TAG_FORMAT, format);
                         //System.out.printf("SPC version minor: %d\n", myFile.getVersion());
                     }
@@ -137,7 +137,7 @@ public final class TagReader {
                         int length = myFile.getLengthSeconds();
                         long fadelength = myFile.getFadeLengthMilliseconds();
                         if (length != 0) {
-                            System.out.printf("%s: %d\n", LENGTH_SECONDS_D, myFile.getLengthSeconds());
+                            System.out.printf("%s: %d\n", LENGTH_SECONDS, myFile.getLengthSeconds());
                         }
                         if (fadelength != 0) {
                             System.out.printf("%s: %d\n", FADE_LENGTH_MILLISECONDS, myFile.getFadeLengthMilliseconds());
