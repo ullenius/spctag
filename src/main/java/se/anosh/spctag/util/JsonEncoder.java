@@ -49,8 +49,8 @@ public final class JsonEncoder {
 			char ch = text.charAt(i);
 			
 			String result = switch (ch) {
-				case '"' -> "\"";
-				case '\\' -> "\\";
+				case '"' -> "\\\"";
+				case '\\' -> "\\\\";
 				case '/' -> "\\/";
 				case '\b' -> "\\b";
 				case '\f' -> "\\f";
@@ -64,7 +64,7 @@ public final class JsonEncoder {
 				if (ch >= 0x0 && ch <= 0x1F) {
 					// UTF-16 escaping as per the spec, 
 					// all other (multibyte)characters are encoded as UTF-8
-					result = "\\u00%x".formatted( (int) ch);
+					result = "\\u%04x".formatted( (int) ch);
 				}
 				else {
 					result = Character.toString(ch);
