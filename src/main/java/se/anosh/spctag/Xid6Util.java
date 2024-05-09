@@ -76,7 +76,7 @@ public final class Xid6Util {
 
     public void printJson(Xid6 xid6) {
 
-        System.out.printf("""
+        System.out.print("""
         ,
             "xid6" : {
         """);
@@ -106,20 +106,10 @@ public final class Xid6Util {
         for (int i = 0; i < length; i++) {
             System.out.printf("\t\t%s", tags.get(i));
             if (i != length - 1) {
-                System.out.printf(",\n"); // trailing comma
+                System.out.print(",\n"); // trailing comma
             }
         }
-        System.out.printf("\n\t}\n");
-    }
-
-    private String createIfExists(String format, String data) {
-        return data != null ? String.format(format, data) : null;
-    }
-
-    private void printIf(String format, String data) {
-        if (data != null) {
-            System.out.printf(format, data);
-        }
+        System.out.print("\n\t}\n");
     }
 
     private void printLine(Xid6Tag field, String text) {

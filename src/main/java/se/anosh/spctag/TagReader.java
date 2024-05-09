@@ -20,7 +20,7 @@ import se.anosh.spctag.util.JsonEncoder;
  */
 public final class TagReader {
 
-    private static final String VERSION = "spctag version 2.3.6";
+    private static final String VERSION = "spctag version 2.4.0";
     private static final String ABOUT = "code by A. Ullenius 2019-2023";
     private static final String LICENCE = "Licence: Gnu General Public License - version 3.0 only";
     private static final String TRIBUTE = "spctag is dedicated to my favourite OC remixer: Avien (1986-2004). RIP";
@@ -118,11 +118,11 @@ public final class TagReader {
                             Logger.warn("Unable to read xid6 tags", xid6ex);
                         }
                     } else {
-                        System.out.printf("\n");
+                        System.out.println();
                     }
-                    System.out.printf("}");
+                    System.out.print("}");
                     if (i == len -1) { // last element
-                        System.out.print("\n]"); // trailing comma
+                        System.out.println("\n]"); // trailing comma
                     }
                     else {
                         System.out.println(",");
