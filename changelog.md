@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.4.1
+* Bump dependencies
+* Minor refactoring
+
 ## v2.4.0
 * Add JSON-output support
 * Always output length and fade length in verbose mode (id666). Previously
