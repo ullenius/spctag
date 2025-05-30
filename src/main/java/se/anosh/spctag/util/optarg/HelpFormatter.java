@@ -5,7 +5,7 @@ public class HelpFormatter {
     public void printHelp(String message, Options options) {
         System.out.printf("usage: %s\n", message);
         for (Option option : options.options()) {
-            System.out.printf(" -%s,--%s\t\t%s\n", option.opt(), option.longOpt(), option.description());
+            System.out.printf(" -%s,--%s\t%s\n", option.opt(), option.longOpt(), option.description());
         }
         /*
         usage: spctag <filename>
