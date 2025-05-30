@@ -2,13 +2,12 @@ package se.anosh.spctag;
 
 import java.io.IOException;
 
-import org.apache.commons.cli.*;
-
 import org.tinylog.Logger;
 import se.anosh.spctag.dao.*;
 import se.anosh.spctag.domain.Id666;
 import se.anosh.spctag.domain.Xid6;
 import se.anosh.spctag.util.JsonEncoder;
+import se.anosh.spctag.util.optarg.*;
 
 /**
  * SPC tag
@@ -47,7 +46,7 @@ public final class TagReader {
         options.addOption(XID6, "xid6", false, "print xid6 tags");
         options.addOption("j", "json", false, "output JSON");
 
-        CommandLineParser parser = new DefaultParser();
+        CommandLineParser parser = new CommandLineParser();
         HelpFormatter formatter = new HelpFormatter();
         try {
             CommandLine cmd = parser.parse(options, args);
