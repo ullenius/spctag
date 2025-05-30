@@ -1,12 +1,13 @@
 package se.anosh.spctag.util.optarg;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class CommandLineParser {
 
-    public CommandLine parse(Options options, String[] arr) { //throws ParseException;
+    public CommandLine parse(Options options, String[] arr) throws ParseException {
         List<Option> valid = options.options();
         List<Option> parsed = new LinkedList<>();
         List<String> argv = new LinkedList<>();
@@ -20,6 +21,10 @@ public class CommandLineParser {
                     found.ifPresentOrElse(parsed::add, () -> argv.add(opt));
                     }
                 );
+        if (parsed.isEmpty()) {
+            throw new ParseException("No options found");
+        }
+        parsed.sort(Comparator.comparing(Option::opt)); // TODO move sorting?
         return new CommandLine(parsed, argv);
     }
 
