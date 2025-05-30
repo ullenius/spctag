@@ -2,7 +2,7 @@ package se.anosh.spctag.util.optarg;
 
 import java.util.*;
 
-public class Options {
+public final class Options {
 
     private final SortedSet<Option> options = Option.of();
 

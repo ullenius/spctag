@@ -1,10 +1,8 @@
 package se.anosh.spctag.util.optarg;
 
-import org.tinylog.Logger;
-
 import java.util.*;
 
-public class CommandLineParser {
+public final class CommandLineParser {
 
     public CommandLine parse(Options options, String[] arr) throws ParseException {
         Collection<Option> valid = options.options();
@@ -29,6 +27,7 @@ public class CommandLineParser {
         }
         return new CommandLine(parsed, argv);
     }
+
     private int index(String opt) {
         int index = 0;
         for (int i = 0; i < opt.length() && i < 2; i++) {

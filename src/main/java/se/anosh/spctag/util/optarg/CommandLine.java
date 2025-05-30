@@ -1,12 +1,10 @@
 package se.anosh.spctag.util.optarg;
 
-import org.tinylog.Logger;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-public class CommandLine {
+public final class CommandLine {
 
     private final Collection<Option> parsed;
     private final List<String> argv;
