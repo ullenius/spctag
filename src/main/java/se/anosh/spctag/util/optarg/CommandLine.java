@@ -1,5 +1,7 @@
 package se.anosh.spctag.util.optarg;
 
+import org.tinylog.Logger;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +20,7 @@ public class CommandLine {
         return parsed.stream()
                 .anyMatch(e -> e.opt().contentEquals(opt) || e.longOpt().contentEquals(opt));
     }
+
 
     public List<String> getArgList() {
         return argv;

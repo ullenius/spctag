@@ -61,6 +61,7 @@ public final class TagReader {
             TagReader tagReader = new TagReader();
             tagReader.go(cmd);
         } catch (ParseException ex) {
+            Logger.error("ex {}", ex.getMessage());
             formatter.printHelp("spctag <filename>", options);
             System.exit(-1);
         }
