@@ -6,13 +6,13 @@
     <groupId>se.anosh</groupId>
     <artifactId>spctag</artifactId>
     <name>SPCtag</name>
-    <version>2.4.1-SNAPSHOT</version>
+    <version>2.4.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <jupiter.version>5.12.2</jupiter.version>
+        <jupiter.version>5.13.0</jupiter.version>
         <tinylog.version>2.7.0</tinylog.version>
     </properties>
 

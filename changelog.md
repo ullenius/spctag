@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.4.2
+* Bump dependencies (JUnit)
+* Remove Apache Commons CLI dependency
+
+Replaced with custom options-parsing as to minimise the number of dependencies.
+This reduces the JAR-size by 20% (64 KB).
+
 ## v2.4.1
 * Bump dependencies
 * Minor refactoring
