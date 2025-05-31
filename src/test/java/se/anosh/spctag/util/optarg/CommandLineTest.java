@@ -46,5 +46,4 @@ class CommandLineTest {
         assertArrayEquals(expected, uut.getArgs());
     }
 
-
 }

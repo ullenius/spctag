@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CommandLineParserTest {
@@ -23,9 +27,26 @@ class CommandLineParserTest {
     }
 
     @Test
-    void noOptionsThrows() {
-        String[] argv = { "foo", "bar" };
+    void noOptionsAndArgsThrows() {
+        String[] argv = { };
         assertThrows(ParseException.class, () -> uut.parse(OPTIONS, argv));
+    }
+    @Test
+    void noOptionsWorks() {
+        String[] argv = EXPECTED_ARGS;
+        List<String> argvList = Arrays.stream(argv).toList();
+        CommandLine cmd = uut.parse(OPTIONS, argv);
+        assertArrayEquals(argv, cmd.getArgs());
+        assertEquals(argvList, cmd.getArgList());
+    }
+
+    @Test
+    void onlyOptionsWorks() {
+        String[] argv = { "--help" };
+        String[] empty = {};
+        CommandLine cmd = uut.parse(OPTIONS, argv);
+        assertArrayEquals(empty, cmd.getArgs());
+        assertEquals(Collections.emptyList(), cmd.getArgList());
     }
 
     @ParameterizedTest

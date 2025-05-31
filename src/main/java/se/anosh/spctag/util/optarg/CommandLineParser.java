@@ -23,7 +23,7 @@ public final class CommandLineParser {
                         }
                     }
                 );
-        if (parsed.isEmpty()) {
+        if (parsed.isEmpty() && argv.isEmpty()) {
             throw new ParseException("No options found");
         }
         return new CommandLine(parsed, argv);
