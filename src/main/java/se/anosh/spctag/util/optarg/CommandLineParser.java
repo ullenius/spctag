@@ -12,8 +12,9 @@ public final class CommandLineParser {
         Arrays.stream(arr)
                 .forEach(opt -> {
                     final int index = index(opt);
+                    final String optTrimmed = opt.substring(index);
                         var found = valid.stream()
-                                .filter(e -> e.opt().contentEquals(opt.substring(index)) || e.longOpt().contentEquals(opt.substring(index)))
+                                .filter((e) -> e.opt().contentEquals(optTrimmed) || e.longOpt().contentEquals(optTrimmed))
                                 .findAny();
                         if (found.isPresent()) {
                             parsed.add(found.orElseThrow());
