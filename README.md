@@ -149,7 +149,6 @@ Emulator emulatorUsed = EmulatorFactory.createEmulator(0x31, Type.JAPANESE) // T
 GPL 3 only. See COPYING
 
 ### Libraries used & credit
-* Apache Commons CLI-library - [Apache Licence version 2](https://www.apache.org/licenses/LICENSE-2.0)
 * tinylog - [Apache Licence version 2](https://www.apache.org/licenses/LICENSE-2.0)
 * [S-SMP chip for SFC](https://commons.wikimedia.org/wiki/File:S-SMP_01.jpg) - made by [Yaca2671](https://commons.wikimedia.org/wiki/User_talk:Yaca2671) (2007). [Creative Commons Attribution-Share-Alike](https://creativecommons.org/licenses/by-sa/3.0/) 3.0 Unported licence.
 * SPC dumped-date check (logs warning if tag pre-dates the birth of the SPC-format; 1998-04-15) used is from `SPCTool` 
