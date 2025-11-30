@@ -19,7 +19,7 @@ import se.anosh.spctag.util.optarg.*;
  */
 public final class TagReader {
 
-    private static final String VERSION = "spctag version 2.4.2";
+    private static final String VERSION = "spctag version 2.4.3";
     private static final String ABOUT = "code by A. Ullenius 2019-2025";
     private static final String LICENCE = "Licence: Gnu General Public License - version 3.0 only";
     private static final String TRIBUTE = "spctag is dedicated to my favourite OC remixer: Avien (1986-2004). RIP";

@@ -12,8 +12,10 @@ import se.anosh.spctag.domain.Id666;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static se.anosh.spctag.TestModelWithData.BINARY_SPC;
@@ -84,7 +86,7 @@ public class Id666Test {
     void preSpcFormatDumpedDatesWork() {
         uut.setBinaryTagFormat(Boolean.TRUE);
         final String expected = "1997/05/08";
-        var earlyDate = LocalDate.of(1997, Month.MAY, 8);
+        LocalDate earlyDate = LocalDate.of(1997, Month.MAY, 8);
         uut.setDateDumpWasCreated(earlyDate);
         assertEquals(expected, uut.dateDumpWasCreated());
     }
@@ -137,18 +139,11 @@ public class Id666Test {
         final SpcFile otherFile = new SpcFile(BINARY_SPC);
         final Id666 other = otherFile.read();
 
-        List<Id666> myList = new LinkedList<>();
-        myList.add(other);
-        myList.add(uut);
-        myList.add(other);
-        myList.add(uut);
+        List<Id666> list = Arrays.asList(other, uut, other, uut);
+        List<Id666> expected = List.of(uut, uut, other, other);
 
-        myList.sort(null);
-        myList.forEach(Logger::debug);
-        assertEquals(uut, myList.get(0));
-        assertEquals(uut, myList.get(1));
-        assertEquals(other, myList.get(2));
-        assertEquals(other, myList.get(3));
+        list.sort(null);
+        assertEquals(expected, list);
     }
 
     @Test
@@ -157,17 +152,9 @@ public class Id666Test {
         final Id666 binaryTags = binary.read();
         final Id666 emptyTags = new Id666();
 
-        List<Id666> myList = new LinkedList<>();
-        myList.add(binaryTags);
-        myList.add(emptyTags);
-        myList.sort(null);
-
-        assertNull(myList.get(0).getSongTitle());
-        assertNull(myList.get(0).getGameTitle());
-        assertNull(myList.get(0).getArtist());
-        assertNotNull(myList.get(1).getGameTitle());
-        assertNotNull(myList.get(1).getArtist());
-        assertNotNull(myList.get(1).getSongTitle());
+        List<Id666> actual = Stream.of(binaryTags, emptyTags).sorted().toList();
+        List<Id666> expected = List.of(emptyTags, binaryTags);
+        assertEquals(expected, actual);
     }
 
     @Test

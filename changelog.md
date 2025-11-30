@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.4.3
+* Bump dependencies (JUnit)
+* Minor refactoring
+
 ## v2.4.2
 * Bump dependencies (JUnit)
 * Remove Apache Commons CLI dependency

@@ -5,11 +5,11 @@ import java.util.Objects;
 
 /**
  *
- * This class matches the code provided according to the legacy spec
- * made by creaothceann on 2006-02-27 21:48
+ * This class matches the code provided according to the legacy spec written by
+ * creaothceann on 2006-02-27 21:48
  * ---
- * Some values don't overlap in the Japanese spec. That's why
- * I created two different implementations.
+ * Some values don't overlap in the Japanese spec. That's why I created two
+ * different implementations.
  * 
  */
 final class LegacyEmulator implements Emulator {
