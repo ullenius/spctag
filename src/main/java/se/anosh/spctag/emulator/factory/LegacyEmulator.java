@@ -1,6 +1,5 @@
 package se.anosh.spctag.emulator.factory;
 
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -19,20 +18,17 @@ final class LegacyEmulator implements Emulator {
     static final int ZSNES = 1;
     static final int SNES9x = 2;
     
-    private static final Map<Integer, Name> emulatorMap = Map.of(
-        UNKNOWN, Name.Unknown,
-        ZSNES, Name.ZSNES,
-        SNES9x,Name.Snes9x
-    );
-
     private final int code;
     private final Name name;
 
     LegacyEmulator(int code) {
         this.code = code;
-        name = Objects.requireNonNullElse(emulatorMap.get(code), Name.Unknown);
+        name = switch (code) {
+            case ZSNES -> Name.ZSNES;
+            case SNES9x -> Name.Snes9x;
+            default -> Name.Unknown;
+        };
     }
-
 
     @Override
     public Name getName() {

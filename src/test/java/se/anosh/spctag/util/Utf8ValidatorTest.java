@@ -347,7 +347,7 @@ public class Utf8ValidatorTest {
                 {(byte) 0xF4, (byte) 0x8F, (byte) 0xBF, (byte) 0xBE},
                 {(byte) 0xF4, (byte) 0x8F, (byte) 0xBF, (byte) 0xBF},
         };
-        assertEquals(lastTwoOfSupplementaryPlanes.length, 32);
+        assertEquals(32, lastTwoOfSupplementaryPlanes.length);
 
         for (int i = 0; i < lastTwoOfSupplementaryPlanes.length; i++) {
             assertFalse(Utf8Validator.validate(lastTwoOfSupplementaryPlanes[i]), "Noncharacter at offset[%d] passed validation".formatted(i));

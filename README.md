@@ -47,7 +47,7 @@ $ java -jar spctag -v --json "/warez/spc/dkc2/17 Stickerbrush Symphony.spc"
 
 ## Features
 
-* :heavy_check_mark: 100% Java (Java 17) :coffee:
+* :heavy_check_mark: 100% Java (Java 21) :coffee:
 * :heavy_check_mark: Supports UTF-8 encoding in the tags!
 * :heavy_check_mark: Command line. Multi-platform.
 * :heavy_check_mark: Batch processing using wildcards is possible! For example: `java -jar spctag *.spc`

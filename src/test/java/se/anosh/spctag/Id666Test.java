@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.tinylog.Logger;
 import se.anosh.spctag.dao.SpcDao;
 import se.anosh.spctag.dao.SpcFile;
 import se.anosh.spctag.domain.Id666;
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
